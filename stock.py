@@ -10,7 +10,6 @@ import os
 #   Company
 #   Delayed Quote
 #   Dividends
-
 #   Earnings
 #   Earnings Today
 #   Effective Spread
@@ -19,7 +18,10 @@ import os
 #   Fund Ownership
 #   Historical Prices
 #   Income Statement
+#   Insider Roster
+#   Insider Summary
 #   Insider Transactions
+
 #   Institutional Ownership
 #   IPO Calendar
 #   Key Stats
@@ -42,92 +44,163 @@ import os
 #   Volume by Venue
 
 IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
+VERBOSE = False # Turn on explanitory output
+
+
+def _vprint(*args, **kwargs):
+    if VERBOSE:
+        print(*args, **kwargs)
 
 def _append_token(url):
     token = os.getenv('IEX_TOKEN')
-    return "{}&token={}".format(url, token)
+    return f"{url}&token={token}"
 
-#   Balance Sheet
-IEX_STOCK_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet?period={period}'
-def balance_sheet(symbol, period):
-    url = IEX_STOCK_BALANCE_SHEET_URL
-    url = url.replace('{symbol}', symbol)
-    url = url.replace('{period}', period)
-    result = requests.get(_append_token(url))
+def _get_iex_json_request(url):
+    url = _append_token(url)
+    _vprint(f"Making request: {url}")
+    result = requests.get(url)
+    _vprint(f"Request status code: {result.status_code}")
+    if result.status_code != 200:
+        raise BaseException(result.text)
     result = result.json()
     return result
+
+def _replace_url_var(url, **kwargs):
+    for key, value in kwargs.items():
+        url = url.replace('{' + key + '}', value)
+    return url
+
+
+#   Balance Sheet
+IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet?period={period}'
+def balance_sheet(symbol, period):
+    url = _replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol, period=period)
+    return _get_iex_json_request(url)
 
 #   Batch Requests
 def batch_requests():
     raise ImplementationError("Function cannot be implemented.")
 
 #   Book
-IEX_STOCK_BOOK_URL = IEX_STOCK_BASE_URL + '{symbol}/book?'
+IEX_BOOK_URL = IEX_STOCK_BASE_URL + '{symbol}/book?'
 def book(symbol):
-    url = IEX_STOCK_BOOK_URL
-    url = url.replace('{symbol}', symbol)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+    url = _replace_url_var(IEX_BOOK_URL, symbol=symbol)
+    return _get_iex_json_request(url)
 
 #   Cash Flow
-IEX_STOCK_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash_flow?'
+IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash_flow?'
 def cash_flow(symbol, period=None):
-    url = IEX_STOCK_CASH_FLOW_URL
-    url = url.replace('{symbol}', symbol)
+    url = _replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     if period:
-        url = url + "period={}".format(period)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+        url = url + f"period={period}"
+    return _get_iex_json_request(url)
 
 #   Collections
-IEX_STOCK_COLLECTION_URL = IEX_STOCK_BASE_URL + 'market/collection/{collectionType}?collectionName={collectionName}'
+IEX_COLLECTION_URL = IEX_STOCK_BASE_URL + 'market/collection/{collectionType}?collectionName={collectionName}'
 def collection(collectionType, collectionName):
-    url = IEX_STOCK_COLLECTION_URL
-    url = url.replace('{collectionType}', collectionType)
-    url = url.replace('{collectionName}', collectionName)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+    url = _replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
+    return _get_iex_json_request(url)
 
 #   Company
-IEX_STOCK_COMPANY_URL = IEX_STOCK_BASE_URL + '{symbol}/company'
+IEX_COMPANY_URL = IEX_STOCK_BASE_URL + '{symbol}/company?'
 def company(symbol):
-    url = IEX_STOCK_COMPANY_URL
-    url = url.replace('{symbol}', symbol)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+    url = _replace_url_var(IEX_COMPANY_URL, symbol=symbol)
+    return _get_iex_json_request(url)
 
 #   Delayed Quote
-IEX_STOCK_DELAYED_QUOTE_URL = IEX_STOCK_BASE_URL + '{symbol}/delayed-quote'
+IEX_DELAYED_QUOTE_URL = IEX_STOCK_BASE_URL + '{symbol}/delayed-quote?'
 def delayed_quote(symbol):
-    url = IEX_STOCK_DELAYED_QUOTE_URL
-    url = url.replace('{symbol}', symbol)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+    url = _replace_url_var(IEX_DELAYED_QUOTE_URL, symbol=symbol)
+    return _get_iex_json_request(url)
 
 #   Dividends
-IEX_DIVIDENDS_QUOTE_URL = IEX_STOCK_BASE_URL + 'stock/{symbol}/dividends/{range}'
+IEX_DIVIDENDS_URL = IEX_STOCK_BASE_URL + '{symbol}/dividends/{range}?'
 def dividends(symbol, range):
-    url = IEX_DIVIDENDS_QUOTE_URL
-    url = url.replace('{symbol}', symbol)
-    url = url.replace('{range}', range)
-    result = requests.get(_append_token(url))
-    result = result.json()
-    return result
+    url = _replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, range=range)
+    return _get_iex_json_request(url)
 
 #   Earnings
+IEX_EARNINGS_URL = IEX_STOCK_BASE_URL + '{symbol}/earnings?'
+def earnings(symbol, last=None, field=None):
+    url = _replace_url_var(IEX_EARNINGS_URL, symbol=symbol)
+    if last:
+        url = url + f"/{last}"
+        if field:
+            url = url + f"/{field}"
+    return _get_iex_json_request(url)
+
 #   Earnings Today
+IEX_TODAY_EARNINGS_URL = IEX_STOCK_BASE_URL + 'market/today-earnings?'
+def today_earnings():
+    url = IEX_TODAY_EARNINGS_URL
+    return _get_iex_json_request(url)
+
 #   Effective Spread
+IEX_EFFECTIVE_SPREAD_URL = IEX_STOCK_BASE_URL + '{symbol}/effective-spread?'
+def effective_spread(symbol):
+    url = _replace_url_var(IEX_EFFECTIVE_SPREAD_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
 #   Estimates
+IEX_ESTIMATES_URL = IEX_STOCK_BASE_URL + '{symbol}/estimates?'
+def estimates(symbol):
+    url = _replace_url_var(IEX_ESTIMATES_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
 #   Financials
+IEX_FINANCIALS_URL = IEX_STOCK_BASE_URL + '{symbol}/financials?'
+def financials(symbol, period=None):
+    url = _replace_url_var(IEX_FINANCIALS_URL, symbol=symbol)
+    if period:
+        url = url + f"period={period}"
+    return _get_iex_json_request(url)
+
 #   Fund Ownership
+IEX_FUND_OWNERSHIP_URL = IEX_STOCK_BASE_URL + '{symbol}/fund-ownership?'
+def fund_ownership(symbol):
+    url = _replace_url_var(IEX_FUND_OWNERSHIP_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
 #   Historical Prices
+IEX_CHART_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
+def chart(symbol, range=None, date=None, chartByDay=False, dynamic=False):
+    url = _replace_url_var(IEX_CHART_URL, symbol=symbol)
+    if range:
+        url = url + f'/{range}?'
+    elif date:
+        url = url + f'/date/{date}?chartByDay={chartByDay}'
+    elif dynamic:
+        url = url + f'/dynamic?'
+    else:
+        url = url + '?'
+    return _get_iex_json_request(url)
+
 #   Income Statement
+IEX_INCOME_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
+def income(symbol, period=None):
+    url = _replace_url_var(IEX_INCOME_URL, symbol=symbol)
+    if period:
+        url = url + f'period={period}'
+    return _get_iex_json_request(url)
+
+#   Insider Roster
+IEX_INSIDER_ROSTER_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-roster?'
+def insider_roster(symbol):
+    url = _replace_url_var(IEX_INSIDER_ROSTER_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
+#   Insider Summary
+IEX_INSIDER_SUMMARY_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-summary?'
+def insider_summary(symbol):
+    url = _replace_url_var(IEX_INSIDER_SUMMARY_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
 #   Insider Transactions
+IEX_INSIDER_TRANSACTIONS_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-transactions?'
+def insider_transactions(symbol):
+    url = _replace_url_var(IEX_INSIDER_TRANSACTIONS_URL, symbol=symbol)
+    return _get_iex_json_request(url)
+
 #   Institutional Ownership
 #   IPO Calendar
 #   Key Stats
@@ -150,207 +223,7 @@ def dividends(symbol, range):
 #   Volume by Venue
 
 
-
-# Returns historical stock prices for specified company
-IEX_STOCK_CHART_URL = IEXCLOUD_STOCK_BASE_URL + '{symbol}/chart/{range}/{date}'
-def chart(symbol, range, date='', format=None):
-    url = IEX_STOCK_CHART_URL.replace('{symbol}', symbol).replace('{range}', range).replace('{date}', date)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns financials overview (limited data) for specified company
-IEX_STOCK_FINANCIALS_URL = IEXCLOUD_STOCK_BASE_URL + '{symbol}/financials?period={period}'
-def financials(symbol, period, format=None):
-    url = IEX_STOCK_FINANCIALS_URL.replace('{symbol}', symbol).replace('{period}', period)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns income statement for specified company
-IEX_STOCK_INCOME_STATEMENT_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/income?period={period}'
-def income_statement(symbol, period, format=None):
-    url = IEX_STOCK_INCOME_STATEMENT_URL.replace('{symbol}', symbol).replace('{period}', period)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns balance sheet for specified company
-IEX_STOCK_BALANCE_SHEET_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/balance-sheet?period={period}'
-def balance_sheet(symbol, period, format=None):
-    url = IEX_STOCK_BALANCE_SHEET_URL.replace('{symbol}', symbol).replace('{period}', period)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns cash flow statement for specified company
-IEX_STOCK_CASH_FLOW_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/cash-flow?period={period}'
-def cash_flow(symbol, period, format=None):
-    url = IEX_STOCK_CASH_FLOW_URL.replace('{symbol}', symbol).replace('{period}', period)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns key statistics for specified company
-IEX_STOCK_KEY_STAT_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/stats/{stat}'
-def key_stat(symbol, stat, format=None):
-    url = IEX_STOCK_KEY_STAT_URL.replace('{symbol}', symbol).replace('{stat}', stat)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns the analyst price target for specified company
-IEX_STOCK_PRICE_TARGET_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/price-target'
-def price_target(symbol, format=None):
-    url = IEX_STOCK_PRICE_TARGET_URL.replace('{symbol}', symbol)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns dividend information for specified company
-IEX_STOCK_DIVIDENDS_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/dividends/{range}'
-def dividends(symbol, range, format=None):
-    url = IEX_STOCK_DIVIDENDS_URL.replace('{symbol}', symbol).replace('{range}', range)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns relevant stocks, similar to peers (true/false specifies whether it is the peer list)
-IEX_STOCK_RELEVANT_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/relevant'
-def relevant(symbol, format=None):
-    url = IEX_STOCK_RELEVANT_URL.replace('{symbol}')
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns IB analyst recommendations
-IEX_STOCK_RECOMENDATION_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/recommendation-trends'
-def recommendation_trends(symbol, format=None):
-    url = IEX_STOCK_RECOMENDATION_URL.replace('{symbol}', symbol)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns earnings estimates for the specified company
-IEX_STOCK_ESTIMATES_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/estimates'
-def analyst_estimates(symbol, format=None):
-    url = IEX_STOCK_ESTIMATES_URL.replace('{symbol}', symbol)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
-
-# Returns 10 most recent news items for specified company
-IEX_STOCK_NEWS_URL = IEXCLOUD_STOCK_BASE_URL + 'stock/{symbol}/news'
-def news(symbol, format=None):
-    url = IEX_STOCK_NEWS_URL.replace('{symbol}', symbol)
-    result = requests.get(append_token(url))
-    result = result.json()
-
-    if format == 'pandas':
-        # Do your pandas formatting here
-        pass
-
-    if format == 'numpy':
-        #do your numpy formatting here
-        pass
-
-    return result
+if __name__ == '__main__':
+    import json
+    print("Running Developer Tests...")
+    VERBOSE = True
