@@ -156,9 +156,9 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
     return get_iex_json_request(url)
 
 #   Income Statement
-IEX_INCOME_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
-def income(symbol, period=None):
-    url = replace_url_var(IEX_INCOME_URL, symbol=symbol)
+IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
+def income_statement(symbol, period=None):
+    url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     url += f'period={period}' if period else ''
     return get_iex_json_request(url)
 
