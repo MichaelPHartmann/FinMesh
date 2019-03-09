@@ -36,7 +36,7 @@ from iex._common import vprint, append_token, get_iex_json_request, replace_url_
 #   Price Target
 #   Quote
 #   Recommended Trends
-#   Relavent Stocks
+#   Relevent Stocks
 #   Sector Performance
 #   Splits
 #   Volume by Venue
