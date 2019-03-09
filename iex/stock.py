@@ -192,12 +192,12 @@ def insider_transactions():
     return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
 
 IEX_TODAY_IPOS_URL = IEX_STOCK_BASE_URL + 'market/today-ipos?'
-def insider_transactions():
+def ipo_today():
     return get_iex_json_request(IEX_TODAY_IPOS_URL)
 
 #   Key Stats
 IEX_STATS_URL = IEX_STOCK_BASE_URL + '{symbol}/stats'
-def insider_transactions(symbol, nextEarningsDate=False):
+def key_stats(symbol, nextEarningsDate=False):
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
     url += '/nextEarningsDate?' if nextEarningsDate else '?'
     return get_iex_json_request(url)
