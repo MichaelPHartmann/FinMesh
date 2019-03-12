@@ -60,7 +60,7 @@ def book(symbol):
     return get_iex_json_request(url)
 
 #   Cash Flow
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash_flow?'
+IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow?'
 def cash_flow(symbol, period=None, last=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     if period:
