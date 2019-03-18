@@ -60,13 +60,15 @@ def book(symbol):
     return get_iex_json_request(url)
 
 #   Cash Flow
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash_flow?'
+IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
 def cash_flow(symbol, period=None, last=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
-    if period:
-        url += f'period={period}'
-        if last:
-            url += f'last={last}'
+    if last and field:
+        url+= f"/{last}/{field}?"
+    elif last:
+        url+= f"/{last}?"
+    else:
+        url += '?'
     return get_iex_json_request(url)
 
 #   Collections
@@ -197,9 +199,9 @@ def ipo_today():
 
 #   Key Stats
 IEX_STATS_URL = IEX_STOCK_BASE_URL + '{symbol}/stats'
-def key_stats(symbol, nextEarningsDate=False):
+def key_stats(symbol, stat=False):
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += '/nextEarningsDate?' if nextEarningsDate else '?'
+    url += str(stat) if stat else '?'
     return get_iex_json_request(url)
 
 #   Largest Trades
