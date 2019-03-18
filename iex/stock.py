@@ -36,7 +36,7 @@ from iex._common import vprint, append_token, get_iex_json_request, replace_url_
 #   Price Target
 #   Quote
 #   Recommended Trends
-#   Relavent Stocks
+#   Relevent Stocks
 #   Sector Performance
 #   Splits
 #   Volume by Venue
@@ -60,13 +60,15 @@ def book(symbol):
     return get_iex_json_request(url)
 
 #   Cash Flow
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash_flow?'
+IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
 def cash_flow(symbol, period=None, last=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
-    if period:
-        url += f'period={period}'
-        if last:
-            url += f'last={last}'
+    if last and field:
+        url+= f"/{last}/{field}?"
+    elif last:
+        url+= f"/{last}?"
+    else:
+        url += '?'
     return get_iex_json_request(url)
 
 #   Collections
@@ -156,9 +158,9 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
     return get_iex_json_request(url)
 
 #   Income Statement
-IEX_INCOME_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
-def income(symbol, period=None):
-    url = replace_url_var(IEX_INCOME_URL, symbol=symbol)
+IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
+def income_statement(symbol, period=None):
+    url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     url += f'period={period}' if period else ''
     return get_iex_json_request(url)
 
@@ -192,14 +194,14 @@ def insider_transactions():
     return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
 
 IEX_TODAY_IPOS_URL = IEX_STOCK_BASE_URL + 'market/today-ipos?'
-def insider_transactions():
+def ipo_today():
     return get_iex_json_request(IEX_TODAY_IPOS_URL)
 
 #   Key Stats
 IEX_STATS_URL = IEX_STOCK_BASE_URL + '{symbol}/stats'
-def insider_transactions(symbol, nextEarningsDate=False):
+def key_stats(symbol, stat=False):
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += '/nextEarningsDate?' if nextEarningsDate else '?'
+    url += str(stat) if stat else '?'
     return get_iex_json_request(url)
 
 #   Largest Trades
