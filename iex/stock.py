@@ -139,6 +139,7 @@ def fund_ownership(symbol):
     return get_iex_json_request(url)
 
 #   Historical Prices
+#   Soon to be deprecated
 #
 #   Here the query string parameters are handled a bit differently because
 #   there are so many.  This may be inconsistent but no other way is realistic
@@ -184,13 +185,13 @@ def insider_transactions(symbol):
 
 #   Institutional Ownership
 IEX_INSTITUTIONAL_OWNERSHIP_URL = IEX_STOCK_BASE_URL + '{symbol}/institutional-ownership?'
-def insider_transactions(symbol):
+def institutional_ownership(symbol):
     url = replace_url_var(IEX_INSTITUTIONAL_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   IPO Calendar
 IEX_UPCOMING_IPOS_URL = IEX_STOCK_BASE_URL + 'market/upcoming-ipos?'
-def insider_transactions():
+def ipo_upcoming():
     return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
 
 IEX_TODAY_IPOS_URL = IEX_STOCK_BASE_URL + 'market/today-ipos?'

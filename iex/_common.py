@@ -1,7 +1,7 @@
 import requests
 import os
 
-VERBOSE = False # Turn on explanitory output
+VERBOSE = True # Turn on explanitory output
 
 def vprint(*args, **kwargs):
     if VERBOSE:
