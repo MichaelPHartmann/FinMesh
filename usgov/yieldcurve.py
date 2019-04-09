@@ -12,8 +12,9 @@ curve = xmltodict.parse(curve.content)
 #This will be based around retrieving the n last dates or average of n days.
 feed = curve['feed']
 entry = feed['entry']
-content = entry[0]['content']
-content = content['m:properties']
+content = entry[0]['content']['m:properties']
+
+#Very verbose but makes it easy to use values in other contexts
 one_month_yield = content['d:BC_1MONTH']['#text']
 two_month_yield = content['d:BC_2MONTH']['#text']
 three_month_yield = content['d:BC_3MONTH']['#text']
@@ -38,5 +39,3 @@ yield_curve_values = {
         '20 Year' : twenty_year_yield,
         '30 Year' : thirty_year_yield,
     }
-
-print(yield_curve_values)
