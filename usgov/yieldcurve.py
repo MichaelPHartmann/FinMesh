@@ -15,6 +15,7 @@ entry = feed['entry']
 content = entry[0]['content']['m:properties']
 
 #Very verbose but makes it easy to use values in other contexts
+date = entry[0]['content']['m:properties']['d:NEW_DATE']['#text']
 one_month_yield = content['d:BC_1MONTH']['#text']
 two_month_yield = content['d:BC_2MONTH']['#text']
 three_month_yield = content['d:BC_3MONTH']['#text']
@@ -26,7 +27,10 @@ five_year_yield = content['d:BC_5YEAR']['#text']
 ten_year_yield = content['d:BC_10YEAR']['#text']
 twenty_year_yield = content['d:BC_20YEAR']['#text']
 thirty_year_yield = content['d:BC_30YEAR']['#text']
+
+#Dict that contains the whole yield curve so there is no need to bring in each rate.
 yield_curve_values = {
+        'Date' : date,
         '1 Month' : one_month_yield,
         '2 Month' : two_month_yield,
         '3 Month' : three_month_yield,
@@ -39,3 +43,5 @@ yield_curve_values = {
         '20 Year' : twenty_year_yield,
         '30 Year' : thirty_year_yield,
     }
+
+print(yield_curve_values)
