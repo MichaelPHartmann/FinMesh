@@ -8,4 +8,6 @@ if __name__ == "__main__":
     import json
     print("Running developer tests...")
 
-print(one_month_yield)
+print('done')
+
+print(yield_curve_values)

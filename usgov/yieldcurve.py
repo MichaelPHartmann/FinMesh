@@ -6,16 +6,17 @@ GOV_YIELD_URL = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateD
 
 #Formatting of XML to Python Dict
 curve = requests.get(GOV_YIELD_URL)
-curve = xmltodict.parse(curve.content)
+parse_curve = xmltodict.parse(curve.content)
 
 #Definitions for various datapoints
 #This will be based around retrieving the n last dates or average of n days.
-feed = curve['feed']
+feed = parse_curve['feed']
 entry = feed['entry']
-content = entry[0]['content']['m:properties']
+last_entry = len(entry)-1
+content = entry[last_entry]['content']['m:properties']
 
 #Very verbose but makes it easy to use values in other contexts
-date = entry[0]['content']['m:properties']['d:NEW_DATE']['#text']
+date = entry[last_entry]['content']['m:properties']['d:NEW_DATE']['#text']
 one_month_yield = content['d:BC_1MONTH']['#text']
 two_month_yield = content['d:BC_2MONTH']['#text']
 three_month_yield = content['d:BC_3MONTH']['#text']
@@ -43,5 +44,3 @@ yield_curve_values = {
         '20 Year' : twenty_year_yield,
         '30 Year' : thirty_year_yield,
     }
-
-print(yield_curve_values)
