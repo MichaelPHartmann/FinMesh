@@ -10,4 +10,4 @@ if __name__ == "__main__":
 
 print('done')
 
-print(yield_curve_values)
+print(two_year_yield())
