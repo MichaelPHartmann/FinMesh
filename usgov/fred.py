@@ -5,14 +5,15 @@ import requests
 import xmltodict
 
 FRED_BASE_URL = 'https://api.stlouisfed.org/fred/'
+GEOFRED_BASE_URL = 'https://api.stlouisfed.org/geofred/'
 
 def append_fred_token(url):
     token = os.getenv('FRED_TOKEN')
     return f'{url}&api_key={token}'
 
-SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
+FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
 def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, limit=None, offset=None, sort_order=None, observation_start=None, observation_end=None, units=None, frequency=None, aggregation_method=None, output_type=None, vintage_dates=None):
-    url = SERIES_OBS_URL + f'series_id={series}'
+    url = FRED_SERIES_OBS_URL + f'series_id={series}'
     url += f'&file_type={file_type}' if file_type else ''
     url += f'&realtime_start={realtime_start}' if realtime_start else ''
     url += f'&realtime_end={realtime_end}' if realtime_end else ''
@@ -29,5 +30,13 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
     url = append_fred_token(url)
     result = requests.get(url)
     return result
+
+GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'data?'
+def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
+    url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
+    url += f'&file_type={file_type}' if file_type else ''
+    url += f'&date={date}' if date else ''
+    url += f'&start_date={start_date}'
+
 
 print(fred_series('GNPCA', 'json'))
