@@ -31,12 +31,23 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
     result = requests.get(url)
     return result
 
+GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'group?'
+def geofred_series_meta(series_id, file_type=None):
+    url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
+    url += f'&file_type={file_type}' if file_type else ''
+    url = append_fred_token(url)
+    result = requests.get(url)
+    return result
+
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'data?'
 def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
     url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
     url += f'&file_type={file_type}' if file_type else ''
     url += f'&date={date}' if date else ''
-    url += f'&start_date={start_date}'
+    url += f'&start_date={start_date}' if start_date else ''
+    url = append_fred_token(url)
+    result = requests.get(url)
+    return result
 
 
 print(fred_series('GNPCA', 'json'))
