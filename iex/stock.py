@@ -44,7 +44,7 @@ from iex._common import vprint, append_token, get_iex_json_request, replace_url_
 IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
 
 #   Balance Sheet
-IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet?'
+IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet'
 def balance_sheet(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
     if period: url += f'period={period}'
@@ -68,7 +68,7 @@ def book(symbol):
 
 #   Cash Flow
 
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow?'
+IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
 def cash_flow(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     if period: url += f'period={period}'
@@ -168,7 +168,7 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
     return get_iex_json_request(url)
 
 #   Income Statement
-IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
+IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income'
 def income_statement(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     if period: url += f'period={period}'
