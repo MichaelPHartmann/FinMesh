@@ -8,6 +8,9 @@ if __name__ == "__main__":
     import json
     print("Running developer tests...")
 
-test = usgov.fred.geofred_series_meta('WIPCPI')
+ycv = get_yield()
+
+ycv["1Month"]
+#test = usgov.fred.geofred_series_meta('WIPCPI')
 
 print(test)

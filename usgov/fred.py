@@ -20,19 +20,19 @@ def append_fred_token(url):
 FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
 def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, limit=None, offset=None, sort_order=None, observation_start=None, observation_end=None, units=None, frequency=None, aggregation_method=None, output_type=None, vintage_dates=None):
     url = FRED_SERIES_OBS_URL + f'series_id={series}'
-    url += f'&file_type={file_type}' if file_type else ''
-    url += f'&realtime_start={realtime_start}' if realtime_start else ''
-    url += f'&realtime_end={realtime_end}' if realtime_end else ''
-    url += f'&limit={limit}' if limit else ''
-    url += f'&offset={offset}' if offset else ''
-    url += f'&sort_order={sort_order}' if sort_order else ''
-    url += f'&observation_start={observation_start}' if observation_start else ''
-    url += f'&observation_end={observation_end}' if observation_end else ''
-    url += f'&units={units}' if units else ''
-    url += f'&frequency={frequency}' if frequency else ''
-    url += f'&aggregation_method={aggregation_method}' if aggregation_method else ''
-    url += f'&output_type={output_type}' if output_type else ''
-    url += f'&vintage_dates={vintage_dates}' if vintage_dates else ''
+    if file_type: url += f'&file_type={file_type}'
+    if realtime_start: url += f'&realtime_start={realtime_start}'
+    if realtime_end: url += f'&realtime_end={realtime_end}'
+    if limit: url += f'&limit={limit}'
+    if offset: url += f'&offset={offset}'
+    if sort_order: url += f'&sort_order={sort_order}'
+    if observation_start: url += f'&observation_start={observation_start}'
+    if observation_end: url += f'&observation_end={observation_end}'
+    if units: url += f'&units={units}'
+    if frequency: url += f'&frequency={frequency}'
+    if aggregation_method: url += f'&aggregation_method={aggregation_method}'
+    if output_type: url += f'&output_type={output_type}'
+    if vintage_dates: url += f'&vintage_dates={vintage_dates}'
     url = append_fred_token(url)
     vprint(url)
     result = requests.get(url)
@@ -41,7 +41,7 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
 def geofred_series_meta(series_id, file_type=None):
     url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
-    url += f'&file_type={file_type}' if file_type else ''
+    if file_type: url += f'&file_type={file_type}'
     url = append_fred_token(url)
     vprint(url)
     result = requests.get(url)
@@ -50,9 +50,9 @@ def geofred_series_meta(series_id, file_type=None):
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
 def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
     url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
-    url += f'&file_type={file_type}' if file_type else ''
-    url += f'&date={date}' if date else ''
-    url += f'&start_date={start_date}' if start_date else ''
+    if file_type: url += f'&file_type={file_type}'
+    if date: url += f'&date={date}'
+    if start_date: url += f'&start_date={start_date}'
     url = append_fred_token(url)
     vprint(url)
     result = requests.get(url)
