@@ -1,4 +1,4 @@
-from iex._common import vprint, append_token, get_iex_json_request, replace_url_var
+from iex._common import *
 
 # API Endpoints for "stock":
 #   Balance Sheet
@@ -60,11 +60,7 @@ def book(symbol):
     return get_iex_json_request(url)
 
 #   Cash Flow
-<<<<<<< HEAD
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
-=======
 IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow?'
->>>>>>> 264a378f0787c933e8e9e49a78e5f75ebea79893
 def cash_flow(symbol, period=None, last=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     if last and field:
@@ -164,7 +160,7 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
 
 #   Income Statement
 IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income?'
-def income_statement(symbol, period=None):
+def income_statement(symbol, period=None, last=None):
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     url += f'period={period}' if period else ''
     return get_iex_json_request(url)

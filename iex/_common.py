@@ -7,12 +7,12 @@ def vprint(*args, **kwargs):
     if VERBOSE:
         print(*args, **kwargs)
 
-def append_token(url):
+def append_iex_token(url):
     token = os.getenv('IEX_TOKEN')
     return f"{url}&token={token}"
 
 def get_iex_json_request(url):
-    url = append_token(url)
+    url = append_iex_token(url)
     vprint(f"Making request: {url}")
     result = requests.get(url)
     vprint(f"Request status code: {result.status_code}")
