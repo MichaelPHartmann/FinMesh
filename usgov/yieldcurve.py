@@ -16,17 +16,18 @@ def get_yield():
     content = entry[last_entry]['content']['m:properties']
 
     # Dict that contains the whole yield curve so there is no need to bring in each rate.
-    return yield_curve_values = {
-            'date' : entry[last_entry]['content']['m:properties']['d:NEW_DATE']['#text'],
-            '1month' : content['d:BC_1MONTH']['#text'],
-            '2month' : content['d:BC_2MONTH']['#text'],
-            '3month' : content['d:BC_3MONTH']['#text'],
-            '6month' : content['d:BC_6MONTH']['#text'],
-            '1year' : content['d:BC_1YEAR']['#text'],
-            '2year' : content['d:BC_2YEAR']['#text'],
-            '3year' : content['d:BC_3YEAR']['#text'],
-            '5year' : content['d:BC_5YEAR']['#text'],
-            '10year' : content['d:BC_10YEAR']['#text'],
-            '20year' : content['d:BC_20YEAR']['#text'],
-            '30year' : content['d:BC_30YEAR']['#text'],
+    yield_curve_values = {
+        'date' : entry[last_entry]['content']['m:properties']['d:NEW_DATE']['#text'],
+        '1month' : float(content['d:BC_1MONTH']['#text']),
+        '2month' : float(content['d:BC_2MONTH']['#text']),
+        '3month' : float(content['d:BC_3MONTH']['#text']),
+        '6month' : float(content['d:BC_6MONTH']['#text']),
+        '1year' : float(content['d:BC_1YEAR']['#text']),
+        '2year' : float(content['d:BC_2YEAR']['#text']),
+        '3year' : float(content['d:BC_3YEAR']['#text']),
+        '5year' : float(content['d:BC_5YEAR']['#text']),
+        '10year' : float(content['d:BC_10YEAR']['#text']),
+        '20year' : float(content['d:BC_20YEAR']['#text']),
+        '30year' : float(content['d:BC_30YEAR']['#text']),
         }
+    return yield_curve_values

@@ -47,13 +47,10 @@ IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
 IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet'
 def balance_sheet(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
+    if last: url += f'/{last}'
+    if field: url += f'{field}'
     if period: url += f'/period={period}'
-    if last and field:
-        url+= f"/{last}/{field}?"
-    elif last:
-        url+= f"/{last}?"
-    else:
-        url += '?'
+    url += '?'
     return get_iex_json_request(url)
 
 #   Batch Requests
@@ -71,13 +68,10 @@ def book(symbol):
 IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
 def cash_flow(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
+    if last: url += f'/{last}'
+    if field: url += f'{field}'
     if period: url += f'/period={period}'
-    if last and field:
-        url+= f"/{last}/{field}?"
-    elif last:
-        url+= f"/{last}?"
-    else:
-        url += '?'
+    url += '?'
     return get_iex_json_request(url)
 
 #   Collections
@@ -171,13 +165,10 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
 IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income'
 def income_statement(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
+    if last: url += f'/{last}'
+    if field: url += f'{field}'
     if period: url += f'/period={period}'
-    if last and field:
-        url+= f"/{last}/{field}?"
-    elif last:
-        url+= f"/{last}?"
-    else:
-        url += '?'
+    url += '?'
     return get_iex_json_request(url)
 
 #   Insider Roster
