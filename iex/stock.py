@@ -41,7 +41,12 @@ from iex._common import *
 #   Splits
 #   Volume by Venue
 
-IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
+SAND_BOX = True
+
+if SAND_BOX:
+    IEX_STOCK_BASE_URL = 'https://sandbox.iexapis.com/beta/stock/'
+else:
+    IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet'
