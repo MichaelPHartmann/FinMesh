@@ -160,7 +160,6 @@ def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
         url+= f'/dynamic?'
     else:
         url+= '?'
-
     for key, value in kwargs.items():
         url += f'&{key}={value}'
 

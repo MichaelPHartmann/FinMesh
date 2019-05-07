@@ -7,4 +7,4 @@ if __name__ == "__main__":
     import json
     print("Running developer tests...")
 
-print(iex.stock.quote('.DJI'))
+print(iex.stock.quote('AAPL'))
