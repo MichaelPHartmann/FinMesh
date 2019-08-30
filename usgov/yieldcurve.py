@@ -1,6 +1,6 @@
+import os
 import requests
 import xmltodict
-import os
 
 GOV_YIELD_URL = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%204%20and%20year(NEW_DATE)%20eq%202019'
 

@@ -4,11 +4,6 @@ import json
 import requests
 import xmltodict
 
-VERBOSE = True # Turn on explanitory output
-
-def vprint(*args, **kwargs):
-    if VERBOSE:
-        print(*args, **kwargs)
 
 FRED_BASE_URL = 'https://api.stlouisfed.org/fred/'
 GEOFRED_BASE_URL = 'https://api.stlouisfed.org/geofred/'
@@ -34,7 +29,6 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
     if output_type: url += f'&output_type={output_type}'
     if vintage_dates: url += f'&vintage_dates={vintage_dates}'
     url = append_fred_token(url)
-    vprint(url)
     result = requests.get(url)
     return result.text
 
@@ -43,7 +37,6 @@ def geofred_series_meta(series_id, file_type=None):
     url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
     if file_type: url += f'&file_type={file_type}'
     url = append_fred_token(url)
-    vprint(url)
     result = requests.get(url)
     return result.text
 
@@ -54,6 +47,5 @@ def geofred_regional_series(series_id, file_type=None, date=None, start_date=Non
     if date: url += f'&date={date}'
     if start_date: url += f'&start_date={start_date}'
     url = append_fred_token(url)
-    vprint(url)
     result = requests.get(url)
     return result.text

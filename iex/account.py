@@ -1,11 +1,5 @@
 from iex._common import vprint, append_iex_token, get_iex_json_request, replace_url_var
 
-# API Endpoints for "account":
-#   Metadata
-#   Usage
-#   Pay as you go
-
-
 IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/account/'
 
 #   Metadata

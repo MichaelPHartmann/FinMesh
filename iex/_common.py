@@ -1,21 +1,15 @@
-import requests
 import os
-
-VERBOSE = True # Turn on explanitory output
-
-def vprint(*args, **kwargs):
-    if VERBOSE:
-        print(*args, **kwargs)
+import requests
 
 def append_iex_token(url):
     token = os.getenv('IEX_TOKEN')
     return f"{url}&token={token}"
 
-def get_iex_json_request(url):
+def get_iex_json_request(url, vprint=False):
     url = append_iex_token(url)
-    vprint(f"Making request: {url}")
+    if vprint: print(f"Making request: {url}")
     result = requests.get(url)
-    vprint(f"Request status code: {result.status_code}")
+    if vprint: print(f"Request status code: {result.status_code}")
     if result.status_code != 200:
         raise BaseException(result.text)
     result = result.json()

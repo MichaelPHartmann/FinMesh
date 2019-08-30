@@ -1,47 +1,6 @@
 from iex._common import *
 
-# API Endpoints for "stock":
-#   Balance Sheet
-#   Batch Requests
-#   Book
-#   Cash Flow
-#   Collections
-#   Company
-#   Delayed Quote
-#   Dividends
-#   Earnings
-#   Earnings Today
-#   Effective Spread
-#   Estimates
-#   Financials
-#   Fund Ownership
-#   Historical Prices
-#   Income Statement
-#   Insider Roster
-#   Insider Summary
-#   Insider Transactions
-#   Institutional Ownership
-#   IPO Calendar
-#   Key Stats
-#   Largest Trades
-#   List
-#   Logo
-#   Market Volume (U.S.)
-#   News
-#   OHLC
-#   Open / Close Price
-#   Peers
-#   Previous Day Prices
-#   Price
-#   Price Target
-#   Quote
-#   Recommended Trends
-#   Relevent Stocks
-#   Sector Performance
-#   Splits
-#   Volume by Venue
-
-SAND_BOX = True
+SAND_BOX = False
 
 if SAND_BOX:
     IEX_STOCK_BASE_URL = 'https://sandbox.iexapis.com/beta/stock/'
