@@ -8,7 +8,7 @@ FinMesh is a python-based package that brings together financial data from vario
 
 ## Purpose
 ---
-The purpose of this package and its sub-packages was originally to practice interacting with API data. With thrid-party API packages there is always the risk of outages or bugs. In building the original IEX wrapper we sought to build something easy to understand and use, that can be updated quickly and accurately.
+The purpose of this package and its sub-packages was originally to practice interacting with API data. With third-party API packages there is always the risk of outages or bugs. In building the original IEX wrapper we sought to build something easy to understand and use, that can be updated quickly and accurately.
 
 With the addition of the US Federal data the opportunity arose to create a package that could deliver all sorts of economic and security data from one place. In doing so we hope to create a low-barrier way for beginners to play with large and very useful data sets.
 
@@ -18,7 +18,7 @@ In the future, this package will be updated with new financial and economic APIs
 ---
 The name of the function shall be the name of the endpoint.
 The function shall accept all variables for a given endpoint using the same variable names per the documentation.
-Differences between IEX cloud documentation and this API should be considered errors. Please raise an issue if you notice discrepencies.
+Differences between IEX cloud documentation and this API should be considered errors. Please raise an issue if you notice discrepancies.
 
 ## Contact
 ---
