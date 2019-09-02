@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: FinMesh
-Version: 0.9.2
+Version: 0.9.4
 Summary: A Python wrapper to bring together various financial APIs.
 Home-page: UNKNOWN
 Author: Michael and Josh Hartmann
@@ -63,6 +63,7 @@ Description: # FinMesh
         [2]: https://www.linkedin.com/in/michael-hartmann/
         [3]: MichaelPeterHartmann94@gmail.com
         
+Keywords: Finance
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Requires-Python: >3.6
