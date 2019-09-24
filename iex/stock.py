@@ -57,9 +57,9 @@ def delayed_quote(symbol):
     return get_iex_json_request(url)
 
 #   Dividends
-IEX_DIVIDENDS_URL = IEX_STOCK_BASE_URL + '{symbol}/dividends/{range}?'
-def dividends(symbol, range):
-    url = replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, range=range)
+IEX_DIVIDENDS_URL = IEX_STOCK_BASE_URL + '{symbol}/dividends/{scope}?'
+def dividends(symbol, scope):
+    url = replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, scope=scope)
     return get_iex_json_request(url)
 
 #   Earnings
@@ -105,24 +105,42 @@ def fund_ownership(symbol):
     url = replace_url_var(IEX_FUND_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url)
 
-#   Historical Prices
+IEX_HISTORICAL_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
+def historical_price(symbol, scope=None, dynamic=False, **kwargs):
 #   Soon to be deprecated
-#
 #   Here the query string parameters are handled a bit differently because
 #   there are so many.  This may be inconsistent but no other way is realistic
-IEX_CHART_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
-def chart(symbol, range=None, date=None, dynamic=False, **kwargs):
-    url = replace_url_var(IEX_CHART_URL, symbol=symbol)
-    if range:
-        url+= f'/{range}?'
-    elif dynamic:
-        url+= f'/dynamic?'
-    else:
-        url+= '?'
+    url = replace_url_var(IEX_HISTORICAL_URL, symbol=symbol, scope=None, dynamic=None, **kwargs, status=False)
+    if scope: url += f'/{scope}'
+    if dynamic: url += f'/dynamic'
+    url += '?'
+    url = append_iex_token(url)
     for key, value in kwargs.items():
         url += f'&{key}={value}'
+    if status: print(f"Now fetching: {url}")
+    result = requests.get(url)
+    if status: print(f"Request status code: {result.status_code}")
+    if result.status_code != 200:
+        raise BaseException(result.text)
+    result = result.json()
+    return result
 
-    return get_iex_json_request(url)
+#   DEPRECATED in favour of historical prices as to align
+#   with IEX nomenclature
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#IEX_CHART_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
+#def chart(symbol, scope=None, date=None, dynamic=False, **kwargs):
+#    url = replace_url_var(IEX_CHART_URL, symbol=symbol)
+#    if scope:
+#        url+= f'/{scope}?'
+#    elif dynamic:
+#        url+= f'/dynamic?'
+#    else:
+#        url+= '?'
+#    for key, value in kwargs.items():
+#        url += f'&{key}={value}'
+#
+#    return get_iex_json_request(url)
 
 #   Income Statement
 IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income'
@@ -266,9 +284,9 @@ def sector_performance():
 
 #   Splits
 IEX_SPLITS_URL = IEX_STOCK_BASE_URL + '{symbol}/splits'
-def splits(symbol, range=None):
+def splits(symbol, scope=None):
     url = replace_url_var(IEX_SPLITS_URL, symbol=symbol)
-    url += f'/{range}?' if range else '?'
+    url += f'/{scope}?' if scope else '?'
     return get_iex_json_request(url)
 
 #   Volume by Venue
