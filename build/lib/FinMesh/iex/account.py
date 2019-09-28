@@ -1,4 +1,4 @@
-from iex._common import vprint, append_iex_token, get_iex_json_request, replace_url_var
+from ._common import vprint, append_iex_token, get_iex_json_request, replace_url_var
 
 IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/account/'
 

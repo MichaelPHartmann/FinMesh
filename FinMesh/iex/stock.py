@@ -1,11 +1,7 @@
-from iex._common import *
+#from iex._common import *
+from ._common import *
 
-SAND_BOX = False
-
-if SAND_BOX:
-    IEX_STOCK_BASE_URL = 'https://sandbox.iexapis.com/beta/stock/'
-else:
-    IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/beta/stock/'
+IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/stable/stock/'
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet'

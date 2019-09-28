@@ -9,7 +9,6 @@ FinMesh/iex/__init__.py
 FinMesh/iex/_common.py
 FinMesh/iex/account.py
 FinMesh/iex/stock.py
-FinMesh/iex/tested.py
 FinMesh/usgov/__init__.py
 FinMesh/usgov/fred.py
 FinMesh/usgov/yieldcurve.py
