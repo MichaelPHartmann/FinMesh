@@ -8,6 +8,7 @@ FinMesh.egg-info/top_level.txt
 FinMesh/iex/__init__.py
 FinMesh/iex/_common.py
 FinMesh/iex/account.py
+FinMesh/iex/forex.py
 FinMesh/iex/stock.py
 FinMesh/usgov/__init__.py
 FinMesh/usgov/fred.py

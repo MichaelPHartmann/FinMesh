@@ -2,7 +2,11 @@ import os
 import requests
 
 def append_iex_token(url):
-    token = os.getenv('IEX_TOKEN')
+    sandboxState = os.getenv('SANDBOX')
+    if sandboxState is True:
+        token = os.getenv('IEX_SANDBOX_TOKEN')
+    else:
+        token = os.getenv('IEX_TOKEN')
     return f"{url}&token={token}"
 
 def get_iex_json_request(url, vprint=False):

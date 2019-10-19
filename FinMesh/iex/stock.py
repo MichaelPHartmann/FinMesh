@@ -76,11 +76,12 @@ def today_earnings():
     url = IEX_TODAY_EARNINGS_URL
     return get_iex_json_request(url)
 
-#   Effective Spread
+# DEPRECATED
+"""#   Effective Spread
 IEX_EFFECTIVE_SPREAD_URL = IEX_STOCK_BASE_URL + '{symbol}/effective-spread?'
 def effective_spread(symbol):
     url = replace_url_var(IEX_EFFECTIVE_SPREAD_URL, symbol=symbol)
-    return get_iex_json_request(url)
+    return get_iex_json_request(url)"""
 
 #   Estimates
 IEX_ESTIMATES_URL = IEX_STOCK_BASE_URL + '{symbol}/estimates?'
