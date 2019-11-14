@@ -1,10 +1,10 @@
 #from iex._common import *
 from ._common import *
 
-IEX_STOCK_BASE_URL = 'https://cloud.iexapis.com/stable/stock/'
+prepend_iex_url() = 'https://cloud.iexapis.com/stable/stock/'
 
 #   Balance Sheet
-IEX_BALANCE_SHEET_URL = IEX_STOCK_BASE_URL + '{symbol}/balance-sheet'
+IEX_BALANCE_SHEET_URL = prepend_iex_url() + '{symbol}/balance-sheet'
 def balance_sheet(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
     if last: url += f'/{last}'
@@ -18,14 +18,14 @@ def batch_requests():
     raise ImplementationError("Function cannot be implemented.")
 
 #   Book
-IEX_BOOK_URL = IEX_STOCK_BASE_URL + '{symbol}/book?'
+IEX_BOOK_URL = prepend_iex_url() + '{symbol}/book?'
 def book(symbol):
     url = replace_url_var(IEX_BOOK_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Cash Flow
 
-IEX_CASH_FLOW_URL = IEX_STOCK_BASE_URL + '{symbol}/cash-flow'
+IEX_CASH_FLOW_URL = prepend_iex_url() + '{symbol}/cash-flow'
 def cash_flow(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     if last: url += f'/{last}'
@@ -35,31 +35,31 @@ def cash_flow(symbol, period=None, last=None, field=None):
     return get_iex_json_request(url)
 
 #   Collections
-IEX_COLLECTION_URL = IEX_STOCK_BASE_URL + 'market/collection/{collectionType}?collectionName={collectionName}'
+IEX_COLLECTION_URL = prepend_iex_url() + 'market/collection/{collectionType}?collectionName={collectionName}'
 def collection(collectionType, collectionName):
     url = replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
     return get_iex_json_request(url)
 
 #   Company
-IEX_COMPANY_URL = IEX_STOCK_BASE_URL + '{symbol}/company?'
+IEX_COMPANY_URL = prepend_iex_url() + '{symbol}/company?'
 def company(symbol):
     url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Delayed Quote
-IEX_DELAYED_QUOTE_URL = IEX_STOCK_BASE_URL + '{symbol}/delayed-quote?'
+IEX_DELAYED_QUOTE_URL = prepend_iex_url() + '{symbol}/delayed-quote?'
 def delayed_quote(symbol):
     url = replace_url_var(IEX_DELAYED_QUOTE_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Dividends
-IEX_DIVIDENDS_URL = IEX_STOCK_BASE_URL + '{symbol}/dividends/{scope}?'
+IEX_DIVIDENDS_URL = prepend_iex_url() + '{symbol}/dividends/{scope}?'
 def dividends(symbol, scope):
     url = replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, scope=scope)
     return get_iex_json_request(url)
 
 #   Earnings
-IEX_EARNINGS_URL = IEX_STOCK_BASE_URL + '{symbol}/earnings'
+IEX_EARNINGS_URL = prepend_iex_url() + '{symbol}/earnings'
 def earnings(symbol, last=None, field=None):
     url = replace_url_var(IEX_EARNINGS_URL, symbol=symbol)
     if last and field:
@@ -71,38 +71,38 @@ def earnings(symbol, last=None, field=None):
     return get_iex_json_request(url)
 
 #   Earnings Today
-IEX_TODAY_EARNINGS_URL = IEX_STOCK_BASE_URL + 'market/today-earnings?'
+IEX_TODAY_EARNINGS_URL = prepend_iex_url() + 'market/today-earnings?'
 def today_earnings():
     url = IEX_TODAY_EARNINGS_URL
     return get_iex_json_request(url)
 
 # DEPRECATED
 """#   Effective Spread
-IEX_EFFECTIVE_SPREAD_URL = IEX_STOCK_BASE_URL + '{symbol}/effective-spread?'
+IEX_EFFECTIVE_SPREAD_URL = prepend_iex_url() + '{symbol}/effective-spread?'
 def effective_spread(symbol):
     url = replace_url_var(IEX_EFFECTIVE_SPREAD_URL, symbol=symbol)
     return get_iex_json_request(url)"""
 
 #   Estimates
-IEX_ESTIMATES_URL = IEX_STOCK_BASE_URL + '{symbol}/estimates?'
+IEX_ESTIMATES_URL = prepend_iex_url() + '{symbol}/estimates?'
 def estimates(symbol):
     url = replace_url_var(IEX_ESTIMATES_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Financials
-IEX_FINANCIALS_URL = IEX_STOCK_BASE_URL + '{symbol}/financials?'
+IEX_FINANCIALS_URL = prepend_iex_url() + '{symbol}/financials?'
 def financials(symbol, period=None):
     url = replace_url_var(IEX_FINANCIALS_URL, symbol=symbol)
     url += f'period={period}' if period else ''
     return get_iex_json_request(url)
 
 #   Fund Ownership
-IEX_FUND_OWNERSHIP_URL = IEX_STOCK_BASE_URL + '{symbol}/fund-ownership?'
+IEX_FUND_OWNERSHIP_URL = prepend_iex_url() + '{symbol}/fund-ownership?'
 def fund_ownership(symbol):
     url = replace_url_var(IEX_FUND_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url)
 
-IEX_HISTORICAL_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
+IEX_HISTORICAL_URL = prepend_iex_url() + '{symbol}/chart'
 def historical_price(symbol, scope=None, dynamic=False, **kwargs):
 #   Soon to be deprecated
 #   Here the query string parameters are handled a bit differently because
@@ -125,7 +125,7 @@ def historical_price(symbol, scope=None, dynamic=False, **kwargs):
 #   DEPRECATED in favour of historical prices as to align
 #   with IEX nomenclature
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#IEX_CHART_URL = IEX_STOCK_BASE_URL + '{symbol}/chart'
+#IEX_CHART_URL = prepend_iex_url() + '{symbol}/chart'
 #def chart(symbol, scope=None, date=None, dynamic=False, **kwargs):
 #    url = replace_url_var(IEX_CHART_URL, symbol=symbol)
 #    if scope:
@@ -140,7 +140,7 @@ def historical_price(symbol, scope=None, dynamic=False, **kwargs):
 #    return get_iex_json_request(url)
 
 #   Income Statement
-IEX_INCOME_STATEMENT_URL = IEX_STOCK_BASE_URL + '{symbol}/income'
+IEX_INCOME_STATEMENT_URL = prepend_iex_url() + '{symbol}/income'
 def income_statement(symbol, period=None, last=None, field=None):
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     if last: url += f'/{last}'
@@ -150,80 +150,80 @@ def income_statement(symbol, period=None, last=None, field=None):
     return get_iex_json_request(url)
 
 #   Insider Roster
-IEX_INSIDER_ROSTER_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-roster?'
+IEX_INSIDER_ROSTER_URL = prepend_iex_url() + '{symbol}/insider-roster?'
 def insider_roster(symbol):
     url = replace_url_var(IEX_INSIDER_ROSTER_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Insider Summary
-IEX_INSIDER_SUMMARY_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-summary?'
+IEX_INSIDER_SUMMARY_URL = prepend_iex_url() + '{symbol}/insider-summary?'
 def insider_summary(symbol):
     url = replace_url_var(IEX_INSIDER_SUMMARY_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Insider Transactions
-IEX_INSIDER_TRANSACTIONS_URL = IEX_STOCK_BASE_URL + '{symbol}/insider-transactions?'
+IEX_INSIDER_TRANSACTIONS_URL = prepend_iex_url() + '{symbol}/insider-transactions?'
 def insider_transactions(symbol):
     url = replace_url_var(IEX_INSIDER_TRANSACTIONS_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Institutional Ownership
-IEX_INSTITUTIONAL_OWNERSHIP_URL = IEX_STOCK_BASE_URL + '{symbol}/institutional-ownership?'
+IEX_INSTITUTIONAL_OWNERSHIP_URL = prepend_iex_url() + '{symbol}/institutional-ownership?'
 def institutional_ownership(symbol):
     url = replace_url_var(IEX_INSTITUTIONAL_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   IPO Calendar
-IEX_UPCOMING_IPOS_URL = IEX_STOCK_BASE_URL + 'market/upcoming-ipos?'
+IEX_UPCOMING_IPOS_URL = prepend_iex_url() + 'market/upcoming-ipos?'
 def ipo_upcoming():
     return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
 
-IEX_TODAY_IPOS_URL = IEX_STOCK_BASE_URL + 'market/today-ipos?'
+IEX_TODAY_IPOS_URL = prepend_iex_url() + 'market/today-ipos?'
 def ipo_today():
     return get_iex_json_request(IEX_TODAY_IPOS_URL)
 
 #   Key Stats
-IEX_STATS_URL = IEX_STOCK_BASE_URL + '{symbol}/stats'
+IEX_STATS_URL = prepend_iex_url() + '{symbol}/stats'
 def key_stats(symbol, stat=False):
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
     url += str(stat) if stat else '?'
     return get_iex_json_request(url)
 
 #   Largest Trades
-IEX_LARGEST_TRADES_URL = IEX_STOCK_BASE_URL + '{symbol}/largest-trades?'
+IEX_LARGEST_TRADES_URL = prepend_iex_url() + '{symbol}/largest-trades?'
 def largest_trades(symbol):
     url = replace_url_var(IEX_LARGEST_TRADES_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   List
-IEX_MARKET_LIST_URL = IEX_STOCK_BASE_URL + '{symbol}/list/{list_type}?'
+IEX_MARKET_LIST_URL = prepend_iex_url() + '{symbol}/list/{list_type}?'
 def market_list(symbol, list_type, displayPercent=None):
     url = replace_url_var(IEX_MARKET_LIST_URL, symbol=symbol, list_type=list_type)
     url += f'displayPercent={displayPercent}' if displayPercent else ''
     return get_iex_json_request(url)
 
 #   Logo
-IEX_LOGO_URL = IEX_STOCK_BASE_URL + '{symbol}/logo?'
+IEX_LOGO_URL = prepend_iex_url() + '{symbol}/logo?'
 def logo(symbol):
     url = replace_url_var(IEX_LOGO_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Market Volume (U.S.)
-IEX_MARKET_VOLUME_URL = IEX_STOCK_BASE_URL + 'market/volume?'
+IEX_MARKET_VOLUME_URL = prepend_iex_url() + 'market/volume?'
 def market_volume(format=None):
     url = IEX_MARKET_VOLUME_URL
     url += f'format={format}' if format else ''
     return get_iex_json_request(url)
 
 #   News
-IEX_NEWS_URL = IEX_STOCK_BASE_URL + '{symbol}/news'
+IEX_NEWS_URL = prepend_iex_url() + '{symbol}/news'
 def news(symbol, last=None):
     url = replace_url_var(IEX_NEWS_URL, symbol=symbol)
     url += f'/last/{last}?' if last else '?'
     return get_iex_json_request(url)
 
 #   OHLC
-IEX_OHLC_URL = IEX_STOCK_BASE_URL + '{symbol}/ohlc?'
+IEX_OHLC_URL = prepend_iex_url() + '{symbol}/ohlc?'
 def ohlc(symbol):
     url = replace_url_var(IEX_OHLC_URL, symbol=symbol)
     return get_iex_json_request(url)
@@ -232,62 +232,63 @@ def ohlc(symbol):
 #       Does not have cooresponding endpoint
 
 #   Peers
-IEX_PEERS_URL = IEX_STOCK_BASE_URL + '{symbol}/peers?'
+IEX_PEERS_URL = prepend_iex_url() + '{symbol}/peers?'
 def peers(symbol):
     url = replace_url_var(IEX_PEERS_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Previous Day Prices
-IEX_PREVIOUS_URL = IEX_STOCK_BASE_URL + '{symbol}/previous?'
+IEX_PREVIOUS_URL = prepend_iex_url() + '{symbol}/previous?'
 def previous(symbol):
     url = replace_url_var(IEX_PREVIOUS_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Price
-IEX_PRICE_URL = IEX_STOCK_BASE_URL + '{symbol}/price?'
+IEX_PRICE_URL = prepend_iex_url() + '{symbol}/price?'
 def price(symbol):
     url = replace_url_var(IEX_PRICE_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Price Target
-IEX_PRICE_TARGET_URL = IEX_STOCK_BASE_URL + '{symbol}/price-target?'
+IEX_PRICE_TARGET_URL = prepend_iex_url() + '{symbol}/price-target?'
 def price_target(symbol):
     url = replace_url_var(IEX_PRICE_TARGET_URL, symbol=symbol)
     return get_iex_json_request(url)
 
 #   Quote
-IEX_QUOTE_URL = IEX_STOCK_BASE_URL + '{symbol}/quote'
+IEX_QUOTE_URL = prepend_iex_url() + '{symbol}/quote'
 def quote(symbol, field=None):
     url = replace_url_var(IEX_QUOTE_URL, symbol=symbol)
     url += f'/{field}?' if field else '?'
     return get_iex_json_request(url)
 
 #   Recommended Trends
-IEX_RECOMMENDED_TRENDS_URL = IEX_STOCK_BASE_URL + '{symbol}/recommendation-trends?'
+IEX_RECOMMENDED_TRENDS_URL = prepend_iex_url() + '{symbol}/recommendation-trends?'
 def recommendation_trends(symbol):
     url = replace_url_var(IEX_RECOMMENDED_TRENDS_URL, symbol=symbol)
     return get_iex_json_request(url)
 
-#   Relavent Stocks
-IEX_RELEVANT_URL = IEX_STOCK_BASE_URL + '{symbol}/relevant?'
+# DEPRECATED
+"""#   Relavent Stocks
+IEX_RELEVANT_URL = prepend_iex_url() + '{symbol}/relevant?'
 def relevant(symbol):
     url = replace_url_var(IEX_RELEVANT_URL, symbol=symbol)
-    return get_iex_json_request(url)
+    return get_iex_json_request(url)"""
 
 #   Sector Performance
-IEX_SECTOR_PERFORMANCE_URL = IEX_STOCK_BASE_URL + 'market/sector-performance?'
+IEX_SECTOR_PERFORMANCE_URL = prepend_iex_url() + 'market/sector-performance?'
 def sector_performance():
     return get_iex_json_request(IEX_SECTOR_PERFORMANCE_URL)
 
 #   Splits
-IEX_SPLITS_URL = IEX_STOCK_BASE_URL + '{symbol}/splits'
+IEX_SPLITS_URL = prepend_iex_url() + '{symbol}/splits'
 def splits(symbol, scope=None):
     url = replace_url_var(IEX_SPLITS_URL, symbol=symbol)
     url += f'/{scope}?' if scope else '?'
     return get_iex_json_request(url)
 
 #   Volume by Venue
-IEX_VOLUME_BY_VENUE_URL = IEX_STOCK_BASE_URL + '{symbol}/volume-by-venue'
+IEX_VOLUME_BY_VENUE_URL = prepend_iex_url() + '{symbol}/volume-by-venue'
 def volume_by_venue(symbol):
     url = replace_url_var(IEX_VOLUME_BY_VENUE_URL, symbol=symbol)
     return get_iex_json_request(url)

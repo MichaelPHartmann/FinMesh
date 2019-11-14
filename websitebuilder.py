@@ -22,38 +22,35 @@ iex_stock_functions = {
 'institutional_ownership':'Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.',
 'ipo_upcoming':'Returns a list of upcoming IPOs for the current and next month.',
 'ipo_today':'Returns a list of IPOs happening today.',
-'key_stats':'Returns important and key statistics for the requested company.',
-'largest_trades':,
-'market_list',
-'logo',
-'market_volume',
-'news',
-'ohlc',
-'peers',
-'previous',
-'price',
-'price_target',
-'quote',
-'recommendation_trends',
-'relevant',
-'sector_performance',
-'splits',
-'volume_by_venue'
+'key_stats':'Returns important and key statistics for the requested stock.',
+'largest_trades':'Returns a delayed list of largest trades for the requested stock.',
+'market_list':'Returns the 10 largest companies in the specified list.',
+'logo':'Returns a Google APIs link to the logo for the requested stock.',
+'market_volume':'Returns market wide trading volume.',
+'news':'Returns news item summaries for the requested stock.',
+'ohlc':'Returns the most recent days open, high, low, and close data for the requested stock.',
+'peers':'Returns a list of a requested stocks peers.',
+'previous':'Returns the previous day\'s price data for the requested stock.',
+'price':'Returns a single float value of the requested company\'s price.',
+'price_target':'Returns analyst\'s price targets for the requested stock.',
+'quote':'Returns price quote data for the requested stock. Fields are able to be called individually.',
+'recommendation_trends':'Returns analyst recommendations for the requested stocks.',
+'sector_performance':'Returns market performance for all sectors.',
+'splits':'Returns a record of stock splits for the given stock.',
+'volume_by_venue':'Returns trading volume for the requested stock by venue.'
 }
 
 # IEX - FOREX
 iex_forex_functions = {
-'forex_latest_rate',
-'forex_conversion',
-'forex_historical'
+'forex_latest_rate':'Returns the latest exchange rate for the requested currency pair.',
+'forex_conversion':'Returns a converted value according to the requested currency pair.',
+'forex_historical':'Returns a list of the historical exchange rates for the requested currency pair.'
 }
 
 # USGOV - FRED
 usgov_fred_functions = {
-'fred_series',
-'geofred_series_meta',
-'geofred_regional_series',
-'get_yield'
+'fred_series':'Returns time series historical data for the requested FRED data.',
+'geofred_series_meta':'Returns meta data for the requested FRED data.',
+'geofred_regional_series':'Returns the historical, geographically organized time series data for the requested FRED data.',
+'get_yield':'Returns government treasury bond yields. Organized in Python dictionary format by bond length.'
 }
-
-# WEBSITE BUILDER

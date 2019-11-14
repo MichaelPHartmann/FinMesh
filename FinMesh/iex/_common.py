@@ -1,8 +1,24 @@
 import os
 import requests
 
+# Simple string comprehension to allow setting of states through environment variables.
+def arg_to_bool(string):
+    affirmative = ['True','TRUE','true','Yes','YES','yes','On','ON','on']
+    if string in affirmative:
+        return True
+    else:
+        return False
+
+def prepend_iex_url():
+    sandboxState = arg_to_bool(os.getenv('SANDBOX'))
+    if sandboxState is True:
+        url = 'https://sandbox.iexapis.com/stable/stock/'
+    else:
+        url = 'https://cloud.iexapis.com/stable/stock/'
+    return url
+
 def append_iex_token(url):
-    sandboxState = os.getenv('SANDBOX')
+    sandboxState = arg_to_bool(os.getenv('SANDBOX'))
     if sandboxState is True:
         token = os.getenv('IEX_SANDBOX_TOKEN')
     else:
