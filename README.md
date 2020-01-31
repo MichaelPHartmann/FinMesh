@@ -21,6 +21,9 @@ The following dependencies are used in FinMesh:
 - JSON
 - Requests
 - xmltodict
+- xml.etree.ElementTree
+- webbrowser
+- shutil
 
 Some APIs require authentication through the use of tokens. These tokens should be set up as environment variables in the bash profile. A great article on how to do this on Mac is available here:
 
