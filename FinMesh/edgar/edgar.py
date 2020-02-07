@@ -13,7 +13,6 @@ class edgarFiler(object):
 
     def __init__(self, ticker):
         self.ticker = ticker
-        #self.cik = cik(self.ticker)
         self.latest_10k_accession = []
         self.latest_10q_accession = []
         self.latest_all_accession = []
@@ -122,10 +121,12 @@ class edgarFiler(object):
         fixed_accession = accession.replace("-","")
         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
         # Stream site to local file
-        with requests.get(URL, stream=True) as result:
-            filename = f'{self.ticker}_{accession}.txt'
-            with open(filename, 'wb') as f:
-                shutil.copyfileobj(r.raw, f)
+        response = requests.get(URL, stream=True)
+        filename = f'{self.ticker}_{accession}.txt'
+        with open(filename, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=512):
+                if chunk:  # filter out keep-alive new chunks
+                    f.write(chunk)
         # Set the file as a class variable, this allows us to modify and use it later
         if save is True:
             var_name = accession
@@ -147,10 +148,12 @@ class edgarFiler(object):
             fixed_accession = accession.replace("-","")
             URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
             # Stream site to local file
-            with requests.get(URL, stream=True) as result:
-                filename = f'{self.ticker}_{accession}.txt'
-                with open(filename, 'wb') as f:
-                    shutil.copyfileobj(r.raw, f)
+            response = requests.get(URL, stream=True)
+            filename = f'{self.ticker}_{accession}.txt'
+            with open(filename, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=512):
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
             edgar_strip_txt(raw_file, html_file)
         # Set the file as a class variable, this allows us to modify and use it later
         if save is True:
@@ -179,19 +182,12 @@ class edgarFiler(object):
         """
         fixed_accession = accession.replace("-","")
         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/Financial_Report.xlsx"
+        filename = f"{self.ticker}_{accession}.xlsx"
         xlsx_download = requests.get(URL)
         if xlsx_download.status_code == 200:
-            webbrowser.open(URL)
+            with open(filename, 'wb') as f:
+                for chunk in xlsx_download.iter_content(chunk_size=512):
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
-
-    # # # # # # # # # # # #
-    # CONVERSION OF FILES #
-    # # # # # # # # # # # #
-
-    def convert_to_html(self, filename):
-        with open(filename, 'r+') as f:
-            print(f.readline(1))
-
-    def convert_to_original(self, filename):
-        pass

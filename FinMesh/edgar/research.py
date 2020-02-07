@@ -38,21 +38,13 @@ root = tree.getroot()
 print(root)
 """
 
+from edgar import *
 
-import re
-import time
-from _common import *
-
-with open('Tesla.txt', 'r+') as f, open('Tesla.html', 'a') as nf:
-    transfer = False
-    lines = f.readlines()
-    for line in lines:
-        status = egdar_find_html(line)
-        if status == 'Start':
-            transfer = True
-        elif status == 'End':
-            transfer = False
-            nf.write(line)
-
-        if transfer == True:
-            nf.write(line)
+AAPL = edgarFiler('AAPL')
+print(AAPL.ticker)
+AAPL.accessions(20, '10-K')
+AAPL.cik()
+print(AAPL.latest_10k_accession)
+for a in AAPL.latest_10k_accession[:1]:
+    print(a)
+    AAPL.retrieve_xlsx_report(a)
