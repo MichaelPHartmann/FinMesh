@@ -116,7 +116,7 @@ class edgarFiler(object):
     # RETRIEVAL OF RAW URLS #
     # # # # # # # # # # # # #
 
-    def retrieve_raw_report(self, accession, save=False):
+    def retrieve_raw_report(self, accession, save=False, classify=False):
         ## Saves the raw xml filing for the given accession number.
         fixed_accession = accession.replace("-","")
         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
@@ -133,13 +133,17 @@ class edgarFiler(object):
             setattr(edgarFiler, var_name, result)
         else:
             pass
+        # Return an edgarReport object instead of just the file name
+        if classify is True:
+            filename = edgarReport(self.ticker)
+            return filename
+        else:
+            return filename
 
-        return filename
-
-    def retrieve_html_report(self, accession, save=False):
+    def retrieve_html_report(self, accession, save=False, open=False):
         ## Strips non-html elements from the raw filing document.
         raw_file = f"{self.ticker}_{accession}.txt"
-        html_file = f"{accession}.html"
+        html_file = f"{self.ticker}_{accession}.html"
         # If the file is already present, it is converted to pure html
         if os.path.isfile(raw_file):
             edgar_strip_txt(raw_file, html_file)
@@ -162,7 +166,14 @@ class edgarFiler(object):
         else:
             pass
 
-        return html_file
+        if open is True:
+            return html_file, webbrowser.open('file://' + html_file)
+        else:
+            return html_file
+
+    # # # # # # # # # # # #
+    # FILE/SITE RETRIEVAL #
+    # # # # # # # # # # # #
 
     def retrieve_xbrl_report(self, accession, save=False):
         ## Opens a browser to the Inline XBRL Interactive report.
@@ -174,7 +185,7 @@ class edgarFiler(object):
             raise Exception('Please ensure there are valid CIK and accession numbers.')
 
     def retrieve_xlsx_report(self, accession, save=False):
-        ## Opens a browser to trigger a download of the financial statements Excel file.
+        ## Streams financial statement Excel file, may only work on statements in the last 10 years
         """
         The apparent way to do this is to trigger the download by opening a browser window.
         Trying to simply write the 'text' to a new (.xlsx) file returns a corrupted excel file.
@@ -191,3 +202,34 @@ class edgarFiler(object):
                         f.write(chunk)
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
+
+
+class edgarReport(object):
+
+    def __init__(self,ticker):
+        self.ticker = ticker
+        self.
+
+    def raw_to_text(filein):
+        ## Converts a raw txt SEC submission to a text-only document
+        # Open the original file and soupify it
+        with open(filein, 'r') as f:
+            filein = filein.strip('.txt')
+            soup = BeautifulSoup(f, features="html.parser")
+            result = soup.get_text()
+        # Open the temporary file and writeout the pretty soup
+        tempfile = f"{filein}_temp.txt"
+        with open(tempfile, 'w+') as tf:
+            tf.write(result)
+        # Open the temporary file after it has been written to
+        with open(tempfile, 'r') as tf:
+            lines = tf.readlines()
+            print(len(lines))
+            # Open the final file and writeout nonblank lines
+            newfile = f"{filein}_textonly.txt"
+            with open(newfile, "a") as nf:
+                for line in lines:
+                    if line.strip():
+                        nf.write(line)
+        # Remove the temporary file
+        os.remove(tempfile)
