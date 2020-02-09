@@ -1,10 +1,11 @@
 # FinMesh
 ---
-FinMesh is a python-based package that brings together financial data from various sources in one place for ease of use and distribution. The three main sections of FinMesh are (1) the [IEX REST API][1], (2) data from the [US treasury][2], and (3) the data from the [US Federal Reserve Economic Data][3].
+FinMesh is a python-based package that brings together financial data from various sources in one place for ease of use and distribution. The four main sections of FinMesh are (1) the [IEX REST API][1], (2) data from the [US treasury][2], data from the [US Federal Reserve Economic Data][3], and (4) data from the [SECs EDGAR][4] system.
 
 [1]: https://iexcloud.io/docs/api/
 [2]: https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
 [3]: https://fred.stlouisfed.org/
+[4]: https://www.sec.gov/edgar/searchedgar/companysearch.html
 
 ## Purpose
 ---
@@ -24,6 +25,7 @@ The following dependencies are used in FinMesh:
 - xml.etree.ElementTree
 - webbrowser
 - shutil
+- BeautifulSoup4
 
 Some APIs require authentication through the use of tokens. These tokens should be set up as environment variables in the bash profile. A great article on how to do this on Mac is available here:
 
@@ -45,15 +47,15 @@ Differences between IEX cloud documentation and this API should be considered er
 ---
 If you would like to reach out, feel free to connect with me one of three ways:
 
-1. [On GitHub][1]
+1. [On GitHub][5]
 
-2. [On LinkedIn][2]
+2. [On LinkedIn][6]
 
-3. [Via Email][3]
+3. [Via Email][7]
 
 If there are issues, be it major or semantic, please open an issue on GitHub.
 
 
-[1]: https://github.com/MichaelPHartmann
-[2]: https://www.linkedin.com/in/michael-hartmann/
-[3]: MichaelPeterHartmann94@gmail.com
+[5]: https://github.com/MichaelPHartmann
+[6]: https://www.linkedin.com/in/michael-hartmann/
+[7]: MichaelPeterHartmann94@gmail.com

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: FinMesh
-Version: 1.3
+Version: 1.4
 Summary: A Python wrapper to bring together various financial APIs.
 Home-page: UNKNOWN
 Author: Michael and Josh Hartmann
@@ -29,6 +29,9 @@ Description: # FinMesh
         - JSON
         - Requests
         - xmltodict
+        - xml.etree.ElementTree
+        - webbrowser
+        - shutil
         
         Some APIs require authentication through the use of tokens. These tokens should be set up as environment variables in the bash profile. A great article on how to do this on Mac is available here:
         
