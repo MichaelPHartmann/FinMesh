@@ -10,6 +10,38 @@ EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
 EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
 
+class edgarReport(object):
+
+    def __init__(self,ticker,file):
+        self.ticker = ticker
+        self.file = file
+        self.report_period = ''
+        self.company_name = ''
+
+    def raw_to_text(self):
+        ## Converts a raw txt SEC submission to a text-only document
+        filein = self.file
+        # Open the original file and soupify it
+        with open(filein, 'r') as f:
+            filein = filein.strip('.txt')
+            soup = BeautifulSoup(f, features="html.parser")
+            result = soup.get_text()
+        # Open the temporary file and writeout the pretty soup
+        tempfile = f"{filein}_temp.txt"
+        with open(tempfile, 'w+') as tf:
+            tf.write(result)
+        # Open the temporary file after it has been written to
+        with open(tempfile, 'r') as tf:
+            lines = tf.readlines()
+            # Open the final file and writeout nonblank lines
+            newfile = f"{filein}_textonly.txt"
+            with open(newfile, "a") as nf:
+                for line in lines:
+                    if line.strip():
+                        nf.write(line)
+        # Remove the temporary file
+        os.remove(tempfile)
+
 class edgarFiler(object):
 
     def __init__(self, ticker):
@@ -63,17 +95,13 @@ class edgarFiler(object):
             if get_result.status_code == 200:
                 result_text = get_result.text
                 root = ET.fromstring(result_text)
-
+                accessions_requested = []
                 for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
+                    ten_K = ["10-K","10-k","10K","10k"]
+                    ten_Q = ["10-Q","10-q","10Q","10q"]
                     nunber = result.text
-                    if document == "10-k" or "10-K":
-                        self.latest_10k_accession.append(nunber)
-                    if document == "10-q" or "10-Q":
-                        self.latest_10q_accession.append(nunber)
-                    else:
-                        new_list = str(document)
-                        setattr(edgarFiler, new_list, [])
-                        self.latest_all_accession.append(nunber)
+                    accessions_requested.append(nunber)
+                return accessions_requested
             else:
                 raise Exception(f'{document} is not a valid document type!')
 
@@ -117,7 +145,7 @@ class edgarFiler(object):
     # RETRIEVAL OF RAW URLS #
     # # # # # # # # # # # # #
 
-    def retrieve_raw_report(self, accession, save=False, classify=False):
+    def retrieve_txt_report(self, accession, save=False, classify=False):
         ## Saves the raw xml filing for the given accession number.
         fixed_accession = accession.replace("-","")
         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
@@ -204,33 +232,16 @@ class edgarFiler(object):
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
 
+    # # # # # # # # # # # #
+    # All-In-One Function #
+    # # # # # # # # # # # #
 
-class edgarReport(object):
+    def process_reports(self, count, document):
+        classify = edgarFiler(self.ticker)
+        classify.cik()
+        accessions = classify.accessions(count, document)
+        print(accessions)
 
-    def __init__(self,ticker):
-        self.ticker = ticker
-        self.
-
-    def raw_to_text(filein):
-        ## Converts a raw txt SEC submission to a text-only document
-        # Open the original file and soupify it
-        with open(filein, 'r') as f:
-            filein = filein.strip('.txt')
-            soup = BeautifulSoup(f, features="html.parser")
-            result = soup.get_text()
-        # Open the temporary file and writeout the pretty soup
-        tempfile = f"{filein}_temp.txt"
-        with open(tempfile, 'w+') as tf:
-            tf.write(result)
-        # Open the temporary file after it has been written to
-        with open(tempfile, 'r') as tf:
-            lines = tf.readlines()
-            print(len(lines))
-            # Open the final file and writeout nonblank lines
-            newfile = f"{filein}_textonly.txt"
-            with open(newfile, "a") as nf:
-                for line in lines:
-                    if line.strip():
-                        nf.write(line)
-        # Remove the temporary file
-        os.remove(tempfile)
+        for a in accessions[:count]:
+            new_file = classify.retrieve_txt_report(a)
+            raw_to_text(new_file)
