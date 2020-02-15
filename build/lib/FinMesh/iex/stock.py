@@ -1,8 +1,6 @@
 #from iex._common import *
 from ._common import *
 
-prepend_iex_url() = 'https://cloud.iexapis.com/stable/stock/'
-
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url() + '{symbol}/balance-sheet'
 def balance_sheet(symbol, period=None, last=None, field=None):

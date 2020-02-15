@@ -4,13 +4,11 @@ FinMesh/__init__.py
 FinMesh.egg-info/PKG-INFO
 FinMesh.egg-info/SOURCES.txt
 FinMesh.egg-info/dependency_links.txt
-FinMesh.egg-info/requires.txt
 FinMesh.egg-info/top_level.txt
 FinMesh/edgar/__init__.py
 FinMesh/edgar/_common.py
 FinMesh/edgar/edgar.py
 FinMesh/edgar/report.py
-FinMesh/edgar/research.py
 FinMesh/iex/__init__.py
 FinMesh/iex/_common.py
 FinMesh/iex/account.py
