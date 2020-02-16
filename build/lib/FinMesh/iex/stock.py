@@ -100,12 +100,12 @@ def fund_ownership(symbol):
     url = replace_url_var(IEX_FUND_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url)
 
-IEX_HISTORICAL_URL = prepend_iex_url() + '{symbol}/chart'
+IEX_HISTORICAL_URL = prepend_iex_url() +
 def historical_price(symbol, scope=None, chartCloseOnly=False):
 #   Soon to be deprecated
 #   Here the query string parameters are handled a bit differently because
 #   there are so many.  This may be inconsistent but no other way is realistic
-    url = replace_url_var(IEX_HISTORICAL_URL, symbol=symbol, scope=None, status=False)
+    url = IEX_HISTORICAL_URL + f'{symbol}/chart'
     if scope: url += f'/{scope}'
     url += '?'
     url = append_iex_token(url)
