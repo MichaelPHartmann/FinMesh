@@ -3,12 +3,11 @@ from ._common import *
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url() + '{symbol}/balance-sheet'
-def balance_sheet(symbol, period=None, last=None, field=None):
+def balance_sheet(symbol, **queries):
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
-    if last: url += f'/{last}'
-    if field: url += f'{field}'
-    if period: url += f'/period={period}'
     url += '?'
+    for key, value in queries.items():
+        url += (f"&{key}={value}")
     return get_iex_json_request(url)
 
 #   Batch Requests
@@ -24,12 +23,11 @@ def book(symbol):
 #   Cash Flow
 
 IEX_CASH_FLOW_URL = prepend_iex_url() + '{symbol}/cash-flow'
-def cash_flow(symbol, period=None, last=None, field=None):
+def cash_flow(symbol, **queries):
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
-    if last: url += f'/{last}'
-    if field: url += f'{field}'
-    if period: url += f'/period={period}'
     url += '?'
+    for key, value in queries.items():
+        url += (f"&{key}={value}")
     return get_iex_json_request(url)
 
 #   Collections
@@ -136,12 +134,11 @@ def historical_price(symbol, status=False, **queries):
 
 #   Income Statement
 IEX_INCOME_STATEMENT_URL = prepend_iex_url() + '{symbol}/income'
-def income_statement(symbol, period=None, last=None, field=None):
+def income_statement(symbol, **queries):
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
-    if last: url += f'/{last}'
-    if field: url += f'{field}'
-    if period: url += f'/period={period}'
     url += '?'
+    for key, value in queries.items():
+        url += (f"&{key}={value}")
     return get_iex_json_request(url)
 
 #   Insider Roster
