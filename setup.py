@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "FinMesh",
-    version = "1.4.6",
+    version = "1.4.8",
     author = "Michael and Josh Hartmann",
     author_email = "mph101mph@gmail.com",
     description = "A Python wrapper to bring together various financial APIs.",

@@ -101,13 +101,13 @@ def fund_ownership(symbol):
     return get_iex_json_request(url)
 
 IEX_HISTORICAL_URL = prepend_iex_url()
-def historical_price(symbol, status=False, **kwargs):
+def historical_price(symbol, status=False, **queries):
 #   Soon to be deprecated
 #   Here the query string parameters are handled a bit differently because
 #   there are so many.  This may be inconsistent but no other way is realistic
     url = IEX_HISTORICAL_URL + f"{symbol}/chart?"
-    for a,b in kwargs:
-        url.append(f"&{a}={b}")
+    for key, value in queries.items():
+        url += (f"&{key}={value}")
     url = append_iex_token(url)
     if status: print(f"Now fetching: {url}")
     result = requests.get(url)
