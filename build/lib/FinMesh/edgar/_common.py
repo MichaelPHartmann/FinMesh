@@ -23,8 +23,9 @@ def edgar_strip_txt(file, newfile):
             if transfer == True:
                 nf.write(line)
 
-def raw_to_text(filein):
+def raw_to_text(self):
     ## Converts a raw txt SEC submission to a text-only document
+    filein = self.file
     # Open the original file and soupify it
     with open(filein, 'r') as f:
         filein = filein.strip('.txt')
@@ -45,3 +46,16 @@ def raw_to_text(filein):
                     nf.write(line)
     # Remove the temporary file
     os.remove(tempfile)
+    return newfile
+
+def download_report_file(accessions):
+    for accession in accessions:
+        fixed_accession = accession.replace("-","")
+        URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
+        # Stream site to local file
+        response = requests.get(URL, stream=True)
+        filename = f'{self.ticker}_{accession}.txt'
+        with open(filename, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=512):
+                if chunk:  # filter out keep-alive new chunks
+                    f.write(chunk)

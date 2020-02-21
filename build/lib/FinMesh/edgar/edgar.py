@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import webbrowser
 import shutil
 from bs4 import BeautifulSoup, SoupStrainer
-from _common import *
+from ._common import *
 
 EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"

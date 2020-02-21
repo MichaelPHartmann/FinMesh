@@ -9,12 +9,12 @@ def arg_to_bool(string):
     else:
         return False
 
-def prepend_iex_url():
+def prepend_iex_url(section):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
     if sandboxState is True:
-        url = 'https://sandbox.iexapis.com/stable/stock/'
+        url = f'https://sandbox.iexapis.com/stable/{section}/'
     else:
-        url = 'https://cloud.iexapis.com/stable/stock/'
+        url = f'https://cloud.iexapis.com/stable/{section}/'
     return url
 
 def append_iex_token(url):
