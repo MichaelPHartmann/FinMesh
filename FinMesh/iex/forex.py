@@ -18,7 +18,7 @@ def forex_conversion(symbols, amount, vprint=False):
 FOREX_HISTORICAL_URL = prepend_iex_url('fx') + 'historical?'
 def forex_historical(symbols, vprint=False, **queries):
     ## Returns historical FOREX rates for the requested currency pair symbol.
-    url = FOREX_HISTORICAL_URL f'symbols={symbols}'
+    url = FOREX_HISTORICAL_URL + f'symbols={symbols}'
     for key, value in queries.items():
         url += (f"&{key}={value}")
     url =+ '&'
