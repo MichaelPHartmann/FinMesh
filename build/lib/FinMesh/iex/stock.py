@@ -110,41 +110,27 @@ def fund_ownership(symbol, vprint=False):
     return get_iex_json_request(url, vprint=vprint)
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
-def historical_price(symbol, status=False, vprint=False, **queries):
+def historical_price(symbol, period, date=None, vprint=False, **queries):
     ## Returns the historical price for the requested ticker.
     # Soon to be deprecated
     # Here the query string parameters are handled a bit differently because
     # there are so many.  This may be inconsistent but no other way is realistic
-    url = IEX_HISTORICAL_URL + f"{symbol}/chart?"
+    url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
+    if period == 'date':
+        assert date not None, 'Please enter a valid date!'
+        url += f'/{date}?'
+    else:
+        url += '?'
     for key, value in queries.items():
         url += (f"&{key}={value}")
     url = append_iex_token(url)
-    if status: print(f"Now fetching: {url}")
+    if vprint: print(f"Now fetching: {url}")
     result = requests.get(url)
-    if status: print(f"Request status code: {result.status_code}")
+    if vprint: print(f"Request status code: {result.status_code}")
     if result.status_code != 200:
         raise BaseException(result.text)
     result = result.json()
     return result
-
-"""
-   DEPRECATED in favour of historical prices as to align
-   with IEX nomenclature
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-IEX_CHART_URL = prepend_iex_url('stock') + '{symbol}/chart'
-def chart(symbol, scope=None, date=None, dynamic=False, **kwargs):
-    url = replace_url_var(IEX_CHART_URL, symbol=symbol)
-    if scope:
-        url+= f'/{scope}?'
-    elif dynamic:
-        url+= f'/dynamic?'
-    else:
-        url+= '?'
-    for key, value in kwargs.items():
-        url += f'&{key}={value}'
-
-    return get_iex_json_request(url, vprint=vprint)
-"""
 
 #   Income Statement
 IEX_INCOME_STATEMENT_URL = prepend_iex_url('stock') + '{symbol}/income'
