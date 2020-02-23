@@ -17,6 +17,7 @@ def append_fred_token(url):
 
 FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
 def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, limit=None, offset=None, sort_order=None, observation_start=None, observation_end=None, units=None, frequency=None, aggregation_method=None, output_type=None, vintage_dates=None):
+    ## Returns time series historical data for the requested FRED data.
     url = FRED_SERIES_OBS_URL + f'series_id={series}'
     if file_type: url += f'&file_type={file_type}'
     if realtime_start: url += f'&realtime_start={realtime_start}'
@@ -37,6 +38,7 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
 
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
 def geofred_series_meta(series_id, file_type=None):
+    ## Returns meta data for the requested FRED data.
     url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
     if file_type: url += f'&file_type={file_type}'
     url = append_fred_token(url)
@@ -45,6 +47,7 @@ def geofred_series_meta(series_id, file_type=None):
 
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
 def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
+    ## Returns the historical, geographically organized time series data for the requested FRED data.
     url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
     if file_type: url += f'&file_type={file_type}'
     if date: url += f'&date={date}'
@@ -60,11 +63,13 @@ def geofred_regional_series(series_id, file_type=None, date=None, start_date=Non
 GOV_YIELD_URL = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%204%20and%20year(NEW_DATE)%20eq%202019'
 
 def get_yield():
+    ## Returns government treasury bond yields. Organized in Python dictionary format by bond length.
+
     # Formatting of XML to Python Dict
     curve = requests.get(GOV_YIELD_URL)
     parse_curve = xmltodict.parse(curve.content)
 
-    # This will be based around retrieving the n last dates or average of n days.
+    # This is based around retrieving the n last dates or average of n days.
     feed = parse_curve['feed']
     entry = feed['entry']
     last_entry = len(entry)-1

@@ -54,3 +54,10 @@ usgov_fred_functions = {
 'geofred_regional_series':'Returns the historical, geographically organized time series data for the requested FRED data.',
 'get_yield':'Returns government treasury bond yields. Organized in Python dictionary format by bond length.'
 }
+
+# EDGAR
+edgarFiler_functions = {
+'cik':'Sets the CIK attribute for the requested company.',
+'accessions':'Returns accession numbers and documents in five forms for the desired company',
+'accession_request':'Returns accession numbers for the requested document.'
+}

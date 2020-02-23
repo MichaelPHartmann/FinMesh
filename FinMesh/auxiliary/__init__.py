@@ -2,6 +2,7 @@ from nltk.corpus import words
 
 
 def pick_bad_apples(word,ignore_list):
+    ## Determines whether or not to ignore certain words
     ignore = False
     for n in range(len(ignore_list)):
         for i in ignore_list:
@@ -11,6 +12,7 @@ def pick_bad_apples(word,ignore_list):
 
 
 def real_word_frequency(file):
+    ## Returns a list fo real words sorted by use frequency
     with open(file,'r') as f:
         word_list = words.words()
         alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']

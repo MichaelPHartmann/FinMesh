@@ -46,8 +46,9 @@ class edgarReport(object):
 class edgarFiler(object):
 
     def __init__(self, ticker):
-        self.cik = self.cik()
         self.ticker = ticker
+        self.cik = self.cik()
+
         self.latest_10k_accession = []
         self.latest_10q_accession = []
         self.latest_all_accession = []
@@ -61,12 +62,82 @@ class edgarFiler(object):
         cik = root[1][4].text
         return cik
 
-    # # # # # # # # # # # # # # #
-    # GETTING ACCESSION NUMBERS #
-    # # # # # # # # # # # # # # #
+
+    def accessions(self, count, documents, get=False, html=False, xbrl=False, xlsx=False, strip=False):
+        ## Returns accession numbers and documents in five forms for all the documents for the desired company
+        documents_requested = documents.split(' ')
+        # Creates a list of accession numbers for the documents requested.
+        # SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+        for document in documents_requested:
+            document = document_type_parse(document)
+            URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
+            get_result = requests.get(URL)
+            if get_result.status_code == 200:
+                result_text = get_result.text
+                root = ET.fromstring(result_text)
+                accessions_requested = []
+                i = 0
+                for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
+                    while i < count:
+                        i += 1
+                        nunber = result.text
+                        accessions_requested.append(nunber)
+            else:
+                raise Exception(f'{document} is not a valid document type!')
+
+            # Optionally, one can request the raw text document streamed to your local workspace
+            if get:
+                for a in accessions_requested:
+                    fixed_accession = accession.replace("-","")
+                    URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
+                    # Stream site to local file
+                    response = requests.get(URL, stream=True)
+                    filename = f'{self.ticker}_{accession}.txt'
+                    with open(filename, 'wb') as f:
+                        for chunk in response.iter_content(chunk_size=512):
+                            if chunk:  # filter out keep-alive new chunks
+                                f.write(chunk)
+
+                    # Optionally, one can request an html-only version of the raw text document (parsed by switching at html tags)
+                    if html:
+                        raw_file = filename
+                        html_file = f"{self.ticker}_{accession}.html"
+                        edgar_strip_to_html(raw_file, html_file)
+
+                    # Optionally, one can request a new web page with the interactive xbrl data
+                    if xbrl:
+                        URL = f"https://www.sec.gov/cgi-bin/viewer?action=view&amp;cik={self.cik}&amp;accession_number={accession}"
+                        xbrl_request = requests.get(URL)
+                        if xbrl_request.status_code == 200:
+                            webbrowser.open(URL)
+                        else:
+                            raise Exception('Please ensure there are valid CIK and accession numbers.')
+
+                    # Optionally, one can request a download of the xlsx filing document if valid
+                    if xlsx:
+                        URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/Financial_Report.xlsx"
+                        xlsx_filename = f"{self.ticker}_{accession}.xlsx"
+                        xlsx_download = requests.get(URL)
+                        if xlsx_download.status_code == 200:
+                            with open(xlsx_filename, 'wb') as f:
+                                for chunk in xlsx_download.iter_content(chunk_size=512):
+                                    if chunk:  # filter out keep-alive new chunks
+                                        f.write(chunk)
+                        else:
+                            raise Exception('Please ensure there are valid CIK and accession numbers.')
+
+                    # Optionally, one can request the text-only, stripped down version of the document
+                    if strip:
+                        raw_to_text(filename)
+
+        return accessions_requested
+
+    # # # # # # # # # # #
+    # Specific Requests #
+    # # # # # # # # # # #
 
     def accession_requests(self, count, document):
-        ## Will return minimum 10 values.
+        ## Returns accession numbers for the requested document.
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
         get_result = requests.get(URL)
         if get_result.status_code == 200:
@@ -85,43 +156,6 @@ class edgarFiler(object):
                     self.latest_all_accession.append(nunber)
         else:
             raise Exception('Must enter valid document type!')
-
-    def accessions(self, count, documents,get=False,strip=False):
-        ## Returns accession numbers for all the documents for the desired company
-        ## Will return minimum 10 values.
-        documents_requested = documents.split(' ')
-        for document in documents_requested:
-            URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
-            get_result = requests.get(URL)
-            if get_result.status_code == 200:
-                result_text = get_result.text
-                root = ET.fromstring(result_text)
-                accessions_requested = []
-                for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
-                    ten_K = ["10-K","10-k","10K","10k"]
-                    ten_Q = ["10-Q","10-q","10Q","10q"]
-                    nunber = result.text
-                    accessions_requested.append(nunber)
-            else:
-                raise Exception(f'{document} is not a valid document type!')
-            if get:
-                for a in accessions_requested[:count]:
-                    fixed_accession = accession.replace("-","")
-                    URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
-                    # Stream site to local file
-                    response = requests.get(URL, stream=True)
-                    filename = f'{self.ticker}_{accession}.txt'
-                    with open(filename, 'wb') as f:
-                        for chunk in response.iter_content(chunk_size=512):
-                            if chunk:  # filter out keep-alive new chunks
-                                f.write(chunk)
-                    if strip:
-                        raw_to_text(filename)
-        return accessions_requested[:count]
-
-    # # # # # # # # # # #
-    # Specific Requests #
-    # # # # # # # # # # #
 
     def accession_10k(self, count, get=False):
         ## Returns accession numbers for all the 10-Ks for the desired company
@@ -165,8 +199,8 @@ class edgarFiler(object):
             nunber = result.text
             self.latest_all_accession.append(nunber)
 
-    if get is True:
-        download_report_file(self.latest_all_accession[:count])
+        if get is True:
+            download_report_file(self.latest_all_accession[:count])
 
     # # # # # # # # # # # # #
     # RETRIEVAL OF RAW URLS #
@@ -202,7 +236,7 @@ class edgarFiler(object):
         html_file = f"{self.ticker}_{accession}.html"
         # If the file is already present, it is converted to pure html
         if os.path.isfile(raw_file):
-            edgar_strip_txt(raw_file, html_file)
+            edgar_strip_to_html(raw_file, html_file)
         # If the file does not exist it is created and then converted
         else:
             fixed_accession = accession.replace("-","")
@@ -214,7 +248,7 @@ class edgarFiler(object):
                 for chunk in response.iter_content(chunk_size=512):
                     if chunk:  # filter out keep-alive new chunks
                         f.write(chunk)
-            edgar_strip_txt(raw_file, html_file)
+            edgar_strip_to_html(raw_file, html_file)
         # Set the file as a class variable, this allows us to modify and use it later
         if save is True:
             var_name = accession
@@ -254,15 +288,6 @@ class edgarFiler(object):
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
 
-    # # # # # # # # # # # #
-    # All-In-One Function #
-    # # # # # # # # # # # #
 
-    def process_reports(self, count, document):
-        cik()
-        accessions = classify.accessions(count, document)
-        print(accessions)
-
-        for a in accessions[:count]:
-            new_file = classify.retrieve_txt_report(a)
-            raw_to_text(new_file)
+TSLA = edgarFiler('TSLA')
+TSLA.accessions(1,'10k',get=True,strip=True)

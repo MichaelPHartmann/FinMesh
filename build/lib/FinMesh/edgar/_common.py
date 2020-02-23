@@ -3,12 +3,14 @@ import re
 from bs4 import BeautifulSoup, SoupStrainer
 
 def egdar_find_html(string):
+    ## Finds html tags and returns whether it is the start or end of the block
     if re.search('<HTML>', string) or re.search('<html>', string):
         return 'Start'
     if re.search('</HTML>', string) or re.search('</html>', string):
         return 'End'
 
-def edgar_strip_txt(file, newfile):
+def edgar_strip_to_html(file, newfile):
+    ## Strips a document to just the html elements
     with open(file, 'r+') as f, open(newfile, 'a') as nf:
         transfer = False
         lines = f.readlines()
@@ -59,3 +61,12 @@ def download_report_file(accessions):
             for chunk in response.iter_content(chunk_size=512):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
+
+def document_type_parse(document):
+    ## Allows one to pass in a miss-typed document tag and rectifies it
+    ten_K = ["10-K","10-k","10K","10k"]
+    ten_Q = ["10-Q","10-q","10Q","10q"]
+    if document in ten_K:
+        pass
+    if document in ten_Q:
+        pass
