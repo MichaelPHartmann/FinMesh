@@ -9,7 +9,7 @@ def pick_bad_apples(word,ignore_list):
             if i in word:
                 ignore = True
     return ignore
-
+pick_bad_apples.__doc__= "Determines whether or not to ignore certain words."
 
 def real_word_frequency(file):
     ## Returns a list fo real words sorted by use frequency
@@ -51,3 +51,4 @@ def real_word_frequency(file):
         final_checked_sorted = {k: v for k, v in sorted(final_checked.items(), key=lambda item: item[1])}
 
         return final_checked_sorted
+real_word_frequency.__doc__='Returns a list fo real words sorted by use frequency.'

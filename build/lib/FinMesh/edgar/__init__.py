@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 import webbrowser
 import shutil
 from bs4 import BeautifulSoup, SoupStrainer
+from nltk.corpus import words
 from ._common import *
 
 EDGAR_BASE_URL = "https://www.sec.gov"
@@ -18,8 +19,54 @@ class edgarReport(object):
         self.report_period = ''
         self.company_name = ''
 
+    # WORD FREQUENCY #
+
+    def real_word_frequency(self):
+        # Returns a list fo real words sorted by use frequency
+        with open(self.file,'r') as f:
+            word_list = words.words()
+            alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+            file_words = []
+            # Quick sieve that is used in bad_apples function to quickly throw out obvious unreal words
+            ignore = ['-','_','/','=',':',';','<','>','#','$','@','*','\\']
+            lines = f.readlines()
+            word_freq = {}
+            final_checked = {}
+            # Iterate lines from file
+            for line in lines:
+                words = line.lower().strip().split(' ')
+                # Iterate words from line
+                for word in words:
+                    if not pick_bad_apples(word, ignore):
+                        file_words.append(word)
+            # Iterate words that pass bad apple check
+            for w in file_words:
+                if not w == '':
+                    length = len(w)-1
+                    # Checks if the first and last letter are in the alphabet
+                    if w[0] and w[length] in alphabet:
+                        w.replace('.','').strip('\"')
+                        if w in word_freq.keys():
+                            word_freq[w] += 1
+                        else:
+                            word_freq[w] = 1
+
+            # Runs a final check against an actual dictionary
+            for key in word_freq.keys():
+                if key in word_list:
+                    val = word_freq.get(key)
+                    final_checked[key] = val
+
+            # Sort the words by frequency
+            final_checked_sorted = {k: v for k, v in sorted(final_checked.items(), key=lambda item: item[1])}
+
+            return final_checked_sorted
+    real_word_frequency.__doc__='Returns a list fo real words sorted by use frequency.'
+
+    # RAW REPORT CONVERSION #
+
     def raw_to_text(self):
-        ## Converts a raw txt SEC submission to a text-only document
+        # Converts a raw txt SEC submission to a text-only document
         filein = self.file
         # Open the original file and soupify it
         with open(filein, 'r') as f:
@@ -48,7 +95,6 @@ class edgarFiler(object):
     def __init__(self, ticker):
         self.ticker = ticker
         self.cik = self.cik()
-
         self.latest_10k_accession = []
         self.latest_10q_accession = []
         self.latest_all_accession = []
@@ -61,33 +107,48 @@ class edgarFiler(object):
         root = ET.fromstring(search_result)
         cik = root[1][4].text
         return cik
+    cik.__doc__='Sets the CIK attribute for the requested company.'
 
 
-    def accessions(self, count, documents, get=False, html=False, xbrl=False, xlsx=False, strip=False):
-        ## Returns accession numbers and documents in five forms for all the documents for the desired company
+    def accessions(self, count, documents, get=False, html=False, xbrl=False, xlsx=False, strip=False,debug=False):
+        # Returns accession numbers and documents in five forms for all the documents for the desired company
         documents_requested = documents.split(' ')
+        if debug:
+            print(documents_requested)
         # Creates a list of accession numbers for the documents requested.
         # SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
         for document in documents_requested:
             document = document_type_parse(document)
             URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
+            if debug:
+                print(URL)
             get_result = requests.get(URL)
             if get_result.status_code == 200:
                 result_text = get_result.text
+                if debug:
+                    print(result_text)
                 root = ET.fromstring(result_text)
+                if debug:
+                    print(root.text)
                 accessions_requested = []
                 i = 0
                 for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
+                    if debug:
+                        print(result)
                     while i < count:
                         i += 1
                         nunber = result.text
                         accessions_requested.append(nunber)
+                        if debug:
+                            print(nunber)
             else:
                 raise Exception(f'{document} is not a valid document type!')
+            if debug:
+                print(accessions_requested)
 
             # Optionally, one can request the raw text document streamed to your local workspace
             if get:
-                for a in accessions_requested:
+                for accession in accessions_requested:
                     fixed_accession = accession.replace("-","")
                     URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
                     # Stream site to local file
@@ -105,7 +166,7 @@ class edgarFiler(object):
                         edgar_strip_to_html(raw_file, html_file)
 
                     # Optionally, one can request a new web page with the interactive xbrl data
-                    if xbrl:
+                    elif xbrl:
                         URL = f"https://www.sec.gov/cgi-bin/viewer?action=view&amp;cik={self.cik}&amp;accession_number={accession}"
                         xbrl_request = requests.get(URL)
                         if xbrl_request.status_code == 200:
@@ -114,7 +175,7 @@ class edgarFiler(object):
                             raise Exception('Please ensure there are valid CIK and accession numbers.')
 
                     # Optionally, one can request a download of the xlsx filing document if valid
-                    if xlsx:
+                    elif xlsx:
                         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/Financial_Report.xlsx"
                         xlsx_filename = f"{self.ticker}_{accession}.xlsx"
                         xlsx_download = requests.get(URL)
@@ -129,17 +190,18 @@ class edgarFiler(object):
                     # Optionally, one can request the text-only, stripped down version of the document
                     if strip:
                         raw_to_text(filename)
-
         return accessions_requested
+    accessions.__doc__='Returns accession numbers and documents in five forms for all the documents for the desired company.'
 
     # # # # # # # # # # #
     # Specific Requests #
     # # # # # # # # # # #
 
-    def accession_requests(self, count, document):
+    def accession_requests(self, count, document, debug=False):
         ## Returns accession numbers for the requested document.
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
         get_result = requests.get(URL)
+        accessions = []
         if get_result.status_code == 200:
             result_text = get_result.text
             root = ET.fromstring(result_text)
@@ -151,11 +213,11 @@ class edgarFiler(object):
                 if document == "10-q" or "10-Q":
                     self.latest_10q_accession.append(nunber)
                 else:
-                    new_list = str(document)
-                    setattr(edgarFiler, new_list, [])
-                    self.latest_all_accession.append(nunber)
+                    accessions.append(nunber)
+            return accessions
         else:
             raise Exception('Must enter valid document type!')
+    accession_requests.__doc__='Returns accession numbers for the requested document.'
 
     def accession_10k(self, count, get=False):
         ## Returns accession numbers for all the 10-Ks for the desired company
@@ -171,6 +233,7 @@ class edgarFiler(object):
 
         if get is True:
             download_report_file(self.latest_10k_accession[:count])
+    accession_10k.__doc__='Returns accession numbers for all the 10-Ks for the desired company.'
 
     def accession_10q(self, count, get=False):
         ## Returns accession numbers for all the 10-Qs for the desired company
@@ -186,6 +249,7 @@ class edgarFiler(object):
 
         if get is True:
             download_report_file(self.latest_10q_accession[:count])
+    accession_10q.__doc__='Returns accession numbers for all the 10-Qs for the desired company.'
 
     def accession_all_recent(self, count, get=False):
         ## Returns all the most recent accession numbers for the desired company
@@ -201,6 +265,8 @@ class edgarFiler(object):
 
         if get is True:
             download_report_file(self.latest_all_accession[:count])
+    accession_all_recent.__doc__='Returns all the most recent accession numbers for the desired company.'
+
 
     # # # # # # # # # # # # #
     # RETRIEVAL OF RAW URLS #
@@ -229,6 +295,7 @@ class edgarFiler(object):
             return filename
         else:
             return filename
+    retrieve_txt_report.__doc__='Saves the raw xml filing for the given accession number.'
 
     def retrieve_html_report(self, accession, save=False, open=False):
         ## Strips non-html elements from the raw filing document.
@@ -260,6 +327,7 @@ class edgarFiler(object):
             return html_file, webbrowser.open('file://' + html_file)
         else:
             return html_file
+    retrieve_html_report.__doc__='Strips non-html elements from the raw filing document.'
 
     # # # # # # # # # # # #
     # FILE/SITE RETRIEVAL #
@@ -273,6 +341,7 @@ class edgarFiler(object):
             webbrowser.open(URL)
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
+    retrieve_xbrl_report.__doc__='Opens a browser to the Inline XBRL Interactive report.'
 
     def retrieve_xlsx_report(self, accession):
         ## Streams financial statement Excel file, may only work on statements in the last 10 years
@@ -287,7 +356,4 @@ class edgarFiler(object):
                         f.write(chunk)
         else:
             raise Exception('Please ensure there are valid CIK and accession numbers.')
-
-
-TSLA = edgarFiler('TSLA')
-TSLA.accessions(1,'10k',get=True,strip=True)
+    retrieve_xlsx_report.__doc__='Streams financial statement Excel file, may only work on statements in the last 10 years.'

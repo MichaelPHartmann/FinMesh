@@ -47,6 +47,14 @@ iex_forex_functions = {
 'forex_historical':'Returns a list of the historical exchange rates for the requested currency pair.'
 }
 
+# IEX - MARKET
+iex_market_functions = {
+'commodities':'Returns commodites data for the requested commodities symbol.',
+'economic_data':'Returns economic data for the requested economic indicator symbol.',
+'generic_data_point':'Generic endpoint used to access all \'Data Point\' data sets on IEX.',
+'generic_time_series':'Generic endpoint used to access all \'Time Series\' data sets on IEX'
+}
+
 # USGOV - FRED
 usgov_fred_functions = {
 'fred_series':'Returns time series historical data for the requested FRED data.',
@@ -57,7 +65,34 @@ usgov_fred_functions = {
 
 # EDGAR
 edgarFiler_functions = {
+'accession_10k':'Returns accession numbers for all the 10-Ks for the desired company.',
+'accession_10q':'Returns accession numbers for all the 10-Qs for the desired company.',
+'accession_all_recent':'Returns all the most recent accession numbers for the desired company.',
+'accession_requests':'Returns accession numbers for the requested document.',
+'accessions':'Returns accession numbers and documents in five forms for all the documents for the desired company.',
 'cik':'Sets the CIK attribute for the requested company.',
-'accessions':'Returns accession numbers and documents in five forms for the desired company',
-'accession_request':'Returns accession numbers for the requested document.'
+'retrieve_html_report':'Strips non-html elements from the raw filing document.',
+'retrieve_txt_report':'Saves the raw xml filing for the given accession number.',
+'retrieve_xbrl_report':'Opens a browser to the Inline XBRL Interactive report.',
+'retrieve_xlsx_report':'Streams financial statement Excel file, may only work on statements in the last 10 years.'
 }
+
+output = []
+
+for key,value in iex_stock_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in iex_forex_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in iex_market_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in usgov_fred_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in edgarFiler_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+
+print(output)

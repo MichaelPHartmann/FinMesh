@@ -35,6 +35,7 @@ def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, 
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
+fred_series.__doc__='Returns time series historical data for the requested FRED data.'
 
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
 def geofred_series_meta(series_id, file_type=None):
@@ -44,6 +45,7 @@ def geofred_series_meta(series_id, file_type=None):
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
+geofred_series_meta.__doc__='Returns meta data for the requested FRED data.'
 
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
 def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
@@ -55,6 +57,7 @@ def geofred_regional_series(series_id, file_type=None, date=None, start_date=Non
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
+geofred_regional_series.__doc__='Returns the historical, geographically organized time series data for the requested FRED data.'
 
 # # # # # # # # # # # # # # # #
 # GOVERNMENT YIELD CURVE DATA #
@@ -91,3 +94,4 @@ def get_yield():
         '30year' : float(content['d:BC_30YEAR']['#text']),
         }
     return yield_curve_values
+get_yield.__doc__='Returns government treasury bond yields. Organized in Python dictionary format by bond length.'

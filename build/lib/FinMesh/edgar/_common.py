@@ -25,9 +25,9 @@ def edgar_strip_to_html(file, newfile):
             if transfer == True:
                 nf.write(line)
 
-def raw_to_text(self):
+def raw_to_text(filename):
     ## Converts a raw txt SEC submission to a text-only document
-    filein = self.file
+    filein = filename
     # Open the original file and soupify it
     with open(filein, 'r') as f:
         filein = filein.strip('.txt')
@@ -67,6 +67,18 @@ def document_type_parse(document):
     ten_K = ["10-K","10-k","10K","10k"]
     ten_Q = ["10-Q","10-q","10Q","10q"]
     if document in ten_K:
-        pass
+        return '10-K'
     if document in ten_Q:
-        pass
+        return '10-Q'
+    else:
+        return document
+
+def pick_bad_apples(word,ignore_list):
+    ## Determines whether or not to ignore certain words
+    ignore = False
+    for n in range(len(ignore_list)):
+        for i in ignore_list:
+            if i in word:
+                ignore = True
+    return ignore
+pick_bad_apples.__doc__= "Determines whether or not to ignore certain words."
