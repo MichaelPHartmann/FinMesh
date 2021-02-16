@@ -11,10 +11,6 @@ def balance_sheet(symbol, vprint=False, **queries):
     return get_iex_json_request(url, vprint=vprint)
 balance_sheet.__doc__='Returns the balance sheet fincancial statement for the requested stock.'
 
-#   Batch Requests
-def batch_requests():
-    raise ImplementationError("Function cannot be implemented.")
-
 #   Book
 IEX_BOOK_URL = prepend_iex_url('stock') + '{symbol}/book?'
 def book(symbol, vprint=False):
@@ -33,14 +29,6 @@ def cash_flow(symbol, vprint=False, **queries):
         url += (f"&{key}={value}")
     return get_iex_json_request(url, vprint=vprint)
 cash_flow.__doc__='Returns the cash flow financial statement for the requested stock.'
-
-#   Collections
-IEX_COLLECTION_URL = prepend_iex_url('stock') + 'market/collection/{collectionType}?collectionName={collectionName}'
-def collection(collectionType, collectionName, vprint=False):
-    # Returns a list of tickers belonging to the requested collection.
-    url = replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
-    return get_iex_json_request(url, vprint=vprint)
-collection.__doc__='Returns quotes for stocks in the requested collection type.'
 
 #   Company
 IEX_COMPANY_URL = prepend_iex_url('stock') + '{symbol}/company?'
@@ -78,8 +66,7 @@ def earnings(symbol, last=None, field=None, vprint=False):
     else:
         url += '?'
     return get_iex_json_request(url, vprint=vprint)
-earnings.__doc__='Returns earnings data such as actual EPS, beat/miss, and date for the requested stock.'
-
+earnings.__doc__='Returns earnings data such as actual EPS, beat/miss, and date for the requested stock. May be deprecated.'
 
 #   Earnings Today
 IEX_TODAY_EARNINGS_URL = prepend_iex_url('stock') + 'market/today-earnings?'
@@ -87,7 +74,7 @@ def today_earnings(vprint=False):
     # Returns earnings data released today, grouped by timing and stock.
     url = IEX_TODAY_EARNINGS_URL
     return get_iex_json_request(url, vprint=vprint)
-today_earnings.__doc__='Returns earnings data released today, grouped by timing and stock.'
+today_earnings.__doc__='Returns earnings data released today, grouped by timing and stock. May be deprecated.'
 
 #   Estimates
 IEX_ESTIMATES_URL = prepend_iex_url('stock') + '{symbol}/estimates?'
@@ -95,7 +82,7 @@ def estimates(symbol, vprint=False):
     # Returns latest future earnings estimates for the requested ticker.
     url = replace_url_var(IEX_ESTIMATES_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-estimates.__doc__='Returns latest future earnings estimates for the requested stock.'
+estimates.__doc__='Returns latest future earnings estimates for the requested stock. May be deprecated.'
 
 #   Financials
 IEX_FINANCIALS_URL = prepend_iex_url('stock') + '{symbol}/financials?'
@@ -185,13 +172,13 @@ IEX_UPCOMING_IPOS_URL = prepend_iex_url('stock') + 'market/upcoming-ipos?'
 def ipo_upcoming(vprint=False):
     # Returns a list of upcoming IPOs for the current and next month.
     return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
-ipo_upcoming.__doc__='Returns a list of upcoming IPOs for the current and next month.'
+ipo_upcoming.__doc__='Returns a list of upcoming IPOs for the current and next month. May be deprecated.'
 
 IEX_TODAY_IPOS_URL = prepend_iex_url('stock') + 'market/today-ipos?'
 def ipo_today(vprint=False):
     # Returns a list of IPOs happening today.
     return get_iex_json_request(IEX_TODAY_IPOS_URL)
-ipo_today.__doc__='Returns a list of IPOs happening today.'
+ipo_today.__doc__='Returns a list of IPOs happening today. May be deprecated.'
 
 #   Key Stats
 IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats'
@@ -234,7 +221,7 @@ def market_volume(format=None, vprint=False):
     url = IEX_MARKET_VOLUME_URL
     url += f'format={format}' if format else ''
     return get_iex_json_request(url, vprint=vprint)
-market_volume.__doc__='Returns market wide trading volume.'
+market_volume.__doc__='Returns market wide trading volume. May be deprecated.'
 
 #   News
 IEX_NEWS_URL = prepend_iex_url('stock') + '{symbol}/news'
@@ -259,7 +246,7 @@ def peers(symbol, vprint=False):
     # Returns a list of a requested ticker's peers.
     url = replace_url_var(IEX_PEERS_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-peers.__doc__='Returns a list of a requested stocks peers.'
+peers.__doc__='Returns a list of a requested stocks peers. May be deprecated.'
 
 #   Previous Day Prices
 IEX_PREVIOUS_URL = prepend_iex_url('stock') + '{symbol}/previous?'
@@ -267,7 +254,7 @@ def previous(symbol, vprint=False):
     # Returns the previous day\'s price data for the requested ticker.
     url = replace_url_var(IEX_PREVIOUS_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-previous.__doc__='Returns the previous day\'s price data for the requested stock.'
+previous.__doc__='Returns the previous day\'s price data for the requested stock. May be deprecated.'
 
 #   Price
 IEX_PRICE_URL = prepend_iex_url('stock') + '{symbol}/price?'
@@ -300,14 +287,14 @@ def recommendation_trends(symbol, vprint=False):
     # Returns analyst recommendations for the requested ticker.
     url = replace_url_var(IEX_RECOMMENDED_TRENDS_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-recommendation_trends.__doc__='Returns analyst recommendations for the requested stocks.'
+recommendation_trends.__doc__='Returns analyst recommendations for the requested stocks. May be deprecated.'
 
 #   Sector Performance
 IEX_SECTOR_PERFORMANCE_URL = prepend_iex_url('stock') + 'market/sector-performance?'
 def sector_performance(vprint=False):
     # Returns market performance for all sectors.
     return get_iex_json_request(IEX_SECTOR_PERFORMANCE_URL)
-sector_performance.__doc__='Returns market performance for all sectors.'
+sector_performance.__doc__='Returns market performance for all sectors. May be deprecated.'
 
 #   Splits
 IEX_SPLITS_URL = prepend_iex_url('stock') + '{symbol}/splits'
