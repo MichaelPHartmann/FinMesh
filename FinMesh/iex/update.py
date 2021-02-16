@@ -17,8 +17,7 @@ ticker = 'FARM'
 
 ## Test of possibly deprecated endpoints ##
 
-print(stock.collection())
-print(stock.earnings(ticker))
+
 print(stock.today_earnings())
 print(stock.estimates(ticker))
 print(stock.ipo_upcoming())

@@ -45,4 +45,4 @@ def collection(collectionType, collectionName, vprint=False):
     # Returns a list of tickers belonging to the requested collection.
     url = replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
     return get_iex_json_request(url, vprint=vprint)
-collection.__doc__='Returns quotes for stocks in the requested collection type. May be deprecated.'
+collection.__doc__='Returns quotes for stocks in the requested collection type.'
