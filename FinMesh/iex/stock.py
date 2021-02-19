@@ -1,5 +1,13 @@
 from ._common import *
 
+#   Advanced Stats
+IEX_ADVANCED_STATS_URL = prepend_iex_url('stock') + '{symbol}/advanced-stats'
+def advanced_stats(symbol, vprint=False):
+    # Returns normal key stats as well as some selected financial stats and ratios
+    url = replace_url_var(IEX_ADVANCED_STATS_URL, symbol=symbol)
+    return get_iex_json_request(url, vprint=vprint)
+advanced_stats.__doc__='Returns normal key stats as well as some selected financial stats and ratios.'
+
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url('stock') + '{symbol}/balance-sheet'
 def balance_sheet(symbol, vprint=False, **queries):
