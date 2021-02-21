@@ -145,6 +145,14 @@ def institutional_ownership(symbol, vprint=False):
     return get_iex_json_request(url, vprint=vprint)
 institutional_ownership.__doc__='Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.'
 
+#   Intraday Prices
+IEX_INTRADAY_URL = prepend_iex_url('stock') + '{symbol}/intraday-prices'
+def intraday_prices(symbol, vprint=False):
+    # Returns the intraday prices for the selected security
+    url = replace_url_var(IEX_INTRADAY_URL, symbol=symbol)
+    return get_iex_json_request(url, vprint=vprint)
+intraday_prices.__doc__='Returns the intraday price for the selected symbol'
+
 #   IPO Calendar
 # May be deprecated
 IEX_UPCOMING_IPOS_URL = prepend_iex_url('stock') + 'market/upcoming-ipos?'
@@ -242,6 +250,14 @@ def splits(symbol, scope=None, vprint=False):
     url += f'/{scope}?' if scope else '?'
     return get_iex_json_request(url, vprint=vprint)
 splits.__doc__='Returns a record of stock splits for the given stock.'
+
+#   Technical Indicators
+IEX_TECHNICAL_URL = prepend_iex_url('stock') + '{symbol}/indicator/{indicator_name}'
+def technical_indicators(symbol, indicator, vprint=False):
+    # Returns various technical indicators based on request.
+    url = replace_url_var(IEX_TECHNICAL_URL, symbol=symbol, indicator_name=indicator)
+    return get_iex_json_request(url, vprint=vprint)
+technical_indicators.__doc__='Returns various technical indicators based on request.'
 
 #   Volume by Venue
 IEX_VOLUME_BY_VENUE_URL = prepend_iex_url('stock') + '{symbol}/volume-by-venue'
