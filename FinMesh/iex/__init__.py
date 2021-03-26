@@ -1,7 +1,7 @@
 import stock
 
 class IEXStock:
-    def __init__(self, ticker, period, last):
+    def __init__(self, ticker, period='quarter', last=1):
         self.ticker = ticker
         self.period = period
         self.last = last
