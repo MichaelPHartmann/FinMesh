@@ -10,6 +10,8 @@ class IEXStock:
             price_information()
 
     def basic_information():
+        # 6 credits per symbol requested
+        # Could be pared down to 5 credits but not economical
         company_request = stock.company(self.ticker)
         self.company_name = company_request['companyName']
         self.industry = company_request['industry']
@@ -19,6 +21,7 @@ class IEXStock:
         self.beta = key_stat_request['beta']
 
     def price_information():
+        # 6 credits pers symbol requested
         key_stat_request = stock.key_stats(self.ticker)
         self.week52_high = key_stat_request['week52high']
         self.week52_low = key_stat_request['week52low']
@@ -27,21 +30,30 @@ class IEXStock:
         self.price = stock.price(self.ticker)
 
     def balance_sheet(self):
+        # 3,000 credits per symbol requested
         result = stock.balance_sheet(self.ticker, self.period, self.last)
         self.balance_sheet = result
         return result
 
     def income_statement(self):
+        # 1,000 credits per symbol requested
         result = stock.income_statement(self.ticker, self.period, self.last)
         self.income_statement = result
         return result
 
     def cash_flow_statement(self):
+        # 1,000 credits per symbol requested
         result = stock.cash_flow(self.ticker, self.period, self.last)
         self.cash_flow_statement = result
         return result
 
+    def financial_statements(self):
+        income_statement()
+        balance_sheet()
+        cash_flow_statement()
+
     def price(self):
+        # 1 credit per symbol requested
         result = stock.price(self.ticker)
         self.price = result
         return result
