@@ -1,10 +1,12 @@
 import stock
 
-class IEXStock:
-    def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
+class Stock:
+    def __init__(self, ticker, period='quarter', last=1, output_csv=False, autopopulate=False):
         self.ticker = ticker
         self.period = period
         self.last = last
+        self.csvfile_base = f'{ticker}_%s.csv'
+
         if autopopulate:
             basic_information()
             price_information()
@@ -26,28 +28,28 @@ class IEXStock:
         self.week52_high = key_stat_request['week52high']
         self.week52_low = key_stat_request['week52low']
         self.moving_average_200 = key_stat_request['day200MovingAvg']
-        self.moving average_50 = key_stat_request['day50MovingAvg']
+        self.moving_average_50 = key_stat_request['day50MovingAvg']
         self.price = stock.price(self.ticker)
 
-    def balance_sheet(self):
+    def balance_sheet(self, output_csv=False):
         # 3,000 credits per symbol requested
         result = stock.balance_sheet(self.ticker, self.period, self.last)
         self.balance_sheet = result
         return result
 
-    def income_statement(self):
+    def income_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
         result = stock.income_statement(self.ticker, self.period, self.last)
         self.income_statement = result
         return result
 
-    def cash_flow_statement(self):
+    def cash_flow_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
         result = stock.cash_flow(self.ticker, self.period, self.last)
         self.cash_flow_statement = result
         return result
 
-    def financial_statements(self):
+    def get_financial_statements(self):
         income_statement()
         balance_sheet()
         cash_flow_statement()
@@ -57,3 +59,21 @@ class IEXStock:
         result = stock.price(self.ticker)
         self.price = result
         return result
+
+    def convert_dict_csv(self, json, statement):
+        header = []
+        incomeStatement = 'income'
+        balanceSheet = 'balancesheet'
+        cashFlow = 'cashflow'
+        for key, value in json[statement][0]:
+            header.append(key)
+        with open(self.csvfile_base.replace('%s', statement), 'w+') as f:
+            f.write(header.join(','))
+            f.write('\n')
+            for period in range(len(json[statement])):
+                for key, value in json[statement][period]:
+                    f.write(str(value) + ',')
+                f.write('\n')
+
+if __name__ == '__main__':
+    print(stock.cash_flow('AAPL',last=1))
