@@ -35,18 +35,24 @@ class Stock:
         # 3,000 credits per symbol requested
         result = stock.balance_sheet(self.ticker, self.period, self.last)
         self.balance_sheet = result
+        if output_csv:
+            convert_dict_csv(result, 'balancesheet')
         return result
 
     def income_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
         result = stock.income_statement(self.ticker, self.period, self.last)
         self.income_statement = result
+        if output_csv:
+            convert_dict_csv(result, 'income')
         return result
 
     def cash_flow_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
         result = stock.cash_flow(self.ticker, self.period, self.last)
         self.cash_flow_statement = result
+        if output_csv:
+            convert_dict_csv(result, 'cashflow')
         return result
 
     def get_financial_statements(self):
@@ -62,9 +68,6 @@ class Stock:
 
     def convert_dict_csv(self, json, statement):
         header = []
-        incomeStatement = 'income'
-        balanceSheet = 'balancesheet'
-        cashFlow = 'cashflow'
         for key, value in json[statement][0]:
             header.append(key)
         with open(self.csvfile_base.replace('%s', statement), 'w+') as f:
