@@ -38,3 +38,11 @@ def generic_time_series(symbol, *args, vprint=False):
     url += '?'
     return get_iex_json_request(url, vprint=vprint)
 generic_time_series.__doc__='Generic endpoint used to access all \'Time Series\' data sets on IEX'
+
+#   Collections
+IEX_COLLECTION_URL = prepend_iex_url('stock') + 'market/collection/{collectionType}?collectionName={collectionName}'
+def collection(collectionType, collectionName, vprint=False):
+    # Returns a list of tickers belonging to the requested collection.
+    url = replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
+    return get_iex_json_request(url, vprint=vprint)
+collection.__doc__='Returns quotes for stocks in the requested collection type.'

@@ -14,5 +14,6 @@ FinMesh/iex/_common.py
 FinMesh/iex/account.py
 FinMesh/iex/forex.py
 FinMesh/iex/market.py
+FinMesh/iex/premium.py
 FinMesh/iex/stock.py
 FinMesh/usgov/__init__.py

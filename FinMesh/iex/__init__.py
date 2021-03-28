@@ -23,6 +23,8 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    ### BASIC AND PRICE INFORMATION ###
+
     def basic_information(self):
         # 6 credits per symbol requested
         # Could be pared down to 5 credits but not economical
@@ -42,6 +44,14 @@ class IEXStock:
         self.moving_average_200 = key_stat_request['day200MovingAvg']
         self.moving_average_50 = key_stat_request['day50MovingAvg']
         self.price = stock.price(self.ticker)
+
+    def price(self):
+        # 1 credit per symbol requested
+        result = stock.price(self.ticker)
+        self.price = result
+        return result
+
+    ### FINANCIAL STATEMENTS ###
 
     def get_balance_sheet(self, output_csv=False):
         # 3,000 credits per symbol requested
@@ -67,13 +77,7 @@ class IEXStock:
             convert_dict_csv(result, 'cashflow')
         return result
 
-    def get_financial_statements(self):
-        income_statement()
-        balance_sheet()
-        cash_flow_statement()
-
-    def price(self):
-        # 1 credit per symbol requested
-        result = stock.price(self.ticker)
-        self.price = result
-        return result
+    def get_financial_statements(self, output_csv=False):
+        income_statement(output_csv=False)
+        balance_sheet(output_csv=False)
+        cash_flow_statement(output_csv=False)
