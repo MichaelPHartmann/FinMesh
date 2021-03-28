@@ -1,7 +1,7 @@
 import stock
 
-class Stock:
-    def __init__(self, ticker, period='quarter', last=1, output_csv=False, autopopulate=False):
+class IEXStock:
+    def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
         self.period = period
         self.last = last
@@ -11,7 +11,19 @@ class Stock:
             basic_information()
             price_information()
 
-    def basic_information():
+    def convert_dict_csv(self, json, statement):
+        header = []
+        for key in json[statement][0].keys():
+            header.append(key)
+        with open(self.csvfile_base.replace('%s', statement), 'w+') as f:
+            f.write(','.join(header))
+            f.write('\n')
+            for period in range(len(json[statement])):
+                for key, value in json[statement][period].items():
+                    f.write(str(value) + ',')
+                f.write('\n')
+
+    def basic_information(self):
         # 6 credits per symbol requested
         # Could be pared down to 5 credits but not economical
         company_request = stock.company(self.ticker)
@@ -22,7 +34,7 @@ class Stock:
         self.pe_ratio = key_stat_request['peRatio']
         self.beta = key_stat_request['beta']
 
-    def price_information():
+    def price_information(self):
         # 6 credits pers symbol requested
         key_stat_request = stock.key_stats(self.ticker)
         self.week52_high = key_stat_request['week52high']
@@ -31,7 +43,7 @@ class Stock:
         self.moving_average_50 = key_stat_request['day50MovingAvg']
         self.price = stock.price(self.ticker)
 
-    def balance_sheet(self, output_csv=False):
+    def get_balance_sheet(self, output_csv=False):
         # 3,000 credits per symbol requested
         result = stock.balance_sheet(self.ticker, self.period, self.last)
         self.balance_sheet = result
@@ -39,15 +51,15 @@ class Stock:
             convert_dict_csv(result, 'balancesheet')
         return result
 
-    def income_statement(self, output_csv=False):
+    def get_income_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
-        result = stock.income_statement(self.ticker, self.period, self.last)
+        result = stock.income_statement(self.ticker, period=self.period, last=self.last)
         self.income_statement = result
         if output_csv:
-            convert_dict_csv(result, 'income')
+            self.convert_dict_csv(result, 'income')
         return result
 
-    def cash_flow_statement(self, output_csv=False):
+    def get_cash_flow_statement(self, output_csv=False):
         # 1,000 credits per symbol requested
         result = stock.cash_flow(self.ticker, self.period, self.last)
         self.cash_flow_statement = result
@@ -65,18 +77,3 @@ class Stock:
         result = stock.price(self.ticker)
         self.price = result
         return result
-
-    def convert_dict_csv(self, json, statement):
-        header = []
-        for key, value in json[statement][0]:
-            header.append(key)
-        with open(self.csvfile_base.replace('%s', statement), 'w+') as f:
-            f.write(header.join(','))
-            f.write('\n')
-            for period in range(len(json[statement])):
-                for key, value in json[statement][period]:
-                    f.write(str(value) + ',')
-                f.write('\n')
-
-if __name__ == '__main__':
-    print(stock.cash_flow('AAPL',last=1))
