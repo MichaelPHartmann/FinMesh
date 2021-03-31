@@ -72,7 +72,7 @@ class IEXStock:
         self.price = result
         return result
 
-    def historical_price(self, symbol, time_frame, date=None, chart_by_day=False):
+    def historical_price(self, time_frame, date=None, chart_by_day=False):
         result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
@@ -80,39 +80,51 @@ class IEXStock:
 
     ### FINANCIAL STATEMENTS ###
 
-    def get_balance_sheet(self, period=self.period, last=self.last, output_csv=False):
+    def get_balance_sheet(self, period=None, last=None, output_csv=False):
         """3,000 credits per symbol requested.
         Returns balance sheet data for the requested company and sets class attribute 'self.balance_sheet'.
         Parameters:
-        period -> accepts ['annual', 'quarterly'], defaults to quarterly
+        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
         result = stock.balance_sheet(self.ticker, period=period, last=last)
         self.balance_sheet = result
         if output_csv:
             convert_dict_csv(result, 'balancesheet')
         return result
 
-    def get_income_statement(self, period=self.period, last=self.last, output_csv=False):
+    def get_income_statement(self, period=None, last=None, output_csv=False):
         """1,000 credits per symbol requested.
         Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
         Parameters:
-        period -> accepts ['annual', 'quarterly'], defaults to quarterly
+        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
         result = stock.income_statement(self.ticker, period=period, last=last)
         self.income_statement = result
         if output_csv:
             self.convert_dict_csv(result, 'income')
         return result
 
-    def get_cash_flow_statement(self, period=self.period, last=self.last, output_csv=False):
+    def get_cash_flow_statement(self, period=None, last=None, output_csv=False):
         """1,000 credits per symbol requested.
         Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
         Parameters:
         period -> accepts ['annual', 'quarterly'], defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
         result = stock.cash_flow(self.ticker, period=period, last=last)
         self.cash_flow_statement = result
         if output_csv:
