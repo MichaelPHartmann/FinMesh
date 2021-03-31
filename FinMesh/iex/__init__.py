@@ -11,7 +11,9 @@ class IEXStock:
             basic_information()
             price_information()
 
-    def convert_dict_csv(self, json, statement):
+    ### HELPER FUNCTIONS ###
+
+    def convert_financial_json_csv(self, json, statement):
         """Converts IEX JSON financial statements into csv files.
 
         Parameters:
@@ -26,6 +28,18 @@ class IEXStock:
             f.write('\n')
             for period in range(len(json[statement])):
                 for key, value in json[statement][period].items():
+                    f.write(str(value) + ',')
+                f.write('\n')
+
+    def convert_price_json_csv(self, json_doc, period):
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        with open(self.csvfile_base.replace('%s', period), 'w+') as f:
+            f.write(','.join(header))
+            f.write('\n')
+            for day in range(len(json_doc)):
+                for key, value in json_doc.items():
                     f.write(str(value) + ',')
                 f.write('\n')
 
@@ -72,10 +86,12 @@ class IEXStock:
         self.price = result
         return result
 
-    def historical_price(self, time_frame, date=None, chart_by_day=False):
+    def historical_price(self, time_frame, date=None, chart_by_day=False, output_csv=False):
         result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
+        if output_csv:
+            convert_price_json_csv(result, time_frame)
         return result
 
     ### FINANCIAL STATEMENTS ###
@@ -94,7 +110,7 @@ class IEXStock:
         result = stock.balance_sheet(self.ticker, period=period, last=last)
         self.balance_sheet = result
         if output_csv:
-            convert_dict_csv(result, 'balancesheet')
+            convert_financial_json_csv(result, 'balancesheet')
         return result
 
     def get_income_statement(self, period=None, last=None, output_csv=False):
@@ -111,7 +127,7 @@ class IEXStock:
         result = stock.income_statement(self.ticker, period=period, last=last)
         self.income_statement = result
         if output_csv:
-            self.convert_dict_csv(result, 'income')
+            self.convert_financial_json_csv(result, 'income')
         return result
 
     def get_cash_flow_statement(self, period=None, last=None, output_csv=False):
@@ -128,7 +144,7 @@ class IEXStock:
         result = stock.cash_flow(self.ticker, period=period, last=last)
         self.cash_flow_statement = result
         if output_csv:
-            convert_dict_csv(result, 'cashflow')
+            convert_financial_json_csv(result, 'cashflow')
         return result
 
     def get_financial_statements(self, output_csv=False):
