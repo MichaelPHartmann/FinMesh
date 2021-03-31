@@ -72,8 +72,11 @@ class IEXStock:
         self.price = result
         return result
 
-    def historical_price(self):
-        pass
+    def historical_price(self, symbol, time_frame, date=None, chart_by_day=False):
+        result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
+        attribute_name = f"{period}_historical_price"
+        setattr(IEXStock, attribute_name, result)
+        return result
 
     ### FINANCIAL STATEMENTS ###
 
