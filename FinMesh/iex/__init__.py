@@ -87,6 +87,14 @@ class IEXStock:
         return result
 
     def historical_price(self, time_frame, date=None, chart_by_day=False, output_csv=False):
+        """10 credits per day requested when part of a time frame. (Full Data)
+        50 credits per single day, minute data.
+        Parameters:
+        time_frame -> String. Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
+        date -> String. If 'date' is specified in time_frame, this is the date that you wish to access.
+        chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
         result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
@@ -102,6 +110,7 @@ class IEXStock:
         Parameters:
         period -> accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
             period = self.period
@@ -119,6 +128,7 @@ class IEXStock:
         Parameters:
         period -> accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
             period = self.period
@@ -136,6 +146,7 @@ class IEXStock:
         Parameters:
         period -> accepts ['annual', 'quarterly'], defaults to quarterly
         last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
             period = self.period
@@ -151,7 +162,7 @@ class IEXStock:
         """5,000 credits per symbol requested.
         Simply fetches all the financial statements at once.
         Parameters:
-        output_csv -> Boolean, defaults to False
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         income_statement(output_csv=False)
         balance_sheet(output_csv=False)

@@ -91,14 +91,16 @@ def fund_ownership(symbol, vprint=False):
 fund_ownership.__doc__='Returns the largest 10 fund owners of the requested stock. This excludes explicit buy or sell-side firms.'
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
-def historical_price(symbol, period, date=None, vprint=False, **queries):
+def historical_price(symbol, period, date=None, chart_by_day=False, vprint=False, **queries):
     # Returns the historical price for the requested ticker.
     # Soon to be deprecated
     # Here the query string parameters are handled a bit differently because
     # there are so many.  This may be inconsistent but no other way is realistic
     url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
     if period == 'date':
-        url += f'/{date}?&chartByDay=True'
+        url += f'/{date}'
+        if chart_by_day:
+            url += '?&chartByDay=True'
     else:
         url += '?'
     for key, value in queries.items():

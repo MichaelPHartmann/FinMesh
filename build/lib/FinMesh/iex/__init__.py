@@ -11,7 +11,15 @@ class IEXStock:
             basic_information()
             price_information()
 
-    def convert_dict_csv(self, json, statement):
+    ### HELPER FUNCTIONS ###
+
+    def convert_financial_json_csv(self, json, statement):
+        """Converts IEX JSON financial statements into csv files.
+
+        Parameters:
+        json -> the IEX JSON financial statement document
+        statement -> accepts ['income, balancesheet', 'cashflow']
+        """
         header = []
         for key in json[statement][0].keys():
             header.append(key)
@@ -23,9 +31,30 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    def convert_price_json_csv(self, json_doc, period):
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        with open(self.csvfile_base.replace('%s', period), 'w+') as f:
+            f.write(','.join(header))
+            f.write('\n')
+            for day in range(len(json_doc)):
+                for key, value in json_doc.items():
+                    f.write(str(value) + ',')
+                f.write('\n')
+
+    ### BASIC AND PRICE INFORMATION ###
+
     def basic_information(self):
-        # 6 credits per symbol requested
-        # Could be pared down to 5 credits but not economical
+        """6 credits per symbol requested.
+        Makes requests to the company and key stat IEX endpoints.
+        Sets class attributes for:
+        Company name (self.company_name)
+        Industry (self.industry)
+        Market Capitalization (self.market_cap)
+        P/E Ratio (self.pe_ratio)
+        Beta (self.beta)
+        """
         company_request = stock.company(self.ticker)
         self.company_name = company_request['companyName']
         self.industry = company_request['industry']
@@ -35,7 +64,13 @@ class IEXStock:
         self.beta = key_stat_request['beta']
 
     def price_information(self):
-        # 6 credits pers symbol requested
+        """6 credits per symbol requested.
+        Makes requests to the key stat and price endpoints.
+        Sets class attributes for:
+        52 week high (week52_high), 52 week low (week52_low)
+        200 day moving average (moving_average_200), 50 day moving average (moving_average_50)
+        Most recent price (self.price)
+        """
         key_stat_request = stock.key_stats(self.ticker)
         self.week52_high = key_stat_request['week52high']
         self.week52_low = key_stat_request['week52low']
@@ -43,37 +78,81 @@ class IEXStock:
         self.moving_average_50 = key_stat_request['day50MovingAvg']
         self.price = stock.price(self.ticker)
 
-    def get_balance_sheet(self, output_csv=False):
-        # 3,000 credits per symbol requested
-        result = stock.balance_sheet(self.ticker, self.period, self.last)
-        self.balance_sheet = result
-        if output_csv:
-            convert_dict_csv(result, 'balancesheet')
-        return result
-
-    def get_income_statement(self, output_csv=False):
-        # 1,000 credits per symbol requested
-        result = stock.income_statement(self.ticker, period=self.period, last=self.last)
-        self.income_statement = result
-        if output_csv:
-            self.convert_dict_csv(result, 'income')
-        return result
-
-    def get_cash_flow_statement(self, output_csv=False):
-        # 1,000 credits per symbol requested
-        result = stock.cash_flow(self.ticker, self.period, self.last)
-        self.cash_flow_statement = result
-        if output_csv:
-            convert_dict_csv(result, 'cashflow')
-        return result
-
-    def get_financial_statements(self):
-        income_statement()
-        balance_sheet()
-        cash_flow_statement()
-
     def price(self):
-        # 1 credit per symbol requested
+        """1 credit per symbol requested.
+        Returns the most recent price for the requested company and sets class attribute 'self.price'.
+        """
         result = stock.price(self.ticker)
         self.price = result
         return result
+
+    def historical_price(self, time_frame, date=None, chart_by_day=False, output_csv=False):
+        result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
+        attribute_name = f"{period}_historical_price"
+        setattr(IEXStock, attribute_name, result)
+        if output_csv:
+            convert_price_json_csv(result, time_frame)
+        return result
+
+    ### FINANCIAL STATEMENTS ###
+
+    def get_balance_sheet(self, period=None, last=None, output_csv=False):
+        """3,000 credits per symbol requested.
+        Returns balance sheet data for the requested company and sets class attribute 'self.balance_sheet'.
+        Parameters:
+        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
+        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
+        result = stock.balance_sheet(self.ticker, period=period, last=last)
+        self.balance_sheet = result
+        if output_csv:
+            convert_financial_json_csv(result, 'balancesheet')
+        return result
+
+    def get_income_statement(self, period=None, last=None, output_csv=False):
+        """1,000 credits per symbol requested.
+        Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
+        Parameters:
+        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
+        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
+        result = stock.income_statement(self.ticker, period=period, last=last)
+        self.income_statement = result
+        if output_csv:
+            self.convert_financial_json_csv(result, 'income')
+        return result
+
+    def get_cash_flow_statement(self, period=None, last=None, output_csv=False):
+        """1,000 credits per symbol requested.
+        Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
+        Parameters:
+        period -> accepts ['annual', 'quarterly'], defaults to quarterly
+        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        """
+        if period is None:
+            period = self.period
+        if last is None:
+            last = self.last
+        result = stock.cash_flow(self.ticker, period=period, last=last)
+        self.cash_flow_statement = result
+        if output_csv:
+            convert_financial_json_csv(result, 'cashflow')
+        return result
+
+    def get_financial_statements(self, output_csv=False):
+        """5,000 credits per symbol requested.
+        Simply fetches all the financial statements at once.
+        Parameters:
+        output_csv -> Boolean, defaults to False
+        """
+        income_statement(output_csv=False)
+        balance_sheet(output_csv=False)
+        cash_flow_statement(output_csv=False)
