@@ -17,8 +17,8 @@ class IEXStock:
         """Converts IEX JSON financial statements into csv files.
 
         Parameters:
-        json -> the IEX JSON financial statement document
-        statement -> accepts ['income, balancesheet', 'cashflow']
+        json -> The IEX JSON financial statement document
+        statement -> String. Accepts ['income, balancesheet', 'cashflow']
         """
         header = []
         for key in json[statement][0].keys():
@@ -108,8 +108,8 @@ class IEXStock:
         """3,000 credits per symbol requested.
         Returns balance sheet data for the requested company and sets class attribute 'self.balance_sheet'.
         Parameters:
-        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
+        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
@@ -126,8 +126,8 @@ class IEXStock:
         """1,000 credits per symbol requested.
         Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
         Parameters:
-        period -> accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
+        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
@@ -144,8 +144,8 @@ class IEXStock:
         """1,000 credits per symbol requested.
         Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
         Parameters:
-        period -> accepts ['annual', 'quarterly'], defaults to quarterly
-        last -> number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
+        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         if period is None:
