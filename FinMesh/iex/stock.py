@@ -91,6 +91,24 @@ def fund_ownership(symbol, vprint=False):
 fund_ownership.__doc__='Returns the largest 10 fund owners of the requested stock. This excludes explicit buy or sell-side firms.'
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
+def new_historical_price(symbol, period, date=None, chart_by_day=False, chart_close_only=False, vprint=False)
+    # This endpoint sucks in it's current form.
+    # This is probably the best way to handle this for now.
+    url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
+    if period == 'date':
+        url += f'/{date}'
+    url = append_iex_token(url)
+    if chart_by_day:
+        url += 'chartByDay=True'
+    if chart_close_only:
+        url += 'chartCloseOnly=True'
+    result = requests.get(url)
+    if result.status_code != 200:
+        raise BaseException(result.text)
+    result = result.json()
+new_historical_price.__doc__='Returns the historical price for the requested stock.'
+
+IEX_HISTORICAL_URL = prepend_iex_url('stock')
 def historical_price(symbol, period, date=None, chart_by_day=False, vprint=False, **queries):
     # Returns the historical price for the requested ticker.
     # Soon to be deprecated
