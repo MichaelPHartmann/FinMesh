@@ -86,7 +86,7 @@ class IEXStock:
         self.price = result
         return result
 
-    def historical_price(self, time_frame, date=None, chart_by_day=False, output_csv=False):
+    def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, output_csv=False):
         """10 credits per day requested when part of a time frame. (Full Data)
         50 credits per single day, minute data.
         Parameters:
@@ -95,7 +95,7 @@ class IEXStock:
         chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
-        result = stock.historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day)
+        result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
         if output_csv:
