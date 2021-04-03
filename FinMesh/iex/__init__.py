@@ -43,16 +43,20 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
-    def convert_puredict_csv(self, json_dict, dictname):
-        header = []
-        values = []
-        for key, value in json_dict.items():
-            header.append(key)
-            values.append(value)
-        with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
-            f.write(','.join(header))
-            f.write(','.join(map(str, values)))
-
+    def convert_puredict_csv(self, json_dict, dictname, orientation='horizontal'):
+        if orientation == 'horizontal':
+            header = []
+            values = []
+            for key, value in json_dict.items():
+                header.append(key)
+                values.append(value)
+            with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
+                f.write(','.join(header))
+                f.write(','.join(map(str, values)))
+        elif orientation == 'vertical':
+            with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
+                for key, value in json_dict.items():
+                    f.write(str(key) + ',' + str(value) + '\n')
 
     ### BASIC AND PRICE INFORMATION ###
 
@@ -184,6 +188,8 @@ class IEXStock:
     def get_advanced_stats(self, output_csv=False):
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
+        CSV is formatted horizontally with keys in the first row.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
@@ -195,9 +201,23 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
+        CSV is formatted horizontally with keys in the first row.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.book(self.ticker)
         self.book = result
         if output_csv:
             convert_puredict_csv(result, 'book')
+        return result
+
+    def get_company(self, output_csv):
+        """1 credit per symbol requested.
+        Returns general information on the company requested.
+        CSV is formatted vertically with keys in the first column
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.company(self.ticker):
+        self.company = result
+        if output_csv:
+            convert_puredict_csv(result, 'company', orientation='vertical')
         return result
