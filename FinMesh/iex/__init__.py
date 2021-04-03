@@ -167,3 +167,13 @@ class IEXStock:
         income_statement(output_csv=False)
         balance_sheet(output_csv=False)
         cash_flow_statement(output_csv=False)
+
+    ### IEX FUNCTIONS ###
+
+    def get_advanced_stats(self):
+        """3,005 credits per symbol requested.
+        Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
+        """
+        result = stock.advanced_stats(self.ticker)
+        self.advanced_stats = result
+        return result
