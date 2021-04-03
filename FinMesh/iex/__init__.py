@@ -43,6 +43,17 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    def convert_puredict_csv(self, json_dict, dictname):
+        header = []
+        values = []
+        for key, value in json_dict.items():
+            header.append(key)
+            values.append(value)
+        with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
+            f.write(','.join(header))
+            f.write(','.join(map(str, values)))
+
+
     ### BASIC AND PRICE INFORMATION ###
 
     def basic_information(self):
@@ -170,19 +181,23 @@ class IEXStock:
 
     ### IEX FUNCTIONS ###
 
-    def get_advanced_stats(self):
+    def get_advanced_stats(self, output_csv=False):
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         """
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
+        if output_csv:
+            convert_puredict_csv(result, 'advanced_stats')
         return result
 
-    def get_book(self):
+    def get_book(self, output_csv=False):
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
         """
         result = stock.book(self.ticker)
         self.book = result
+        if output_csv:
+            convert_puredict_csv(result, 'book')
         return result
