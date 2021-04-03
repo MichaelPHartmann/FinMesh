@@ -177,3 +177,12 @@ class IEXStock:
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
         return result
+
+    def get_book(self):
+        """1 credit per symbol requested.
+        Returns quote, bid, ask, etc. data for the requested symbol.
+        Real time data available.
+        """
+        result = stock.book(self.ticker)
+        self.book = result
+        return result
