@@ -201,7 +201,6 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
-        CSV is formatted horizontally with keys in the first row.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.book(self.ticker)
@@ -210,7 +209,7 @@ class IEXStock:
             convert_puredict_csv(result, 'book')
         return result
 
-    def get_company(self, output_csv):
+    def get_company(self, output_csv=False):
         """1 credit per symbol requested.
         Returns general information on the company requested.
         CSV is formatted vertically with keys in the first column
@@ -220,4 +219,15 @@ class IEXStock:
         self.company = result
         if output_csv:
             convert_puredict_csv(result, 'company', orientation='vertical')
+        return result
+
+    def get_delayed_quote(self, output_csv=False):
+        """1 credit per symbol requested.
+        Returns 15 minute delayed quote for the requested symbol.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.delayed_quote(self.ticker)
+        self.delayed_quote = result
+        if output_csv:
+            convert_puredict_csv(result, 'delayed_quote')
         return result
