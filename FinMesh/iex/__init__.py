@@ -43,18 +43,29 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
-    def convert_puredict_csv(self, json_dict, dictname, orientation='horizontal'):
+    def convert_listofdict_csv(self, json_doc, dictname):
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
+            f.write(','.join(header))
+            for entry in json_doc:
+                for value in entry.values():
+                    f.write(str(value) + ',')
+                f.write('\n')
+
+    def convert_singledict_csv(self, json_dict, dictname, orientation='horizontal'):
         if orientation == 'horizontal':
             header = []
             values = []
             for key, value in json_dict.items():
                 header.append(key)
                 values.append(value)
-            with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
+            with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
                 f.write(','.join(header))
                 f.write(','.join(map(str, values)))
         elif orientation == 'vertical':
-            with open(self.csvfile_base.replace('%s', json_dict), 'w+') as f:
+            with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
                 for key, value in json_dict.items():
                     f.write(str(key) + ',' + str(value) + '\n')
 
@@ -196,7 +207,7 @@ class IEXStock:
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
         if output_csv:
-            convert_puredict_csv(result, 'advanced_stats')
+            convert_singledict_csv(result, 'advanced_stats')
         return result
 
     def get_book(self, output_csv=False):
@@ -210,7 +221,7 @@ class IEXStock:
         result = stock.book(self.ticker)
         self.book = result
         if output_csv:
-            convert_puredict_csv(result, 'book')
+            convert_singledict_csv(result, 'book')
         return result
 
     def get_company(self, output_csv=False):
@@ -224,7 +235,7 @@ class IEXStock:
         result = stock.company(self.ticker):
         self.company = result
         if output_csv:
-            convert_puredict_csv(result, 'company', orientation='vertical')
+            convert_singledict_csv(result, 'company', orientation='vertical')
         return result
 
     def get_delayed_quote(self, output_csv=False):
@@ -237,7 +248,7 @@ class IEXStock:
         result = stock.delayed_quote(self.ticker)
         self.delayed_quote = result
         if output_csv:
-            convert_puredict_csv(result, 'delayed_quote')
+            convert_singledict_csv(result, 'delayed_quote')
         return result
 
     def get_dividends(self, output_csv=False):
@@ -250,7 +261,7 @@ class IEXStock:
         result = stock.dividends(self.ticker)
         self.dividends = result
         if output_csv:
-            convert_puredict_csv(result, 'dividends')
+            convert_singledict_csv(result, 'dividends')
         return result
 
     def get_basic_financials(self, output_csv=False):
@@ -265,4 +276,17 @@ class IEXStock:
         self.basic_financials = result
         if output_csv:
             convert_financial_json_csv(result, 'basic_financials')
+        return result
+
+    def get_fund_ownership(self, output_csv=False):
+        """10,000 credits per symbol requested.
+        Returns the 10 largest institutional holders of the requested company.
+        Sets class attribute 'self.fund_ownership'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.fund_ownership(self.ticker)
+        self.fund_ownership = result
+        if output_csv:
+            convert_listofdict_csv(result, 'fund_ownership')
         return result
