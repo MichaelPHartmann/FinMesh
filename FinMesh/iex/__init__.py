@@ -231,3 +231,14 @@ class IEXStock:
         if output_csv:
             convert_puredict_csv(result, 'delayed_quote')
         return result
+
+    def get_dividends(self, output_csv=False):
+        """10 credits per symbol requested.
+        Returns basic dividend information for the requested symbol.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.dividends(self.ticker)
+        self.dividends = result
+        if output_csv:
+            convert_puredict_csv(result, 'dividends')
+        return result
