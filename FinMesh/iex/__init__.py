@@ -189,6 +189,8 @@ class IEXStock:
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         CSV is formatted horizontally with keys in the first row.
+        Sets class attribute 'self.advanced_stats'.
+        Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.advanced_stats(self.ticker)
@@ -201,6 +203,8 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
+        Sets class attribute 'self.book'.
+        Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.book(self.ticker)
@@ -213,6 +217,8 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns general information on the company requested.
         CSV is formatted vertically with keys in the first column
+        Sets class attribute 'self.company'.
+        Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.company(self.ticker):
@@ -224,6 +230,8 @@ class IEXStock:
     def get_delayed_quote(self, output_csv=False):
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
+        Sets class attribute 'self.delayed_quote'.
+        Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.delayed_quote(self.ticker)
@@ -235,10 +243,26 @@ class IEXStock:
     def get_dividends(self, output_csv=False):
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
+        Sets class attribute 'self.dividends'.
+        Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.dividends(self.ticker)
         self.dividends = result
         if output_csv:
             convert_puredict_csv(result, 'dividends')
+        return result
+
+    def get_basic_financials(self, output_csv=False):
+        """5000 credits per symbol requested.
+        Returns basic financial data from the requested company.
+        Note that fetching all three full financial statements has the same credit cost as this endpoint.
+        Sets class attribute 'self.basic_financials'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.financials(self.ticker)
+        self.basic_financials = result
+        if output_csv:
+            convert_financial_json_csv(result, 'basic_financials')
         return result
