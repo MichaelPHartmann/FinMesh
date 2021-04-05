@@ -1,5 +1,10 @@
 import stock
 
+## TODO ##
+# Add forex class
+# Add premium endpoints to main IEXClass
+# Add market data class
+
 class IEXStock:
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
