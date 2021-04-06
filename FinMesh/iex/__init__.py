@@ -308,3 +308,16 @@ class IEXStock:
         if output_csv:
             convert_listofdict_csv(result, 'insider_roster')
         return result
+
+    def get_insider_transactions(self, output_csv):
+        """50 credits per transaction per symbol requested.
+        Returns insider transactions with the most recent information.
+        Sets class attribute 'insider_transactions'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.insider_transactions(self.ticker)
+        self.insider_transactions = result
+        if output_csv:
+            convert_listofdict_csv(result, 'insider_transactions')
+        return result
