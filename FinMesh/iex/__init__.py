@@ -205,7 +205,7 @@ class IEXStock:
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         CSV is formatted horizontally with keys in the first row.
-        Sets class attribute 'self.advanced_stats'.
+        Sets class attribute 'advanced_stats'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -219,7 +219,7 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
-        Sets class attribute 'self.book'.
+        Sets class attribute 'book'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -233,7 +233,7 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns general information on the company requested.
         CSV is formatted vertically with keys in the first column
-        Sets class attribute 'self.company'.
+        Sets class attribute 'company'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -246,7 +246,7 @@ class IEXStock:
     def get_delayed_quote(self, output_csv=False):
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
-        Sets class attribute 'self.delayed_quote'.
+        Sets class attribute 'delayed_quote'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -259,7 +259,7 @@ class IEXStock:
     def get_dividends(self, output_csv=False):
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
-        Sets class attribute 'self.dividends'.
+        Sets class attribute 'dividends'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -273,7 +273,7 @@ class IEXStock:
         """5000 credits per symbol requested.
         Returns basic financial data from the requested company.
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
-        Sets class attribute 'self.basic_financials'.
+        Sets class attribute 'basic_financials'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -286,7 +286,7 @@ class IEXStock:
     def get_fund_ownership(self, output_csv=False):
         """10,000 credits per symbol requested.
         Returns the 10 largest institutional holders of the requested company.
-        Sets class attribute 'self.fund_ownership'.
+        Sets class attribute 'fund_ownership'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
@@ -294,4 +294,17 @@ class IEXStock:
         self.fund_ownership = result
         if output_csv:
             convert_listofdict_csv(result, 'fund_ownership')
+        return result
+
+    def get_insider_roster(self, output_csv):
+        """5,000 credits per symbol requested.
+        Returns the top 10 insiders, with the most recent information.
+        Sets class attribute 'insider_roster'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.insider_roster(self.ticker)
+        self.insider_roster = result
+        if output_csv:
+            convert_listofdict_csv(result, 'insider_roster')
         return result
