@@ -201,10 +201,10 @@ ipo_today.__doc__='Returns a list of IPOs happening today. May be deprecated.'
 
 #   Key Stats
 IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats'
-def key_stats(symbol, stat=False, vprint=False):
+def key_stats(symbol, stat=None, vprint=False):
     # Returns important and key statistics for the requested ticker.
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += str(stat) if stat else '?'
+    url += str(stat) + '?' if stat not None else '?'
     return get_iex_json_request(url, vprint=vprint)
 key_stats.__doc__='Returns important and key statistics for the requested stock.'
 

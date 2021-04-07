@@ -334,3 +334,18 @@ class IEXStock:
         if output_csv:
             convert_listofdict_csv(result, 'institutional_ownership')
         return result
+
+    def get_key_stats(self, stat=None, output_csv=False):
+        """5 credits per symbol requested, 1 credit per stat per symbol requested.
+        Returns important stats for the requested company.
+        Sets class attribute 'key_stats'.
+        CSV is formatted vertically with keys in the first column
+        Parameters:
+        stat -> String. If you would like to querie one single stat, you can enter that here.
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.key_stats(self.ticker, stat=stat)
+        self.key_stats = result
+        if output_csv:
+            convert_singledict_csv(result, 'key_stats', orientation='vertical')
+        return result
