@@ -321,3 +321,16 @@ class IEXStock:
         if output_csv:
             convert_listofdict_csv(result, 'insider_transactions')
         return result
+
+    def get_intitutional_ownership(self, output_csv=False):
+        """10,000 credits per symbol requested
+        Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
+        Sets class attribute 'institutional_ownership'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.institutional_ownership(self.ticker)
+        self.institutional_ownership = reuslt
+        if output_csv:
+            convert_listofdict_csv(result, 'institutional_ownership')
+        return result
