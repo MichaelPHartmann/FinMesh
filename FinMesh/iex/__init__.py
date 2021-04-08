@@ -363,4 +363,9 @@ class IEXStock:
             convert_listofdict_csv(result, 'largets_trades')
         return result
 
-        
+    def get_logo(self):
+        """1 credit per symbol requested
+        Returns a Google APIs link (bare url string) to the logo for the requested stock.
+        """
+        result = stock.logo(self.ticker)['url']
+        return result
