@@ -350,7 +350,7 @@ class IEXStock:
             convert_singledict_csv(result, 'key_stats', orientation='vertical')
         return result
 
-    def get_largest_trades(self, output_csv):
+    def get_largest_trades(self, output_csv=False):
         """1 credit per trade per symbol requested.
         This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
@@ -366,6 +366,22 @@ class IEXStock:
     def get_logo(self):
         """1 credit per symbol requested
         Returns a Google APIs link (bare url string) to the logo for the requested stock.
+        Sets class attribute 'logo'.
         """
         result = stock.logo(self.ticker)['url']
+        self.logo = result
+        return result
+
+    def get_news(self,last=10, output_csv=False):
+        """1 credit per news article per symbol requested.
+        Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
+        Sets class attribute 'news'.
+        Parameters ->
+        last -> Integer. Number of article to return. Min = 1 Max = 50 Defualt = 10
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.news(self.ticker, last=last)
+        self.news = result
+        if output_csv:
+            convert_listofdict_csv(result, 'news')
         return result
