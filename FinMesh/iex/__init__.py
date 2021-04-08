@@ -212,7 +212,7 @@ class IEXStock:
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
         if output_csv:
-            convert_singledict_csv(result, 'advanced_stats')
+            convert_singledict_csv(result, 'advanced_stats', orientation='vertical')
         return result
 
     def get_book(self, output_csv=False):
@@ -232,7 +232,7 @@ class IEXStock:
     def get_company(self, output_csv=False):
         """1 credit per symbol requested.
         Returns general information on the company requested.
-        CSV is formatted vertically with keys in the first column
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'company'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -349,3 +349,18 @@ class IEXStock:
         if output_csv:
             convert_singledict_csv(result, 'key_stats', orientation='vertical')
         return result
+
+    def get_largest_trades(self, output_csv):
+        """1 credit per trade per symbol requested.
+        This returns 15 minute delayed, last sale eligible trades.
+        Sets class attribute 'largest_trades'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.largest_trades(self.ticker)
+        self.largest_trades = result
+        if output_csv:
+            convert_listofdict_csv(result, 'largets_trades')
+        return result
+
+        
