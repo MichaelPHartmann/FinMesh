@@ -385,3 +385,24 @@ class IEXStock:
         if output_csv:
             convert_listofdict_csv(result, 'news')
         return result
+
+    def get_ohlc(self, output_csv=False):
+        """2 credits per symbol requested.
+        Returns the official open and close for a give symbol.
+        Sets class attribute 'ohlc'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.ohlc(self.ticker)
+        self.ohlc = result
+        if output_csv:
+            with open(self.csvfile_base.replace('%s', 'ohlc'), 'w+') as f:
+                f.write(result[0])
+                for key, value in result[0].items():
+                    f.write(key + ',' + str(value) + '\n')
+                f.write(result[1])
+                for key, value in result[1].items():
+                    f.write(key + ',' + str(value) + '\n')
+                for key,value in result[2:].items():
+                    f.write(key + ',' + str(value) + '\n')
+        return result
