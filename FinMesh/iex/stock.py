@@ -91,7 +91,7 @@ def fund_ownership(symbol, vprint=False):
 fund_ownership.__doc__='Returns the largest 10 fund owners of the requested stock. This excludes explicit buy or sell-side firms.'
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
-def new_historical_price(symbol, period, date=None, chart_by_day=False, chart_close_only=False, vprint=False)
+def new_historical_price(symbol, period, date=None, chart_by_day=False, chart_close_only=False, vprint=False):
     # This endpoint sucks in it's current form.
     # This is probably the best way to handle this for now.
     url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
@@ -204,7 +204,9 @@ IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats'
 def key_stats(symbol, stat=None, vprint=False):
     # Returns important and key statistics for the requested ticker.
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += str(stat) + '?' if stat not None else '?'
+    if stat:
+        url += str(stat) + '?'
+    else: '?'
     return get_iex_json_request(url, vprint=vprint)
 key_stats.__doc__='Returns important and key statistics for the requested stock.'
 
@@ -240,6 +242,14 @@ def ohlc(symbol, vprint=False):
     url = replace_url_var(IEX_OHLC_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
 ohlc.__doc__='Returns the most recent days open, high, low, and close data for the requested stock.'
+
+#   Peers
+IEX_PEERS_URL = prepend_iex_url('stock') + '{symbol}/peers?'
+def peers(symbol, vprint=False):
+    # Returns a list of a requested ticker's peers.
+    url = replace_url_var(IEX_PEERS_URL, symbol=symbol)
+    return get_iex_json_request(url, vprint=vprint)
+peers.__doc__='Returns a list of a requested stocks peers.'
 
 #   Price
 IEX_PRICE_URL = prepend_iex_url('stock') + '{symbol}/price?'

@@ -237,7 +237,7 @@ class IEXStock:
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
-        result = stock.company(self.ticker):
+        result = stock.company(self.ticker)
         self.company = result
         if output_csv:
             convert_singledict_csv(result, 'company', orientation='vertical')
@@ -405,4 +405,13 @@ class IEXStock:
                     f.write(key + ',' + str(value) + '\n')
                 for key,value in result[2:].items():
                     f.write(key + ',' + str(value) + '\n')
+        return result
+
+    def get_peers(self):
+        """500 credits per symbol requested.
+        Returns a list of peer company's tickers in Python list form.
+        Sets class attribute 'peers'.
+        """
+        result = stock.peers(self.ticker)
+        self.peers = result
         return result

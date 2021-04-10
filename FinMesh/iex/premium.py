@@ -48,14 +48,6 @@ def market_volume(format=None, vprint=False):
     return get_iex_json_request(url, vprint=vprint)
 market_volume.__doc__='Returns market wide trading volume. Requires premium credits to access.'
 
-#   Peers
-IEX_PEERS_URL = prepend_iex_url('stock') + '{symbol}/peers?'
-def peers(symbol, vprint=False):
-    # Returns a list of a requested ticker's peers.
-    url = replace_url_var(IEX_PEERS_URL, symbol=symbol)
-    return get_iex_json_request(url, vprint=vprint)
-peers.__doc__='Returns a list of a requested stocks peers. Requires premium credits to access.'
-
 #   Previous Day Prices
 IEX_PREVIOUS_URL = prepend_iex_url('stock') + '{symbol}/previous?'
 def previous(symbol, vprint=False):
