@@ -1,5 +1,7 @@
 from _common import *
 
+### ADVANCED FUNDEMENTALS TO-DO ###
+
 #   Advanced Stats
 IEX_ADVANCED_STATS_URL = prepend_iex_url('stock') + '{symbol}/advanced-stats'
 def advanced_stats(symbol, vprint=False):
@@ -258,14 +260,6 @@ def price(symbol, vprint=False):
     url = replace_url_var(IEX_PRICE_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
 price.__doc__='Returns a single float value of the requested company\'s price.'
-
-#   Price Target
-IEX_PRICE_TARGET_URL = prepend_iex_url('stock') + '{symbol}/price-target?'
-def price_target(symbol, vprint=False):
-    # Returns analyst's price targets for the requested ticker.
-    url = replace_url_var(IEX_PRICE_TARGET_URL, symbol=symbol)
-    return get_iex_json_request(url, vprint=vprint)
-price_target.__doc__='Returns analyst\'s price targets for the requested stock.'
 
 #   Quote
 IEX_QUOTE_URL = prepend_iex_url('stock') + '{symbol}/quote'

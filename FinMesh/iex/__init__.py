@@ -1,3 +1,5 @@
+from datetime import date
+
 import stock
 
 ## TODO ##
@@ -414,4 +416,53 @@ class IEXStock:
         """
         result = stock.peers(self.ticker)
         self.peers = result
+        return result
+
+    def get_quote(self, output_csv=False):
+        """1 credit per symbol requested.
+        Returns quote data for the requested symbol.
+        CSV is formatted vertically with keys in the first column
+        Sets class attribute 'quote'.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.quote(self.ticker)
+        self.quote = result
+        if output_csv:
+            convert_singledict_csv(result, 'quote', orientation='vertical')
+        return result
+
+class IEXMarket():
+    def __init__(self):
+        self.date = date.today()
+        self.available_symbols = {
+        'MMNRNJ':'CD Rate Non-Jumbo less than $100,000 Money market',
+        'MMNRJD':'CD Rate Jumbo more than $100,000 Money market',
+        'CPIAUCSL':'Consumer Price Index All Urban Consumers',
+        'TERMCBCCALLNS':'Commercial bank credit card interest rate as a percent, not seasonally adjusted',
+        'FEDFUNDS':'Effective federal funds rate',
+        'A191RL1Q225SBEA':'Real Gross Domestic Product',
+        'WIMFSL':'Institutional money funds returned as billions of dollars, seasonally adjusted',
+        'IC4WSA':'Returned as a number, seasonally adjusted',
+        'INDPRO':'Industrial Production Index',
+        'MORTGAGE30US':'US 30-Year fixed rate mortgage average',
+        'MORTGAGE15US':'US 15-Year fixed rate mortgage average',
+        'MORTGAGE5US':'US 5/1-Year fixed rate mortgage average',
+        'HOUST':'Total Housing Starts in thousands of units, seasonally adjusted annual rate',
+        'PAYEMS':'Total nonfarm employees in thousands of persons seasonally adjusted',
+        'TOTALSA':'Total Vehicle Sales in millions of units',
+        'WRMFSL':'Retail money funds returned as billions of dollars, seasonally adjusted',
+        'UNRATE':'Unemployment rate returned as a percent, seasonally adjusted',
+        'RECPROUSM156N':'US Recession Probabilities'
+        }
+
+    def get_market_data(self, symbol):
+        """1,000 credits per symbol requested per date.
+        Returns various economic indicator values and market datapoints.
+        Parameters:
+        symbol -> The symbol of the economic indicator or market datapoint requested.
+        A dictionary of the available datapoints available and their corrosponding symbols is class attribute 'self.available_symbols'.
+        """
+        result = market.economic_data(symbol)
+        setattr(IEXMarket, symbol, result)
         return result

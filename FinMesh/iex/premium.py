@@ -1,5 +1,13 @@
 from ._common import *
 
+#   Price Target
+IEX_PRICE_TARGET_URL = prepend_iex_url('stock') + '{symbol}/price-target?'
+def price_target(symbol, vprint=False):
+    # Returns analyst's price targets for the requested ticker.
+    url = replace_url_var(IEX_PRICE_TARGET_URL, symbol=symbol)
+    return get_iex_json_request(url, vprint=vprint)
+price_target.__doc__='Returns analyst\'s price targets for the requested stock.'
+
 #   Earnings
 IEX_EARNINGS_URL = prepend_iex_url('stock') + '{symbol}/earnings'
 def earnings(symbol, last=None, field=None, vprint=False):
