@@ -456,9 +456,10 @@ class IEXMarket():
         'RECPROUSM156N':'US Recession Probabilities'
         }
 
-    def get_market_data(self, symbol):
+    def get_single_market_data(self, symbol):
         """1,000 credits per symbol requested per date.
         Returns various economic indicator values and market datapoints.
+        Sets a class attribute equal to the symbol requested.
         Parameters:
         symbol -> The symbol of the economic indicator or market datapoint requested.
         A dictionary of the available datapoints available and their corrosponding symbols is class attribute 'self.available_symbols'.
@@ -466,3 +467,18 @@ class IEXMarket():
         result = market.economic_data(symbol)
         setattr(IEXMarket, symbol, result)
         return result
+
+    def get_all_market_data(self, output_csv=False):
+        """18,000 credits per symbol requested per day.
+        Returns all available economic indicator values and market datapoints.
+        Parameters:
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        output_data = {}
+        for key in self.available_symbols.keys():
+            output_data.key = market.economic_data(key)
+        if output_csv:
+            with open(f'{self.date}_market_data.csv', 'w+') as f:
+                for key, value in output_data.items():
+                    f.write(str(key) + ',' + str(value) + '\n')
+        return output_data
