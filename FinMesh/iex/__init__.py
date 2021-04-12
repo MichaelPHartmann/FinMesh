@@ -22,7 +22,6 @@ class IEXStock:
 
     def convert_financial_json_csv(self, json, statement):
         """Converts IEX JSON financial statements into csv files.
-
         Parameters:
         json -> The IEX JSON financial statement document
         statement -> String. Accepts ['income, balancesheet', 'cashflow']
@@ -138,6 +137,7 @@ class IEXStock:
     ### FINANCIAL STATEMENTS ###
 
     def get_balance_sheet(self, period=None, last=None, output_csv=False):
+        # HORIZONTAL
         """3,000 credits per symbol requested.
         Returns balance sheet data for the requested company and sets class attribute 'self.balance_sheet'.
         Parameters:
@@ -156,6 +156,7 @@ class IEXStock:
         return result
 
     def get_income_statement(self, period=None, last=None, output_csv=False):
+        # HORIZONTAL
         """1,000 credits per symbol requested.
         Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
         Parameters:
@@ -174,6 +175,7 @@ class IEXStock:
         return result
 
     def get_cash_flow_statement(self, period=None, last=None, output_csv=False):
+        # HORIZONTAL
         """1,000 credits per symbol requested.
         Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
         Parameters:
@@ -221,6 +223,7 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
+        CSV is formatted horizontally with keys in the first row.
         Sets class attribute 'book'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -228,7 +231,7 @@ class IEXStock:
         result = stock.book(self.ticker)
         self.book = result
         if output_csv:
-            convert_singledict_csv(result, 'book')
+            convert_singledict_csv(result, 'book', orientation='vertical')
         return result
 
     def get_company(self, output_csv=False):
@@ -248,6 +251,7 @@ class IEXStock:
     def get_delayed_quote(self, output_csv=False):
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
+        CSV is formatted horizontally with keys in the first row.
         Sets class attribute 'delayed_quote'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -255,12 +259,13 @@ class IEXStock:
         result = stock.delayed_quote(self.ticker)
         self.delayed_quote = result
         if output_csv:
-            convert_singledict_csv(result, 'delayed_quote')
+            convert_singledict_csv(result, 'delayed_quote', orientation='vertical')
         return result
 
     def get_dividends(self, output_csv=False):
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
+        CSV is formatted horizontally with keys in the first row.
         Sets class attribute 'dividends'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -268,7 +273,7 @@ class IEXStock:
         result = stock.dividends(self.ticker)
         self.dividends = result
         if output_csv:
-            convert_singledict_csv(result, 'dividends')
+            convert_singledict_csv(result, 'dividends', orientation='vertical')
         return result
 
     def get_basic_financials(self, output_csv=False):

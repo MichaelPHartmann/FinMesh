@@ -1,5 +1,7 @@
 from _common import *
 
+### ADVANCED FUNDEMENTALS TO-DO ###
+
 #   Advanced Stats
 IEX_ADVANCED_STATS_URL = prepend_iex_url('stock') + '{symbol}/advanced-stats'
 def advanced_stats(symbol, vprint=False):
@@ -89,6 +91,24 @@ def fund_ownership(symbol, vprint=False):
     url = replace_url_var(IEX_FUND_OWNERSHIP_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
 fund_ownership.__doc__='Returns the largest 10 fund owners of the requested stock. This excludes explicit buy or sell-side firms.'
+
+IEX_HISTORICAL_URL = prepend_iex_url('stock')
+def new_historical_price(symbol, period, date=None, chart_by_day=False, chart_close_only=False, vprint=False):
+    # This endpoint sucks in it's current form.
+    # This is probably the best way to handle this for now.
+    url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
+    if period == 'date':
+        url += f'/{date}'
+    url = append_iex_token(url)
+    if chart_by_day:
+        url += 'chartByDay=True'
+    if chart_close_only:
+        url += 'chartCloseOnly=True'
+    result = requests.get(url)
+    if result.status_code != 200:
+        raise BaseException(result.text)
+    result = result.json()
+new_historical_price.__doc__='Returns the historical price for the requested stock.'
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
 def historical_price(symbol, period, date=None, chart_by_day=False, vprint=False, **queries):
@@ -183,10 +203,12 @@ ipo_today.__doc__='Returns a list of IPOs happening today. May be deprecated.'
 
 #   Key Stats
 IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats'
-def key_stats(symbol, stat=False, vprint=False):
+def key_stats(symbol, stat=None, vprint=False):
     # Returns important and key statistics for the requested ticker.
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += str(stat) if stat else '?'
+    if stat:
+        url += str(stat) + '?'
+    else: '?'
     return get_iex_json_request(url, vprint=vprint)
 key_stats.__doc__='Returns important and key statistics for the requested stock.'
 
@@ -223,6 +245,14 @@ def ohlc(symbol, vprint=False):
     return get_iex_json_request(url, vprint=vprint)
 ohlc.__doc__='Returns the most recent days open, high, low, and close data for the requested stock.'
 
+#   Peers
+IEX_PEERS_URL = prepend_iex_url('stock') + '{symbol}/peers?'
+def peers(symbol, vprint=False):
+    # Returns a list of a requested ticker's peers.
+    url = replace_url_var(IEX_PEERS_URL, symbol=symbol)
+    return get_iex_json_request(url, vprint=vprint)
+peers.__doc__='Returns a list of a requested stocks peers.'
+
 #   Price
 IEX_PRICE_URL = prepend_iex_url('stock') + '{symbol}/price?'
 def price(symbol, vprint=False):
@@ -230,14 +260,6 @@ def price(symbol, vprint=False):
     url = replace_url_var(IEX_PRICE_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
 price.__doc__='Returns a single float value of the requested company\'s price.'
-
-#   Price Target
-IEX_PRICE_TARGET_URL = prepend_iex_url('stock') + '{symbol}/price-target?'
-def price_target(symbol, vprint=False):
-    # Returns analyst's price targets for the requested ticker.
-    url = replace_url_var(IEX_PRICE_TARGET_URL, symbol=symbol)
-    return get_iex_json_request(url, vprint=vprint)
-price_target.__doc__='Returns analyst\'s price targets for the requested stock.'
 
 #   Quote
 IEX_QUOTE_URL = prepend_iex_url('stock') + '{symbol}/quote'
