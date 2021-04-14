@@ -286,6 +286,8 @@ class IEXStock:
         # Vertical
         """75,000 credits per symbol requested.
         Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
+        CSV is formatted vertically with keys in the first column.
+        Sets class attribute 'advanced_fundementals'.
         Parameters:
         period -> string, accepted values ['annual', 'quarterly', 'ttm']
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -300,7 +302,7 @@ class IEXStock:
         # Vertical
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
-        CSV is formatted vertically with keys in the first row.
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'advanced_stats'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -316,7 +318,7 @@ class IEXStock:
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
-        CSV is formatted vertically with keys in the first row.
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'book'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -346,7 +348,7 @@ class IEXStock:
         # Vertical
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
-        CSV is formatted vertically with keys in the first row.
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'delayed_quote'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -361,7 +363,7 @@ class IEXStock:
         # Vertical
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
-        CSV is formatted vertically with keys in the first row.
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'dividends'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -448,7 +450,7 @@ class IEXStock:
         """5 credits per symbol requested, 1 credit per stat per symbol requested.
         Returns important stats for the requested company.
         Sets class attribute 'key_stats'.
-        CSV is formatted vertically with keys in the first column
+        CSV is formatted vertically with keys in the first column.
         Parameters:
         stat -> String. If you would like to querie one single stat, you can enter that here.
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -532,7 +534,7 @@ class IEXStock:
         # Vertical
         """1 credit per symbol requested.
         Returns quote data for the requested symbol.
-        CSV is formatted vertically with keys in the first column
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'quote'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
