@@ -22,11 +22,6 @@ class IEXStock:
 
     # OLD
     def convert_financial_json_csv(self, json, statement):
-        """Converts IEX JSON financial statements into csv files.
-        Parameters:
-        json -> The IEX JSON financial statement document
-        statement -> String. Accepts ['income, balancesheet', 'cashflow']
-        """
         header = []
         for key in json[statement][0].keys():
             header.append(key)
@@ -40,9 +35,9 @@ class IEXStock:
 
     # NEW
     def prep_financial_json_csv(self, json):
-        """Converts IEX JSON financial statements into csv files.
+        """Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
-        json -> the IEX JSON financial statement document
+        json_doc -> a raw json document containing financial data
         """
         doc_to_write = ''
         header = []
@@ -131,19 +126,24 @@ class IEXStock:
                     f.write(str(key) + ',' + str(value) + '\n')
 
     # NEW
-    def prep_singledict_csv(self, json_dict, orientation='horizontal'):
+    def prep_singledict_csv(self, json_dict, orientation='horizontal', in_list=False):
         """Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a single dictionary
         orientation -> the layout of the data. Accepted arguments:
         - 'horizontal' in which the keys are in the first row
         - 'vertical' in which the keys are in the first column
+        in_list -> in some situations, the single dictionary is nested inside a list, True will return the 0 index of that list. Default False.
         """
         doc_to_write = ''
+        if in_list:
+            dictionary = json_dict[0].items()
+        else:
+            dictionary = json_dict.items()
         if orientation == 'horizontal':
             header = []
             values = []
-            for key, value in json_dict.items():
+            for key, value in dictionary:
                 header.append(key)
                 values.append(value)
             doc_to_write.append(','.join(header))
@@ -281,6 +281,20 @@ class IEXStock:
         cash_flow_statement(output_csv=False)
 
     ### IEX FUNCTIONS ###
+
+    def get_advanced_fundementals(self, period, output_csv=False):
+        # Vertical
+        """75,000 credits per symbol requested.
+        Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
+        Parameters:
+        period -> string, accepted values ['annual', 'quarterly', 'ttm']
+        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        """
+        result = stock.advanced_fundementals(self.ticker, period)
+        self.advanced_fundementals = result
+        if output_csv:
+            convert_singledict_csv(result, 'advanced_fundementals', orientation='vertical', in_list=True)
+        return result
 
     def get_advanced_stats(self, output_csv=False):
         # Vertical
