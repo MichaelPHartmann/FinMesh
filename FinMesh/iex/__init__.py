@@ -206,9 +206,10 @@ class IEXStock:
     ### IEX FUNCTIONS ###
 
     def get_advanced_stats(self, output_csv=False):
+        # Vertical
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
-        CSV is formatted horizontally with keys in the first row.
+        CSV is formatted vertically with keys in the first row.
         Sets class attribute 'advanced_stats'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -220,10 +221,11 @@ class IEXStock:
         return result
 
     def get_book(self, output_csv=False):
+        # Vertical
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
         Real time data available.
-        CSV is formatted horizontally with keys in the first row.
+        CSV is formatted vertically with keys in the first row.
         Sets class attribute 'book'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -235,6 +237,7 @@ class IEXStock:
         return result
 
     def get_company(self, output_csv=False):
+        # Vertical
         """1 credit per symbol requested.
         Returns general information on the company requested.
         CSV is formatted vertically with keys in the first column.
@@ -249,9 +252,10 @@ class IEXStock:
         return result
 
     def get_delayed_quote(self, output_csv=False):
+        # Vertical
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
-        CSV is formatted horizontally with keys in the first row.
+        CSV is formatted vertically with keys in the first row.
         Sets class attribute 'delayed_quote'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -263,9 +267,10 @@ class IEXStock:
         return result
 
     def get_dividends(self, output_csv=False):
+        # Vertical
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
-        CSV is formatted horizontally with keys in the first row.
+        CSV is formatted vertically with keys in the first row.
         Sets class attribute 'dividends'.
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
@@ -277,6 +282,7 @@ class IEXStock:
         return result
 
     def get_basic_financials(self, output_csv=False):
+        # Horizontal
         """5000 credits per symbol requested.
         Returns basic financial data from the requested company.
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
@@ -291,6 +297,7 @@ class IEXStock:
         return result
 
     def get_fund_ownership(self, output_csv=False):
+        # Horizontal - Needs to be Changed
         """10,000 credits per symbol requested.
         Returns the 10 largest institutional holders of the requested company.
         Sets class attribute 'fund_ownership'.
@@ -304,6 +311,7 @@ class IEXStock:
         return result
 
     def get_insider_roster(self, output_csv):
+        # Horizontal - Needs to Change
         """5,000 credits per symbol requested.
         Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
@@ -317,6 +325,7 @@ class IEXStock:
         return result
 
     def get_insider_transactions(self, output_csv):
+        # Horizontal - Needs to Change
         """50 credits per transaction per symbol requested.
         Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
@@ -330,6 +339,7 @@ class IEXStock:
         return result
 
     def get_intitutional_ownership(self, output_csv=False):
+        # Horizontal - Needs to Change
         """10,000 credits per symbol requested
         Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
         Sets class attribute 'institutional_ownership'.
@@ -343,6 +353,7 @@ class IEXStock:
         return result
 
     def get_key_stats(self, stat=None, output_csv=False):
+        # Vertical
         """5 credits per symbol requested, 1 credit per stat per symbol requested.
         Returns important stats for the requested company.
         Sets class attribute 'key_stats'.
@@ -358,6 +369,7 @@ class IEXStock:
         return result
 
     def get_largest_trades(self, output_csv=False):
+        # Horizontal - Needs to Change
         """1 credit per trade per symbol requested.
         This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
@@ -380,6 +392,7 @@ class IEXStock:
         return result
 
     def get_news(self,last=10, output_csv=False):
+        # Horizontal - Needs to Change
         """1 credit per news article per symbol requested.
         Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
         Sets class attribute 'news'.
@@ -394,6 +407,7 @@ class IEXStock:
         return result
 
     def get_ohlc(self, output_csv=False):
+        # Horizontal
         """2 credits per symbol requested.
         Returns the official open and close for a give symbol.
         Sets class attribute 'ohlc'.
@@ -424,6 +438,7 @@ class IEXStock:
         return result
 
     def get_quote(self, output_csv=False):
+        # Vertical
         """1 credit per symbol requested.
         Returns quote data for the requested symbol.
         CSV is formatted vertically with keys in the first column
