@@ -88,7 +88,7 @@ class IEXStock:
         for key in json_doc[0].keys():
             header.append(key)
         with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
-            f.write(','.join(header))
+            f.write(','.join(header) + '\n')
             for entry in json_doc:
                 for value in entry.values():
                     f.write(str(value) + ',')
@@ -104,7 +104,7 @@ class IEXStock:
         header = []
         for key in json_doc[0].keys():
             header.append(key)
-        doc_to_write.append(','.join(header))
+        doc_to_write.append(','.join(header)+'\n')
         for entry in json_doc:
             for value in entry.values():
                 doc_to_write.append(str(value) + ',')
@@ -210,7 +210,7 @@ class IEXStock:
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
         if output_csv:
-            convert_price_json_csv(result, time_frame)
+            self.convert_price_json_csv(result, time_frame)
         return result
 
     ### FINANCIAL STATEMENTS ###
@@ -231,7 +231,7 @@ class IEXStock:
         result = stock.balance_sheet(self.ticker, period=period, last=last)
         self.balance_sheet = result
         if output_csv:
-            convert_financial_json_csv(result, 'balancesheet')
+            self.convert_financial_json_csv(result, 'balancesheet')
         return result
 
     def get_income_statement(self, period=None, last=None, output_csv=False):
@@ -269,7 +269,7 @@ class IEXStock:
         result = stock.cash_flow(self.ticker, period=period, last=last)
         self.cash_flow_statement = result
         if output_csv:
-            convert_financial_json_csv(result, 'cashflow')
+            self.convert_financial_json_csv(result, 'cashflow')
         return result
 
     def get_financial_statements(self, output_csv=False):
@@ -278,9 +278,9 @@ class IEXStock:
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
-        get_income_statement(output_csv=False)
-        get_balance_sheet(output_csv=False)
-        get_cash_flow_statement(output_csv=False)
+        self.get_income_statement(output_csv=output_csv)
+        self.get_balance_sheet(output_csv=output_csv)
+        self.get_cash_flow_statement(output_csv=output_csv)
 
     ### IEX FUNCTIONS ###
 
@@ -362,19 +362,20 @@ class IEXStock:
             self.convert_singledict_csv(result, 'delayed_quote', orientation='vertical')
         return result
 
-    def get_dividends(self, output_csv=False):
+    def get_dividends(self, scope, output_csv=False):
         # Vertical
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'dividends'.
         Parameters:
+        scope -> string, the range of data needed. Accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next']
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
-        result = stock.dividends(self.ticker)
+        result = stock.dividends(self.ticker, scope)
         self.dividends = result
         if output_csv:
-            self.convert_singledict_csv(result, 'dividends', orientation='vertical')
+            self.convert_listofdict_csv(result, 'dividends')
         return result
 
     def get_basic_financials(self, output_csv=False):
@@ -389,7 +390,7 @@ class IEXStock:
         result = stock.financials(self.ticker)
         self.basic_financials = result
         if output_csv:
-            self.convert_financial_json_csv(result, 'basic_financials')
+            self.convert_financial_json_csv(result, 'financials')
         return result
 
     def get_fund_ownership(self, output_csv=False):
@@ -434,7 +435,7 @@ class IEXStock:
             self.convert_listofdict_csv(result, 'insider_transactions')
         return result
 
-    def get_intitutional_ownership(self, output_csv=False):
+    def get_institutional_ownership(self, output_csv=False):
         # Horizontal
         """10,000 credits per symbol requested
         Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
@@ -443,7 +444,7 @@ class IEXStock:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
         result = stock.institutional_ownership(self.ticker)
-        self.institutional_ownership = reuslt
+        self.institutional_ownership = result
         if output_csv:
             self.convert_listofdict_csv(result, 'institutional_ownership')
         return result
@@ -578,7 +579,7 @@ class IEXMarket():
         Sets a class attribute equal to the symbol requested.
         Parameters:
         symbol -> The symbol of the economic indicator or market datapoint requested.
-        A dictionary of the available datapoints available and their corrosponding symbols is class attribute 'self.available_symbols'.
+        A dictionary of the available datapoints and their corrosponding symbols is class attribute 'self.available_symbols'.
         """
         result = market.economic_data(symbol)
         setattr(IEXMarket, symbol, result)
