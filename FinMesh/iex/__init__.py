@@ -20,6 +20,7 @@ class IEXStock:
 
     ### HELPER FUNCTIONS ###
 
+    # OLD
     def convert_financial_json_csv(self, json, statement):
         """Converts IEX JSON financial statements into csv files.
         Parameters:
@@ -37,6 +38,24 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    # NEW
+    def prep_financial_json_csv(self, json):
+        """Converts IEX JSON financial statements into csv files.
+        Parameters:
+        json -> the IEX JSON financial statement document
+        """
+        doc_to_write = ''
+        header = []
+        for key in json[statement][0].keys():
+            header.append(key)
+        doc_to_write.append(','.join(header))
+        doc_to_write.append('\n')
+        for period in range(len(json[statement])):
+            for key, value in json[statement][period].items():
+                doc_to_write.append(str(value) + ',')
+            doc_to_write.append('\n')
+
+    # OLD
     def convert_price_json_csv(self, json_doc, period):
         header = []
         for key in json_doc[0].keys():
@@ -49,6 +68,24 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    # NEW
+    def prep_price_json_csv(self, json_doc):
+        """Prepares a JSON document containing a stock price data for writing to a CSV file.
+        Parameters:
+        json_doc -> a raw json document containing price data
+        """
+        doc_to_write = ''
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        doc_to_write.append(','.join(header))
+        doc_to_write.append('\n')
+        for day in range(len(json_doc)):
+            for key, value in json_doc.items():
+                doc_to_write.append(str(value) + ',')
+            doc_to_write.append('\n')
+
+    # OLD
     def convert_listofdict_csv(self, json_doc, dictname):
         header = []
         for key in json_doc[0].keys():
@@ -60,6 +97,24 @@ class IEXStock:
                     f.write(str(value) + ',')
                 f.write('\n')
 
+    # NEW
+    def prep_listofdict_csv(self, json_doc):
+        """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
+        Parameters:
+        json_doc -> a raw json document containing a list of dictionaries
+        """
+        doc_to_write = ''
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        doc_to_write.append(','.join(header))
+        for entry in json_doc:
+            for value in entry.values():
+                doc_to_write.append(str(value) + ',')
+            doc_to_write.append('\n')
+        return doc_to_write
+
+    # OLD
     def convert_singledict_csv(self, json_dict, dictname, orientation='horizontal'):
         if orientation == 'horizontal':
             header = []
@@ -74,6 +129,28 @@ class IEXStock:
             with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
                 for key, value in json_dict.items():
                     f.write(str(key) + ',' + str(value) + '\n')
+
+    # NEW
+    def prep_singledict_csv(self, json_dict, orientation='horizontal'):
+        """Prepares a JSON document containing a single dictionary for writing to a CSV file.
+        Parameters:
+        json_doc -> a raw json document containing a single dictionary
+        orientation -> the layout of the data. Accepted arguments:
+        - 'horizontal' in which the keys are in the first row
+        - 'vertical' in which the keys are in the first column
+        """
+        doc_to_write = ''
+        if orientation == 'horizontal':
+            header = []
+            values = []
+            for key, value in json_dict.items():
+                header.append(key)
+                values.append(value)
+            doc_to_write.append(','.join(header))
+            doc_to_write.append(','.join(map(str, values)))
+        elif orientation == 'vertical':
+            for key, value in json_dict.items():
+                doc_to_write.append(str(key) + ',' + str(value) + '\n')
 
     ### BASIC AND PRICE INFORMATION ###
 
