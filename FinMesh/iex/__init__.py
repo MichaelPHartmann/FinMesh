@@ -2,13 +2,6 @@ from datetime import date
 
 import stock
 
-
-
-## TODO ##
-# Add forex class
-# Add premium endpoints to main IEXClass
-# Add market data class
-
 class IEXStock:
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
@@ -20,7 +13,11 @@ class IEXStock:
             basic_information()
             price_information()
 
-    ### HELPER FUNCTIONS ###
+    #  _  _     _                 ___             _   _
+    # | || |___| |_ __  ___ _ _  | __|  _ _ _  __| |_(_)___ _ _  ___
+    # | __ / -_) | '_ \/ -_) '_| | _| || | ' \/ _|  _| / _ \ ' \(_-<
+    # |_||_\___|_| .__/\___|_|   |_| \_,_|_||_\__|\__|_\___/_||_/__/
+    #            |_|
 
     # OLD
     def convert_financial_json_csv(self, json, statement):
@@ -36,7 +33,7 @@ class IEXStock:
                 f.write('\n')
 
     # NEW
-    def prep_financial_json_csv(self, json):
+    def prep_financial_json_csv(self, json, statement):
         """Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing financial data
@@ -45,12 +42,13 @@ class IEXStock:
         header = []
         for key in json[statement][0].keys():
             header.append(key)
-        doc_to_write.append(','.join(header))
-        doc_to_write.append('\n')
+        doc_to_write += (','.join(header))
+        doc_to_write += ('\n')
         for period in range(len(json[statement])):
             for key, value in json[statement][period].items():
-                doc_to_write.append(str(value) + ',')
-            doc_to_write.append('\n')
+                doc_to_write += (str(value) + ',')
+            doc_to_write += ('\n')
+        return doc_to_write
 
     # OLD
     def convert_price_json_csv(self, json_doc, period):
@@ -75,12 +73,13 @@ class IEXStock:
         header = []
         for key in json_doc[0].keys():
             header.append(key)
-        doc_to_write.append(','.join(header))
-        doc_to_write.append('\n')
+        doc_to_write += (','.join(header))
+        doc_to_write += ('\n')
         for day in range(len(json_doc)):
             for key, value in json_doc.items():
-                doc_to_write.append(str(value) + ',')
-            doc_to_write.append('\n')
+                doc_to_write += (str(value) + ',')
+            doc_to_write += ('\n')
+        return doc_to_write
 
     # OLD
     def convert_listofdict_csv(self, json_doc, dictname):
@@ -104,11 +103,11 @@ class IEXStock:
         header = []
         for key in json_doc[0].keys():
             header.append(key)
-        doc_to_write.append(','.join(header)+'\n')
+        doc_to_write += (','.join(header)+'\n')
         for entry in json_doc:
             for value in entry.values():
-                doc_to_write.append(str(value) + ',')
-            doc_to_write.append('\n')
+                doc_to_write += (str(value) + ',')
+            doc_to_write += ('\n')
         return doc_to_write
 
     # OLD
@@ -148,13 +147,27 @@ class IEXStock:
             for key, value in dictionary:
                 header.append(key)
                 values.append(value)
-            doc_to_write.append(','.join(header))
-            doc_to_write.append(','.join(map(str, values)))
+            doc_to_write += (','.join(header))
+            doc_to_write += (','.join(map(str, values)))
         elif orientation == 'vertical':
             for key, value in json_dict.items():
-                doc_to_write.append(str(key) + ',' + str(value) + '\n')
+                doc_to_write += (str(key) + ',' + str(value) + '\n')
+        return doc_to_write
 
-    ### BASIC AND PRICE INFORMATION ###
+    def write_to_csv(self, doc_to_write, filename_addition):
+        """Writes a preformated string to a csv file.
+        Parameters:
+        doc_to_write -> the preformatted string to write
+        filename_addition -> the identifier that will be tacked onto the filename.
+        """
+        with open(self.csvfile_base.replace('%s', filename_addition), 'w+') as f:
+            f.write(doc_to_write)
+
+    #  ___          _                   _   ___     _          ___       __                    _   _
+    # | _ ) __ _ __(_)__   __ _ _ _  __| | | _ \_ _(_)__ ___  |_ _|_ _  / _|___ _ _ _ __  __ _| |_(_)___ _ _
+    # | _ \/ _` (_-< / _| / _` | ' \/ _` | |  _/ '_| / _/ -_)  | || ' \|  _/ _ \ '_| '  \/ _` |  _| / _ \ ' \
+    # |___/\__,_/__/_\__| \__,_|_||_\__,_| |_| |_| |_\__\___| |___|_||_|_| \___/_| |_|_|_\__,_|\__|_\___/_||_|
+
 
     def basic_information(self):
         """6 credits per symbol requested.
@@ -197,32 +210,44 @@ class IEXStock:
         self.price = result
         return result
 
-    def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, output_csv=False):
+    def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, csv=None):
         """10 credits per day requested when part of a time frame. (Full Data)
         50 credits per single day, minute data.
         Parameters:
         time_frame -> String. Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
         date -> String. If 'date' is specified in time_frame, this is the date that you wish to access.
         chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
-        if output_csv:
-            self.convert_price_json_csv(result, time_frame)
-        return result
+        if csv == 'prep':
+            return self.prep_price_json_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_price_json_csv(result), 'time_frame')
+            return result
+        else:
+            return result
 
-    ### FINANCIAL STATEMENTS ###
+    #  ___ _                   _      _   ___ _        _                     _
+    # | __(_)_ _  __ _ _ _  __(_)__ _| | / __| |_ __ _| |_ ___ _ __  ___ _ _| |_ ___
+    # | _|| | ' \/ _` | ' \/ _| / _` | | \__ \  _/ _` |  _/ -_) '  \/ -_) ' \  _(_-<
+    # |_| |_|_||_\__,_|_||_\__|_\__,_|_| |___/\__\__,_|\__\___|_|_|_\___|_||_\__/__/
 
-    def get_balance_sheet(self, period=None, last=None, output_csv=False):
+
+    def get_balance_sheet(self, period=None, last=None, csv=None):
         # HORIZONTAL
         """3,000 credits per symbol requested.
         Returns balance sheet data for the requested company and sets class attribute 'self.balance_sheet'.
         Parameters:
         period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         if period is None:
             period = self.period
@@ -230,18 +255,25 @@ class IEXStock:
             last = self.last
         result = stock.balance_sheet(self.ticker, period=period, last=last)
         self.balance_sheet = result
-        if output_csv:
-            self.convert_financial_json_csv(result, 'balancesheet')
-        return result
 
-    def get_income_statement(self, period=None, last=None, output_csv=False):
+        if csv == 'prep':
+            return self.prep_financial_json_csv(result, 'balancesheet')
+        if csv == 'output':
+            self.write_to_csv(self.prep_financial_json_csv(result, 'balancesheet'), 'balancesheet')
+            return result
+        else:
+            return result
+
+    def get_income_statement(self, period=None, last=None, csv=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
         Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
         Parameters:
         period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         if period is None:
             period = self.period
@@ -249,18 +281,25 @@ class IEXStock:
             last = self.last
         result = stock.income_statement(self.ticker, period=period, last=last)
         self.income_statement = result
-        if output_csv:
-            self.convert_financial_json_csv(result, 'income')
-        return result
 
-    def get_cash_flow_statement(self, period=None, last=None, output_csv=False):
+        if csv == 'prep':
+            return self.prep_financial_json_csv(result, 'income')
+        if csv == 'output':
+            self.write_to_csv(self.prep_financial_json_csv(result, 'income'), 'incomestatement')
+            return result
+        else:
+            return result
+
+    def get_cash_flow_statement(self, period=None, last=None, csv=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
         Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
         Parameters:
         period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         if period is None:
             period = self.period
@@ -268,23 +307,22 @@ class IEXStock:
             last = self.last
         result = stock.cash_flow(self.ticker, period=period, last=last)
         self.cash_flow_statement = result
-        if output_csv:
-            self.convert_financial_json_csv(result, 'cashflow')
-        return result
 
-    def get_financial_statements(self, output_csv=False):
-        """5,000 credits per symbol requested.
-        Simply fetches all the financial statements at once.
-        Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
-        """
-        self.get_income_statement(output_csv=output_csv)
-        self.get_balance_sheet(output_csv=output_csv)
-        self.get_cash_flow_statement(output_csv=output_csv)
+        if csv == 'prep':
+            return self.prep_financial_json_csv(result, 'cashflow')
+        if csv == 'output':
+            self.write_to_csv(self.prep_financial_json_csv(result, 'cashflow'), 'cashflow')
+            return result
+        else:
+            return result
 
-    ### IEX FUNCTIONS ###
+    #  ___ _____  __  __  __     _   _            _
+    # |_ _| __\ \/ / |  \/  |___| |_| |_  ___  __| |___
+    #  | || _| >  <  | |\/| / -_)  _| ' \/ _ \/ _` (_-<
+    # |___|___/_/\_\ |_|  |_\___|\__|_||_\___/\__,_/__/
 
-    def get_advanced_fundementals(self, period, output_csv=False):
+
+    def get_advanced_fundementals(self, period, csv=None):
         # Vertical
         """75,000 credits per symbol requested.
         Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
@@ -292,31 +330,47 @@ class IEXStock:
         Sets class attribute 'advanced_fundementals'.
         Parameters:
         period -> string, accepted values ['annual', 'quarterly', 'ttm']
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.advanced_fundementals(self.ticker, period)
         self.advanced_fundementals = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'advanced_fundementals', orientation='vertical', in_list=True)
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical', in_list=True)
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical', in_list=True), 'advanced_fundementals')
+            return result
+        else:
+            return result
 
-    def get_advanced_stats(self, output_csv=False):
+    def get_advanced_stats(self, csv=None):
         # Vertical
         """3,005 credits per symbol requested.
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'advanced_stats'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'advanced_stats', orientation='vertical')
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'advanced_stats')
+            return result
+        else:
+            return result
 
-    ## BROKEN CSV WRITE
-    def get_book(self, output_csv=False):
+    #  ___         _            _ #
+    # | _ )_ _ ___| |_____ _ _ | |#
+    # | _ \ '_/ _ \ / / -_) ' \|_|#
+    # |___/_| \___/_\_\___|_||_(_)#
+
+    def get_book(self, csv=None):
         # Vertical
         """1 credit per symbol requested.
         Returns quote, bid, ask, etc. data for the requested symbol.
@@ -324,7 +378,9 @@ class IEXStock:
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'book'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.book(self.ticker)
         self.book = result
@@ -332,80 +388,109 @@ class IEXStock:
             self.convert_singledict_csv(result, 'book', orientation='vertical')
         return result
 
-    def get_company(self, output_csv=False):
+    def get_company(self, csv=None):
         # Vertical
         """1 credit per symbol requested.
         Returns general information on the company requested.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'company'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.company(self.ticker)
         self.company = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'company', orientation='vertical')
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'company')
+            return result
+        else:
+            return result
 
-    def get_delayed_quote(self, output_csv=False):
+    def get_delayed_quote(self, csv=None):
         # Vertical
         """1 credit per symbol requested.
         Returns 15 minute delayed quote for the requested symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'delayed_quote'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.delayed_quote(self.ticker)
         self.delayed_quote = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'delayed_quote', orientation='vertical')
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'delayed_quote')
+            return result
+        else:
+            return result
 
-    def get_dividends(self, scope, output_csv=False):
+    def get_dividends(self, scope, csv=None):
         # Vertical
         """10 credits per symbol requested.
         Returns basic dividend information for the requested symbol.
-        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'dividends'.
         Parameters:
         scope -> string, the range of data needed. Accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next']
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.dividends(self.ticker, scope)
         self.dividends = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'dividends')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'dividends')
+            return result
+        else:
+            return result
 
-    def get_basic_financials(self, output_csv=False):
+    def get_basic_financials(self, csv=None):
         # Horizontal
         """5000 credits per symbol requested.
         Returns basic financial data from the requested company.
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
         Sets class attribute 'basic_financials'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.financials(self.ticker)
         self.basic_financials = result
-        if output_csv:
-            self.convert_financial_json_csv(result, 'financials')
-        return result
+        if csv == 'prep':
+            return self.prep_financial_json_csv(result, 'financials')
+        if csv == 'output':
+            self.write_to_csv(self.prep_financial_json_csv(result, 'financials'), 'basic_financials')
+            return result
+        else:
+            return result
 
-    def get_fund_ownership(self, output_csv=False):
+    def get_fund_ownership(self, csv=None):
         # Horizontal - Needs to be Changed
         """10,000 credits per symbol requested.
         Returns the 10 largest institutional holders of the requested company.
         Sets class attribute 'fund_ownership'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.fund_ownership(self.ticker)
         self.fund_ownership = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'fund_ownership')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'fund_ownership')
+            return result
+        else:
+            return result
 
     def get_insider_roster(self, output_csv):
         # Horizontal
@@ -413,13 +498,19 @@ class IEXStock:
         Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.insider_roster(self.ticker)
         self.insider_roster = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'insider_roster')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'insider_roster')
+            return result
+        else:
+            return result
 
     def get_insider_transactions(self, output_csv):
         # Horizontal
@@ -427,29 +518,41 @@ class IEXStock:
         Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.insider_transactions(self.ticker)
         self.insider_transactions = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'insider_transactions')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'insider_transactions')
+            return result
+        else:
+            return result
 
-    def get_institutional_ownership(self, output_csv=False):
+    def get_institutional_ownership(self, csv=None):
         # Horizontal
         """10,000 credits per symbol requested
         Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
         Sets class attribute 'institutional_ownership'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.institutional_ownership(self.ticker)
         self.institutional_ownership = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'institutional_ownership')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'institutional_ownership')
+            return result
+        else:
+            return result
 
-    def get_key_stats(self, stat=None, output_csv=False):
+    def get_key_stats(self, stat=None, csv=None):
         # Vertical
         """5 credits per symbol requested, 1 credit per stat per symbol requested.
         Returns important stats for the requested company.
@@ -457,27 +560,39 @@ class IEXStock:
         CSV is formatted vertically with keys in the first column.
         Parameters:
         stat -> String. If you would like to querie one single stat, you can enter that here.
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.key_stats(self.ticker, stat=stat)
         self.key_stats = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'key_stats', orientation='vertical')
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'key_stats')
+            return result
+        else:
+            return result
 
-    def get_largest_trades(self, output_csv=False):
+    def get_largest_trades(self, csv=None):
         # Horizontal
         """1 credit per trade per symbol requested.
         This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.largest_trades(self.ticker)
         self.largest_trades = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'largets_trades')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'largest_trades')
+            return result
+        else:
+            return result
 
     def get_logo(self):
         """1 credit per symbol requested
@@ -488,28 +603,36 @@ class IEXStock:
         self.logo = result
         return result
 
-    def get_news(self,last=10, output_csv=False):
+    def get_news(self,last=10, csv=None):
         # Horizontal
         """1 credit per news article per symbol requested.
         Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
         Sets class attribute 'news'.
         Parameters ->
         last -> Integer. Number of article to return. Min = 1 Max = 50 Defualt = 10
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.news(self.ticker, last=last)
         self.news = result
-        if output_csv:
-            self.convert_listofdict_csv(result, 'news')
-        return result
+        if csv == 'prep':
+            return self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_to_csv(self.prep_listofdict_csv(result), 'news')
+            return result
+        else:
+            return result
 
-    def get_ohlc(self, output_csv=False):
+    def get_ohlc(self, csv=None):
         # Horizontal
         """2 credits per symbol requested.
         Returns the official open and close for a give symbol.
         Sets class attribute 'ohlc'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.ohlc(self.ticker)
         self.ohlc = result
@@ -534,20 +657,28 @@ class IEXStock:
         self.peers = result
         return result
 
-    def get_quote(self, output_csv=False):
+    def get_quote(self, csv=None):
         # Vertical
         """1 credit per symbol requested.
         Returns quote data for the requested symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'quote'.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will return and stripped and formatted string of the data which can easily be written to csv.
         """
         result = stock.quote(self.ticker)
         self.quote = result
-        if output_csv:
-            self.convert_singledict_csv(result, 'quote', orientation='vertical')
-        return result
+        if csv == 'prep':
+            return self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
+            return result
+        else:
+            return result
+
+
 
 class IEXMarket():
     def __init__(self):
@@ -585,11 +716,11 @@ class IEXMarket():
         setattr(IEXMarket, symbol, result)
         return result
 
-    def get_all_market_data(self, output_csv=False):
+    def get_all_market_data(self, csv=None):
         """18,000 credits per symbol requested per day.
         Returns all available economic indicator values and market datapoints.
         Parameters:
-        output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
         """
         output_data = {}
         for key in self.available_symbols.keys():
