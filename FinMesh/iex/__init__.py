@@ -311,7 +311,7 @@ class IEXStock:
         return result
 
     def get_insider_roster(self, output_csv):
-        # Horizontal - Needs to Change
+        # Horizontal
         """5,000 credits per symbol requested.
         Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
@@ -325,7 +325,7 @@ class IEXStock:
         return result
 
     def get_insider_transactions(self, output_csv):
-        # Horizontal - Needs to Change
+        # Horizontal
         """50 credits per transaction per symbol requested.
         Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
@@ -339,7 +339,7 @@ class IEXStock:
         return result
 
     def get_intitutional_ownership(self, output_csv=False):
-        # Horizontal - Needs to Change
+        # Horizontal
         """10,000 credits per symbol requested
         Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
         Sets class attribute 'institutional_ownership'.
@@ -369,7 +369,7 @@ class IEXStock:
         return result
 
     def get_largest_trades(self, output_csv=False):
-        # Horizontal - Needs to Change
+        # Horizontal
         """1 credit per trade per symbol requested.
         This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
@@ -392,7 +392,7 @@ class IEXStock:
         return result
 
     def get_news(self,last=10, output_csv=False):
-        # Horizontal - Needs to Change
+        # Horizontal
         """1 credit per news article per symbol requested.
         Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
         Sets class attribute 'news'.
