@@ -2,6 +2,8 @@ from datetime import date
 
 import stock
 
+
+
 ## TODO ##
 # Add forex class
 # Add premium endpoints to main IEXClass
@@ -276,9 +278,9 @@ class IEXStock:
         Parameters:
         output_csv -> Boolean. Creates a csv file for the ouput. Default is False.
         """
-        income_statement(output_csv=False)
-        balance_sheet(output_csv=False)
-        cash_flow_statement(output_csv=False)
+        get_income_statement(output_csv=False)
+        get_balance_sheet(output_csv=False)
+        get_cash_flow_statement(output_csv=False)
 
     ### IEX FUNCTIONS ###
 
@@ -295,7 +297,7 @@ class IEXStock:
         result = stock.advanced_fundementals(self.ticker, period)
         self.advanced_fundementals = result
         if output_csv:
-            convert_singledict_csv(result, 'advanced_fundementals', orientation='vertical', in_list=True)
+            self.convert_singledict_csv(result, 'advanced_fundementals', orientation='vertical', in_list=True)
         return result
 
     def get_advanced_stats(self, output_csv=False):
@@ -310,9 +312,10 @@ class IEXStock:
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
         if output_csv:
-            convert_singledict_csv(result, 'advanced_stats', orientation='vertical')
+            self.convert_singledict_csv(result, 'advanced_stats', orientation='vertical')
         return result
 
+    ## BROKEN CSV WRITE
     def get_book(self, output_csv=False):
         # Vertical
         """1 credit per symbol requested.
@@ -326,7 +329,7 @@ class IEXStock:
         result = stock.book(self.ticker)
         self.book = result
         if output_csv:
-            convert_singledict_csv(result, 'book', orientation='vertical')
+            self.convert_singledict_csv(result, 'book', orientation='vertical')
         return result
 
     def get_company(self, output_csv=False):
@@ -341,7 +344,7 @@ class IEXStock:
         result = stock.company(self.ticker)
         self.company = result
         if output_csv:
-            convert_singledict_csv(result, 'company', orientation='vertical')
+            self.convert_singledict_csv(result, 'company', orientation='vertical')
         return result
 
     def get_delayed_quote(self, output_csv=False):
@@ -356,7 +359,7 @@ class IEXStock:
         result = stock.delayed_quote(self.ticker)
         self.delayed_quote = result
         if output_csv:
-            convert_singledict_csv(result, 'delayed_quote', orientation='vertical')
+            self.convert_singledict_csv(result, 'delayed_quote', orientation='vertical')
         return result
 
     def get_dividends(self, output_csv=False):
@@ -371,7 +374,7 @@ class IEXStock:
         result = stock.dividends(self.ticker)
         self.dividends = result
         if output_csv:
-            convert_singledict_csv(result, 'dividends', orientation='vertical')
+            self.convert_singledict_csv(result, 'dividends', orientation='vertical')
         return result
 
     def get_basic_financials(self, output_csv=False):
@@ -386,7 +389,7 @@ class IEXStock:
         result = stock.financials(self.ticker)
         self.basic_financials = result
         if output_csv:
-            convert_financial_json_csv(result, 'basic_financials')
+            self.convert_financial_json_csv(result, 'basic_financials')
         return result
 
     def get_fund_ownership(self, output_csv=False):
@@ -400,7 +403,7 @@ class IEXStock:
         result = stock.fund_ownership(self.ticker)
         self.fund_ownership = result
         if output_csv:
-            convert_listofdict_csv(result, 'fund_ownership')
+            self.convert_listofdict_csv(result, 'fund_ownership')
         return result
 
     def get_insider_roster(self, output_csv):
@@ -414,7 +417,7 @@ class IEXStock:
         result = stock.insider_roster(self.ticker)
         self.insider_roster = result
         if output_csv:
-            convert_listofdict_csv(result, 'insider_roster')
+            self.convert_listofdict_csv(result, 'insider_roster')
         return result
 
     def get_insider_transactions(self, output_csv):
@@ -428,7 +431,7 @@ class IEXStock:
         result = stock.insider_transactions(self.ticker)
         self.insider_transactions = result
         if output_csv:
-            convert_listofdict_csv(result, 'insider_transactions')
+            self.convert_listofdict_csv(result, 'insider_transactions')
         return result
 
     def get_intitutional_ownership(self, output_csv=False):
@@ -442,7 +445,7 @@ class IEXStock:
         result = stock.institutional_ownership(self.ticker)
         self.institutional_ownership = reuslt
         if output_csv:
-            convert_listofdict_csv(result, 'institutional_ownership')
+            self.convert_listofdict_csv(result, 'institutional_ownership')
         return result
 
     def get_key_stats(self, stat=None, output_csv=False):
@@ -458,7 +461,7 @@ class IEXStock:
         result = stock.key_stats(self.ticker, stat=stat)
         self.key_stats = result
         if output_csv:
-            convert_singledict_csv(result, 'key_stats', orientation='vertical')
+            self.convert_singledict_csv(result, 'key_stats', orientation='vertical')
         return result
 
     def get_largest_trades(self, output_csv=False):
@@ -472,7 +475,7 @@ class IEXStock:
         result = stock.largest_trades(self.ticker)
         self.largest_trades = result
         if output_csv:
-            convert_listofdict_csv(result, 'largets_trades')
+            self.convert_listofdict_csv(result, 'largets_trades')
         return result
 
     def get_logo(self):
@@ -496,7 +499,7 @@ class IEXStock:
         result = stock.news(self.ticker, last=last)
         self.news = result
         if output_csv:
-            convert_listofdict_csv(result, 'news')
+            self.convert_listofdict_csv(result, 'news')
         return result
 
     def get_ohlc(self, output_csv=False):
@@ -542,7 +545,7 @@ class IEXStock:
         result = stock.quote(self.ticker)
         self.quote = result
         if output_csv:
-            convert_singledict_csv(result, 'quote', orientation='vertical')
+            self.convert_singledict_csv(result, 'quote', orientation='vertical')
         return result
 
 class IEXMarket():
