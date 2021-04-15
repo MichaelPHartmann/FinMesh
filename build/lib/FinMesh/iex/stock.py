@@ -1,6 +1,14 @@
 from _common import *
 
-### ADVANCED FUNDEMENTALS TO-DO ###
+# Advanced Fundementals
+IEX_ADVANCED_FUNDEMENTALS_URL = prepend_iex_url('time-series') + 'fundementals/{symbol}'
+def advanced_fundementals(symbol, vprint=False, **queries):
+    url = replace_url_var(IEX_ADVANCED_FUNDEMENTALS_URL, symbol=symbol)
+    url += '?'
+    for key, value in queries.items():
+        url += (f"&{key}={value}")
+    return get_iex_json_request(url, vprint=vprint)
+advanced_fundementals.__doc__='Returns fundmental modelling data for the requested stock.'
 
 #   Advanced Stats
 IEX_ADVANCED_STATS_URL = prepend_iex_url('stock') + '{symbol}/advanced-stats'
@@ -202,7 +210,7 @@ def ipo_today(vprint=False):
 ipo_today.__doc__='Returns a list of IPOs happening today. May be deprecated.'
 
 #   Key Stats
-IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats'
+IEX_STATS_URL = prepend_iex_url('stock') + '{symbol}/stats?'
 def key_stats(symbol, stat=None, vprint=False):
     # Returns important and key statistics for the requested ticker.
     url = replace_url_var(IEX_STATS_URL, symbol=symbol)
