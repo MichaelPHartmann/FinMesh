@@ -1,6 +1,7 @@
 from datetime import date
 
 import stock
+import market
 
 class IEXStock:
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
@@ -625,12 +626,10 @@ class IEXStock:
         else:
             return result
 
-
-
 class IEXMarket():
     def __init__(self):
         self.date = date.today()
-        self.available_symbols = {
+        self.available_economic_symbols = {
         'MMNRNJ':'CD Rate Non-Jumbo less than $100,000 Money market',
         'MMNRJD':'CD Rate Jumbo more than $100,000 Money market',
         'CPIAUCSL':'Consumer Price Index All Urban Consumers',
@@ -650,30 +649,56 @@ class IEXMarket():
         'UNRATE':'Unemployment rate returned as a percent, seasonally adjusted',
         'RECPROUSM156N':'US Recession Probabilities'
         }
+        self.available_commodity_symbols = {
+        'DCOILWTICO':'Crude oil West Texas Intermediate - in dollars per barrel, not seasonally adjusted',
+        'DCOILBRENTEU':'Crude oil Brent Europe - in dollars per barrel, not seasonally adjusted',
+        'DHHNGSP':'Henry Hub Natural Gas Spot Price - in dollars per million BTU, not seasonally adjusted',
+        'DHOILNYH':'No. 2 Heating Oil New York Harbor - in dollars per gallon, not seasonally adjusted',
+        'DJFUELUSGULF':'Kerosense Type Jet Fuel US Gulf Coast - in dollars per gallon, not seasonally adjusted',
+        'GASDESW':'US Diesel Sales Price - in dollars per gallon, not seasonally adjusted',
+        'GASREGCOVW':'US Regular Conventional Gas Price - in dollars per gallon, not seasonally adjusted',
+        'GASMIDCOVW':'US Midgrade Conventional Gas Price - in dollars per gallon, not seasonally adjusted',
+        'GASPRMCOVW':'US Premium Conventional Gas Price - in dollars per gallon, not seasonally adjusted',
+        'DPROPANEMBTX':'Propane Prices Mont Belvieu Texas - in dollars per gallon, not seasonally adjusted'
+        }
 
-    def get_single_market_data(self, symbol):
+    def get_market_datapoint(self, symbol, key='market', **queries):
         """1,000 credits per symbol requested per date.
-        Returns various economic indicator values and market datapoints.
+        Returns various economic and commodity values as a datapoint.
         Sets a class attribute equal to the symbol requested.
         Parameters:
-        symbol -> The symbol of the economic indicator or market datapoint requested.
-        A dictionary of the available datapoints and their corrosponding symbols is class attribute 'self.available_symbols'.
+        symbol -> The symbol of the economic indicator or commodity datapoint requested.
+        Class attribute 'available_economic_symbols' is a dictionary of available economic symbols and their description.
+        Class attribute 'available_commodity_symbols' is a dictionary of available commodity symbols and their description
         """
-        result = market.economic_data(symbol)
+        result = market.generic_data_point(symbol, key, **queries)
         setattr(IEXMarket, symbol, result)
         return result
 
-    def get_all_market_data(self, csv=None):
-        """18,000 credits per symbol requested per day.
-        Returns all available economic indicator values and market datapoints.
+    def get_all_economic_data(self, output_csv=False):
+        """18,000 credits per request per day.
+        Returns all available current economic indicator datapoints.
         Parameters:
         csv -> string. Determines the processing for csv files. Valid arguments are:
         """
         output_data = {}
-        for key in self.available_symbols.keys():
-            output_data.key = market.economic_data(key)
+        for key in self.available_commodity_symbols.keys():
+            output_data[key] = market.generic_data_point(key, 'market')
         if output_csv:
-            with open(f'{self.date}_market_data.csv', 'w+') as f:
+            with open(f'{self.date}_economic_data.csv', 'w+') as f:
+                for key, value in output_data.items():
+                    f.write(str(key) + ',' + str(value) + '\n')
+        return output_data
+
+    def get_all_commodity_data(self, output_csv=False):
+        """10,000 credits per request per day.
+        Returns all available current commodity datapoints.
+        """
+        output_data = {}
+        for key in self.available_commodity_symbols.keys():
+            output_data[key] = market.generic_data_point(key, 'market')
+        if output_csv:
+            with open(f'{self.date}_commodity_data.csv', 'w+') as f:
                 for key, value in output_data.items():
                     f.write(str(key) + ',' + str(value) + '\n')
         return output_data
