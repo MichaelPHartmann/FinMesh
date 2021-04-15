@@ -19,18 +19,6 @@ class IEXStock:
     # |_||_\___|_| .__/\___|_|   |_| \_,_|_||_\__|\__|_\___/_||_/__/
     #            |_|
 
-    # OLD
-    def convert_financial_json_csv(self, json, statement):
-        header = []
-        for key in json[statement][0].keys():
-            header.append(key)
-        with open(self.csvfile_base.replace('%s', statement), 'w+') as f:
-            f.write(','.join(header))
-            f.write('\n')
-            for period in range(len(json[statement])):
-                for key, value in json[statement][period].items():
-                    f.write(str(value) + ',')
-                f.write('\n')
 
     # NEW
     def prep_financial_json_csv(self, json, statement):
@@ -50,19 +38,6 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # OLD
-    def convert_price_json_csv(self, json_doc, period):
-        header = []
-        for key in json_doc[0].keys():
-            header.append(key)
-        with open(self.csvfile_base.replace('%s', period), 'w+') as f:
-            f.write(','.join(header))
-            f.write('\n')
-            for day in range(len(json_doc)):
-                for key, value in json_doc.items():
-                    f.write(str(value) + ',')
-                f.write('\n')
-
     # NEW
     def prep_price_json_csv(self, json_doc):
         """Prepares a JSON document containing a stock price data for writing to a CSV file.
@@ -81,18 +56,6 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # OLD
-    def convert_listofdict_csv(self, json_doc, dictname):
-        header = []
-        for key in json_doc[0].keys():
-            header.append(key)
-        with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
-            f.write(','.join(header) + '\n')
-            for entry in json_doc:
-                for value in entry.values():
-                    f.write(str(value) + ',')
-                f.write('\n')
-
     # NEW
     def prep_listofdict_csv(self, json_doc):
         """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
@@ -109,22 +72,6 @@ class IEXStock:
                 doc_to_write += (str(value) + ',')
             doc_to_write += ('\n')
         return doc_to_write
-
-    # OLD
-    def convert_singledict_csv(self, json_dict, dictname, orientation='horizontal'):
-        if orientation == 'horizontal':
-            header = []
-            values = []
-            for key, value in json_dict.items():
-                header.append(key)
-                values.append(value)
-            with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
-                f.write(','.join(header))
-                f.write(','.join(map(str, values)))
-        elif orientation == 'vertical':
-            with open(self.csvfile_base.replace('%s', dictname), 'w+') as f:
-                for key, value in json_dict.items():
-                    f.write(str(key) + ',' + str(value) + '\n')
 
     # NEW
     def prep_singledict_csv(self, json_dict, orientation='horizontal', in_list=False):
