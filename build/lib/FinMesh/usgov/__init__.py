@@ -16,48 +16,43 @@ def append_fred_token(url):
     return f'{url}&api_key={token}'
 
 FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
-def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, limit=None, offset=None, sort_order=None, observation_start=None, observation_end=None, units=None, frequency=None, aggregation_method=None, output_type=None, vintage_dates=None):
-    ## Returns time series historical data for the requested FRED data.
+def fred_series(series_id, **queries):
+    """Returns time series historical data for the requested FRED data.
+    Parameters:
+    series_id -> The only required parameter. The id for the data series you wish to access.
+    queries -> Accepts key-value pairs for the various parameters available on FRED. (file_type, date, offset, etc.)
+    """
     url = FRED_SERIES_OBS_URL + f'series_id={series}'
-    if file_type: url += f'&file_type={file_type}'
-    if realtime_start: url += f'&realtime_start={realtime_start}'
-    if realtime_end: url += f'&realtime_end={realtime_end}'
-    if limit: url += f'&limit={limit}'
-    if offset: url += f'&offset={offset}'
-    if sort_order: url += f'&sort_order={sort_order}'
-    if observation_start: url += f'&observation_start={observation_start}'
-    if observation_end: url += f'&observation_end={observation_end}'
-    if units: url += f'&units={units}'
-    if frequency: url += f'&frequency={frequency}'
-    if aggregation_method: url += f'&aggregation_method={aggregation_method}'
-    if output_type: url += f'&output_type={output_type}'
-    if vintage_dates: url += f'&vintage_dates={vintage_dates}'
+    for key, value in queries.items():
+        url += f'&{key}={value}'
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
-fred_series.__doc__='Returns time series historical data for the requested FRED data.'
+
 
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
 def geofred_series_meta(series_id, file_type=None):
-    ## Returns meta data for the requested FRED data.
+    """Returns meta data for the requested FRED data."""
     url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
     if file_type: url += f'&file_type={file_type}'
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
-geofred_series_meta.__doc__='Returns meta data for the requested FRED data.'
+
 
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
-def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
-    ## Returns the historical, geographically organized time series data for the requested FRED data.
+def geofred_regional_series(series_id, **queries):
+    """Returns the historical, geographically organized time series data for the requested FRED data.
+    Parameters:
+    series_id -> The only required parameter. The id for the data series you wish to access.
+    queries -> accepts key-value pairs for the various parameters available on FRED. (file_type, date, etc.)
+    """
     url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
-    if file_type: url += f'&file_type={file_type}'
-    if date: url += f'&date={date}'
-    if start_date: url += f'&start_date={start_date}'
+    for key, value in queries.items():
+        url += f'&{key}={value}'
     url = append_fred_token(url)
     result = requests.get(url)
     return result.text
-geofred_regional_series.__doc__='Returns the historical, geographically organized time series data for the requested FRED data.'
 
 # # # # # # # # # # # # # # # #
 # GOVERNMENT YIELD CURVE DATA #
@@ -66,7 +61,7 @@ geofred_regional_series.__doc__='Returns the historical, geographically organize
 GOV_YIELD_URL = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%204%20and%20year(NEW_DATE)%20eq%202019'
 
 def get_yield():
-    ## Returns government treasury bond yields. Organized in Python dictionary format by bond length.
+    """Returns government treasury bond yields. Organized in Python dictionary format by bond length."""
 
     # Formatting of XML to Python Dict
     curve = requests.get(GOV_YIELD_URL)
@@ -94,4 +89,3 @@ def get_yield():
         '30year' : float(content['d:BC_30YEAR']['#text']),
         }
     return yield_curve_values
-get_yield.__doc__='Returns government treasury bond yields. Organized in Python dictionary format by bond length.'
