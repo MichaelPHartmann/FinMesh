@@ -18,6 +18,9 @@ class IEXStock:
             price_information()
 
     def save_state(self):
+        """Saves the current initialized state attributes in a serialized text file.
+        Currently only outputs dicts into a .txt file.
+        """
         result = []
         for attr in dir(self):
             if not attr.startswith('__'):
@@ -29,6 +32,10 @@ class IEXStock:
                 f.write(str(attr_to_save)+'\n')
 
     def load_state(self, filepath):
+        """Loads the attributes of a previous serialized class and it's attributes from a file.
+        Parameters:
+        filepath -> the path for the serialized file containing save-state data.
+        """
         with open(filepath, 'r') as file:
             save_data = file.read()
             ast.literal_eval(save_data)
