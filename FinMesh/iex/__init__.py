@@ -1,4 +1,6 @@
 from datetime import date
+import ast
+import types
 
 import stock
 import market
@@ -14,6 +16,23 @@ class IEXStock:
         if autopopulate:
             basic_information()
             price_information()
+
+    def save_state(self):
+        result = []
+        for attr in dir(self):
+            if not attr.startswith('__'):
+                if not isinstance(self.__getattribute__(attr), types.MethodType):
+                    result.append(attr)
+        with open(f'{self.ticker}_{self.date}_savestate.txt', 'w+') as f:
+            for r in result:
+                attr_to_save = {r:self.__getattribute__(r)}
+                f.write(str(attr_to_save)+'\n')
+
+    def load_state(self, filepath):
+        with open(filepath, 'r') as file:
+            save_data = file.read()
+            ast.literal_eval(save_data)
+        pass
 
     #  _  _     _                 ___             _   _
     # | || |___| |_ __  ___ _ _  | __|  _ _ _  __| |_(_)___ _ _  ___
