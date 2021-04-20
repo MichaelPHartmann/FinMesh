@@ -1,5 +1,6 @@
 import __init__ as b
 
+from datetime import date
 import ast
 import types
 
@@ -26,8 +27,14 @@ class testClass():
                 f.write(str(attr_to_save)+'\n')
 
 
+
 AAPL = b.IEXStock('AAPL')
+AAPL.get_company()
 AAPL.save_state()
+
+AAPL2 = b.IEXStock('AAPL')
+AAPL2.load_state('AAPL_2021-04-19_savestate.txt')
+print(AAPL2.company)
 
 """AAPL = b.IEXStock('AAPL')
 AAPL.get_company()

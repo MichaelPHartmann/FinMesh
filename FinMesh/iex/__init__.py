@@ -11,11 +11,15 @@ class IEXStock:
         self.period = period
         self.last = last
         self.csvfile_base = f'{ticker}_%s.csv'
-        self.date = date.today()
+        self.set_date()
 
         if autopopulate:
             basic_information()
             price_information()
+
+    def set_date(self):
+        result = str(date.today())
+        setattr(IEXStock, 'date', result)
 
     def save_state(self):
         """Saves the current initialized state attributes in a serialized text file.
@@ -27,9 +31,11 @@ class IEXStock:
                 if not isinstance(self.__getattribute__(attr), types.MethodType):
                     result.append(attr)
         with open(f'{self.ticker}_{self.date}_savestate.txt', 'w+') as f:
+            f.write('[\n')
             for r in result:
                 attr_to_save = {r:self.__getattribute__(r)}
-                f.write(str(attr_to_save)+'\n')
+                f.write(str(attr_to_save)+',\n')
+            f.write(']')
 
     def load_state(self, filepath):
         """Loads the attributes of a previous serialized class and it's attributes from a file.
@@ -38,8 +44,10 @@ class IEXStock:
         """
         with open(filepath, 'r') as file:
             save_data = file.read()
-            ast.literal_eval(save_data)
-        pass
+            literal_list = eval(save_data)
+            for dict in literal_list:
+                for key, value in dict.items():
+                    setattr(IEXStock, key, value)
 
     #  _  _     _                 ___             _   _
     # | || |___| |_ __  ___ _ _  | __|  _ _ _  __| |_(_)___ _ _  ___
