@@ -54,7 +54,7 @@ iex -> Access to the IEX Cloud API. This module contains basically all the stock
 usgov -> Access to the US government's FRED database. From here you can access various economic data as well as an easy-to-use treasury yield function.
 edgar -> Essentially experimental at this point. This can be used to download SEC filings and eventually the hope is to be able to parse and format the data for free access.
 
-The iex module contains sub-modules for the various types of data available on IEX Cloud. For the most common endpoints (stock and market data), the iex __init__ file has classes that make gathering, storing, and accessing the data much easier. The IEXStock endpoint can gather any stock information, save and load class states, and output any data to a csv file.
+The iex module contains sub-modules for the various types of data available on IEX Cloud. For the most common endpoints (stock and market data), the iex __init__ file has classes that make gathering, storing, and accessing the data much easier. The IEXStock class can gather any stock information, save and load class states, and output any data to a csv file.
 
 A walk-through of accessing all the modules and using them in your code is in the making.
 
