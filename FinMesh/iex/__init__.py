@@ -16,10 +16,21 @@ class IEXStock:
         if autopopulate:
             basic_information()
             price_information()
+            if self.build_savestate_file(addin='pickle') in os.listdir():
+                self.load_state(input='pickle')
+            if self.build_savestate_file() in os.listdir():
+                self.load_state(input='plaintext')
 
     def set_date(self):
         result = str(date.today())
         setattr(IEXStock, 'date', result)
+
+    def build_savestate_file(self, addin=None):
+        result = f'{self.ticker}_{self.date}_savestate'
+        if addin:
+            result = result + f'_{addin}.txt'
+        else:
+            result = result + '.txt'
 
     def save_state(self, output='plaintext', directory=None):
         """Saves the current initialized state attributes in a serialized text file.
@@ -42,10 +53,9 @@ class IEXStock:
             raw_to_write += raw_to_write += (str(attr_to_save)+',\n')
         raw_to_write += (']')
         # Standard filepath builder
-        filepath = f'{self.ticker}_{self.date}_savestate'
-        if output == 'pickle': filepath += '_pickle.txt'
-        if directory: filepath = f'{directory.strip('/')}/' + filepath + '.txt'
-        else: filepath += '.txt'
+        if output == 'pickle': filepath = self.build_savestate_file(addin='pickle')
+        else: filepath = self.build_savestate_file()
+        if directory: filepath = f'{directory.strip('/')}/' + filepath
 
         if output == 'pickle':
             pickle_to_write = pickle.dumps(raw_to_write)
@@ -62,10 +72,9 @@ class IEXStock:
         directoy -> String. If the saved file is in a directory, this is the name of that directory.
         """
         # Standard filepath builder
-        filepath = f'{self.ticker}_{self.date}_savestate'
-        if output == 'pickle': filepath += '_pickle.txt'
-        if directory: filepath = f'{directory.strip('/')}/' + filepath + '.txt'
-        else: filepath += '.txt'
+        if input == 'pickle': filepath = self.build_savestate_file(addin='pickle')
+        else: filepath = self.build_savestate_file()
+        if directory: filepath = f'{directory.strip('/')}/' + filepath
 
         if input == 'pickle':
             literal_list = pickle.load(filepath)
