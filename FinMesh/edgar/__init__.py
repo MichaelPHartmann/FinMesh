@@ -7,9 +7,11 @@ from bs4 import BeautifulSoup, SoupStrainer
 from nltk.corpus import words
 from ._common import *
 
+
 EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
 EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
+
 
 class edgarFiler(object):
 
