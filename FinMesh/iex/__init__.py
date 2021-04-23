@@ -6,6 +6,17 @@ import stock
 import market
 
 class IEXStock:
+    """A class that is built around retrieving data from the IEX Cloud API service.
+    All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
+    All data is available in CSV format, and can be grouped together for bulk file writing.
+    All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
+    Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
+    Parameters:
+    ticker -> String. The symbol or ticker of the stock for which the class is to be created.
+    period -> String. Default is 'quarter'. Allows a user to set period data for all income statement requests.
+    last -> Integer. Default is 1. Allows a user to specify how many statements to retrieve of financial statement data.
+    autopopulate -> Boolean. Automatically populates key information as class attributes. Uses methods 'basic_information' and 'price_information'
+    """
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
         self.period = period
