@@ -22,10 +22,18 @@ class IEXStock:
                 self.load_state(input='plaintext')
 
     def set_date(self):
+        """Set's the date attribute.
+        This is needed keep save and load funcionality smooth.
+        """
         result = str(date.today())
         setattr(IEXStock, 'date', result)
 
     def build_savestate_file(self, addin=None):
+        """Builds a standard file name based on an add-in.
+        This allows automatic retrieval of savestate files because the files are created using the exact same method.
+        Parameters:
+        addin -> String. File identifier to aid in automated loading of savestate files.
+        """
         result = f'{self.ticker}_{self.date}_savestate'
         if addin:
             result = result + f'_{addin}.txt'
