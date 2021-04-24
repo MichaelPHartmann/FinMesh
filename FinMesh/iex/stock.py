@@ -1,73 +1,107 @@
 from _common import *
 
 # Advanced Fundementals
-IEX_ADVANCED_FUNDEMENTALS_URL = prepend_iex_url('time-series') + 'fundementals/{symbol}'
-def advanced_fundementals(symbol, vprint=False, **queries):
-    url = replace_url_var(IEX_ADVANCED_FUNDEMENTALS_URL, symbol=symbol)
+IEX_ADVANCED_FUNDEMENTALS_URL = prepend_iex_url('time-series') + 'fundementals/{symbol}/{period}'
+def advanced_fundementals(symbol, period, vprint=False, **queries):
+    """Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    period -> String. Required. The period type of data requested. Accepted are: ['annual','quarterly','ttm']
+    All standard time series query parameters are accepted.
+    """
+    url = replace_url_var(IEX_ADVANCED_FUNDEMENTALS_URL, symbol=symbol, period=period)
     url += '?'
     for key, value in queries.items():
         url += (f"&{key}={value}")
     return get_iex_json_request(url, vprint=vprint)
-advanced_fundementals.__doc__='Returns fundmental modelling data for the requested stock.'
+
 
 #   Advanced Stats
 IEX_ADVANCED_STATS_URL = prepend_iex_url('stock') + '{symbol}/advanced-stats'
 def advanced_stats(symbol, vprint=False):
-    # Returns normal key stats as well as some selected financial stats and ratios
+    """Returns everything in key stats plus additional advanced stats such as EBITDA, ratios, key financial data, and more.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    """
     url = replace_url_var(IEX_ADVANCED_STATS_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-advanced_stats.__doc__='Returns normal key stats as well as some selected financial stats and ratios.'
+
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url('stock') + '{symbol}/balance-sheet'
 def balance_sheet(symbol, vprint=False, **queries):
-    # Returns balance sheet data for the requested ticker.
+    """Returns balance sheet data. Available quarterly or annually with the default being the last available quarter.
+    This data is currently only available for U.S. symbols.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    period -> String. Optional. The period type of data requested. Accepted are: ['annual','quarterly']
+    last -> String. Optional. the number of periods to return. Max 16 quarterly and 4 annual.
+    """
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
     url += '?'
     for key, value in queries.items():
         url += (f"&{key}={value}")
     return get_iex_json_request(url, vprint=vprint)
-balance_sheet.__doc__='Returns the balance sheet fincancial statement for the requested stock.'
+
 
 #   Book
 IEX_BOOK_URL = prepend_iex_url('stock') + '{symbol}/book?'
 def book(symbol, vprint=False):
-    # Returns book price data for the requested ticker.
+    """Returns share book information for the requested stock.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    """
     url = replace_url_var(IEX_BOOK_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-book.__doc__='Returns share book information for the requested stock.'
+
 
 #   Cash Flow
 IEX_CASH_FLOW_URL = prepend_iex_url('stock') + '{symbol}/cash-flow'
 def cash_flow(symbol, vprint=False, **queries):
-    # Returns the cash flow statement for the requested ticker.
+    """Returns cash flow data. Available quarterly or annually, with the default being the last available quarter.
+    This data is currently only available for U.S. symbols.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    period -> String. Optional. The period type of data requested. Accepted are: ['annual','quarterly']
+    last -> String. Optional. The number of periods to return. Max 16 quarterly and 4 annual.
+    """
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     url += '?'
     for key, value in queries.items():
         url += (f"&{key}={value}")
     return get_iex_json_request(url, vprint=vprint)
-cash_flow.__doc__='Returns the cash flow financial statement for the requested stock.'
+
 
 #   Company
 IEX_COMPANY_URL = prepend_iex_url('stock') + '{symbol}/company?'
 def company(symbol, vprint=False):
-    # Returns company data such as website, address, and description for the requested ticker.
+    """Returns company data such as website, address, and description for the requested ticker.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    """
     url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-company.__doc__='Returns company data such as website, address, and description for the requested stock.'
+
 
 #   Delayed Quote
 IEX_DELAYED_QUOTE_URL = prepend_iex_url('stock') + '{symbol}/delayed-quote?'
 def delayed_quote(symbol, vprint=False):
-    # Returns a 15-minute delayed market quote for the requested ticker.
+    """Returns a 15-minute delayed market quote for the requested ticker.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    """
     url = replace_url_var(IEX_DELAYED_QUOTE_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-delayed_quote.__doc__='Returns a 15-minute delayed market quote for the requested stock.'
+
 
 #   Dividends
 IEX_DIVIDENDS_URL = prepend_iex_url('stock') + '{symbol}/dividends/{scope}?'
 def dividends(symbol, scope, vprint=False):
-    # Returns dividend information for a requested ticker.
+    """Provides basic dividend data for US equities, ETFs, and Mutual Funds for the last 5 years.
+    Parameters:
+    symbol -> String. Required. The ticker or symbol of the company for which you would like information.
+    scope -> String. Required. The 
+    """
     url = replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, scope=scope)
     return get_iex_json_request(url, vprint=vprint)
 dividends.__doc__='Returns dividend information for a requested stock.'
