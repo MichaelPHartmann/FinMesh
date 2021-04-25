@@ -13,7 +13,7 @@ def advanced_fundementals(symbol, period, vprint=False, **queries):
     url = replace_url_var(IEX_ADVANCED_FUNDEMENTALS_URL, symbol=symbol, period=period)
     url += '?'
     for key, value in queries.items():
-        url += (f"&{key}={value}")
+        url += f"&{key}={value}"
     return get_iex_json_request(url, vprint=vprint)
 
 
@@ -337,7 +337,7 @@ def logo(symbol, vprint=False):
     """
     url = replace_url_var(IEX_LOGO_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-logo.__doc__='Returns a Google APIs link to the logo for the requested stock.'
+
 
 #   News
 IEX_NEWS_URL = prepend_iex_url('stock') + '{symbol}/news'
@@ -345,7 +345,7 @@ def news(symbol, last=None, vprint=False):
     url = replace_url_var(IEX_NEWS_URL, symbol=symbol)
     url += f'/last/{last}?' if last else '?'
     return get_iex_json_request(url, vprint=vprint)
-news.__doc__='Returns news item summaries for the requested stock.'
+
 
 #   OHLC
 IEX_OHLC_URL = prepend_iex_url('stock') + '{symbol}/ohlc?'
@@ -382,7 +382,6 @@ def price(symbol, vprint=False):
     """
     url = replace_url_var(IEX_PRICE_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-price.__doc__='Returns a single float value of the requested company\'s price.'
 
 
 #   Quote
@@ -404,6 +403,7 @@ def sector_performance(vprint=False):
     # Returns market performance for all sectors.
     return get_iex_json_request(IEX_SECTOR_PERFORMANCE_URL)
 sector_performance.__doc__='Returns market performance for all sectors. No longer listed in docs, may soon be deprecated.'
+
 
 #   Splits
 IEX_SPLITS_URL = prepend_iex_url('stock') + '{symbol}/splits'

@@ -21,7 +21,7 @@ class IEXStock:
         self.ticker = ticker
         self.period = period
         self.last = last
-        self.csvfile_base = f'{ticker}_%s.csv'
+        self.csvfile_base = f'{self.ticker}_%s.csv'
         self.set_date()
 
         if autopopulate:
@@ -69,12 +69,14 @@ class IEXStock:
         raw_to_write += ('[\n')
         for r in result:
             attr_to_save = {r:self.__getattribute__(r)}
-            raw_to_write += raw_to_write += (str(attr_to_save)+',\n')
+            raw_to_write += (str(attr_to_save)+',\n')
         raw_to_write += (']')
         # Standard filepath builder
         if output == 'pickle': filepath = self.build_savestate_file(addin='pickle')
         else: filepath = self.build_savestate_file()
-        if directory: filepath = f'{directory.strip('/')}/' + filepath
+        if directory:
+            dir_strip = directory.strip('/')
+            filepath = f'{dir_strip}/' + filepath
 
         if output == 'pickle':
             pickle_to_write = pickle.dumps(raw_to_write)
@@ -93,7 +95,9 @@ class IEXStock:
         # Standard filepath builder
         if input == 'pickle': filepath = self.build_savestate_file(addin='pickle')
         else: filepath = self.build_savestate_file()
-        if directory: filepath = f'{directory.strip('/')}/' + filepath
+        if directory:
+            dir_strip = directory.strip('/')
+            filepath = f'{dir_strip}/' + filepath
 
         if input == 'pickle':
             literal_list = pickle.load(filepath)
