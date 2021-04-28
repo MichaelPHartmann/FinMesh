@@ -13,7 +13,7 @@ GEOFRED_BASE_URL = 'https://api.stlouisfed.org/geofred/'
 
 def append_fred_token(url):
     token = os.getenv('FRED_TOKEN')
-    return f'{url}&api_key={token}'
+    return f"{url}&api_key={token}"
 
 FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
 def fred_series(series_id, **queries):

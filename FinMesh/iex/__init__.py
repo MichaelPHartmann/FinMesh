@@ -2,8 +2,8 @@ from datetime import date
 import types
 import pickle
 
-import stock
-import market
+from .stock import *
+from . market import *
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.

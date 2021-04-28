@@ -6,9 +6,6 @@ FinMesh.egg-info/SOURCES.txt
 FinMesh.egg-info/dependency_links.txt
 FinMesh.egg-info/top_level.txt
 FinMesh/auxiliary/__init__.py
-FinMesh/edgar/__init__.py
-FinMesh/edgar/_common.py
-FinMesh/edgar/_parser.py
 FinMesh/iex/__init__.py
 FinMesh/iex/_common.py
 FinMesh/iex/account.py

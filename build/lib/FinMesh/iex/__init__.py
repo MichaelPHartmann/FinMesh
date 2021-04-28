@@ -1,19 +1,114 @@
 from datetime import date
+import types
+import pickle
 
-import stock
-import market
+from .stock import *
+from . market import *
 
 class IEXStock:
+    """A class that is built around retrieving data from the IEX Cloud API service.
+    All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
+    All data is available in CSV format, and can be grouped together for bulk file writing.
+    All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
+    Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
+    Parameters:
+    ticker -> String. The symbol or ticker of the stock for which the class is to be created.
+    period -> String. Default is 'quarter'. Allows a user to set period data for all income statement requests.
+    last -> Integer. Default is 1. Allows a user to specify how many statements to retrieve of financial statement data.
+    autopopulate -> Boolean. Automatically populates key information as class attributes. Uses methods 'basic_information' and 'price_information'
+    """
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
         self.period = period
         self.last = last
-        self.csvfile_base = f'{ticker}_%s.csv'
-        self.date = date.today()
+        self.csvfile_base = f'{self.ticker}_%s.csv'
+        self.set_date()
 
         if autopopulate:
             basic_information()
             price_information()
+            if self.build_savestate_file(addin='pickle') in os.listdir():
+                self.load_state(input='pickle')
+            if self.build_savestate_file() in os.listdir():
+                self.load_state(input='plaintext')
+
+    def set_date(self):
+        """Set's the date attribute.
+        This is needed keep save and load funcionality smooth.
+        """
+        result = str(date.today())
+        setattr(IEXStock, 'date', result)
+
+    def build_savestate_file(self, addin=None):
+        """Builds a standard file name based on an add-in.
+        This allows automatic retrieval of savestate files because the files are created using the exact same method.
+        Parameters:
+        addin -> String. File identifier to aid in automated loading of savestate files.
+        """
+        result = f'{self.ticker}_{self.date}_savestate'
+        if addin:
+            result = result + f'_{addin}.txt'
+        else:
+            result = result + '.txt'
+
+    def save_state(self, output='plaintext', directory=None):
+        """Saves the current initialized state attributes in a serialized text file.
+        Currently only outputs dicts into a .txt file.
+        Parameters:
+        output -> String. Defines the type of output. Default is plaintext.
+        directoy -> String. If the saved file is to be put in a directory, this is the name of that directory.
+        """
+        # Build a list of attributes for the class
+        result = []
+        for attr in dir(self):
+            if not attr.startswith('__'):
+                if not isinstance(self.__getattribute__(attr), types.MethodType):
+                    result.append(attr)
+        # Prepare the data to be written
+        raw_to_write = ''
+        raw_to_write += ('[\n')
+        for r in result:
+            attr_to_save = {r:self.__getattribute__(r)}
+            raw_to_write += (str(attr_to_save)+',\n')
+        raw_to_write += (']')
+        # Standard filepath builder
+        if output == 'pickle': filepath = self.build_savestate_file(addin='pickle')
+        else: filepath = self.build_savestate_file()
+        if directory:
+            dir_strip = directory.strip('/')
+            filepath = f'{dir_strip}/' + filepath
+
+        if output == 'pickle':
+            pickle_to_write = pickle.dumps(raw_to_write)
+            with open(filepath, 'w+') as f:
+                f.write(pickle_to_write)
+        else:
+            with open(filepath, 'w+') as f:
+                f.write(raw_to_write)
+
+    def load_state(self, input='plaintext', directory=None):
+        """Loads the attributes of a previous serialized class and it's attributes from a file.
+        Parameters:
+        input -> String. Defines the type of input. Default is plaintext.
+        directoy -> String. If the saved file is in a directory, this is the name of that directory.
+        """
+        # Standard filepath builder
+        if input == 'pickle': filepath = self.build_savestate_file(addin='pickle')
+        else: filepath = self.build_savestate_file()
+        if directory:
+            dir_strip = directory.strip('/')
+            filepath = f'{dir_strip}/' + filepath
+
+        if input == 'pickle':
+            literal_list = pickle.load(filepath)
+        else:
+            with open(filepath, 'r') as file:
+                save_data = file.read()
+                literal_list = eval(save_data)
+
+        for dict in literal_list:
+            for key, value in dict.items():
+                setattr(IEXStock, key, value)
 
     #  _  _     _                 ___             _   _
     # | || |___| |_ __  ___ _ _  | __|  _ _ _  __| |_(_)___ _ _  ___
