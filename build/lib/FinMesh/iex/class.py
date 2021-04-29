@@ -2,8 +2,8 @@ from datetime import date
 import types
 import pickle
 
-from stock import *
-from market import *
+from .stock import *
+from .market import *
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
@@ -21,12 +21,12 @@ class IEXStock:
         self.ticker = ticker
         self.period = period
         self.last = last
-        self.csvfile_base = f'{self.ticker}_%s.csv'
+        self.csvfile_base = f'{ticker}_%s.csv'
         self.set_date()
 
         if autopopulate:
-            basic_information()
-            price_information()
+            self.basic_information()
+            self.price_information()
             if self.build_savestate_file(addin='pickle') in os.listdir():
                 self.load_state(input='pickle')
             if self.build_savestate_file() in os.listdir():

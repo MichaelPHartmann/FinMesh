@@ -1,4 +1,4 @@
-from _common import *
+from ._common import *
 
 # Advanced Fundementals
 IEX_ADVANCED_FUNDEMENTALS_URL = prepend_iex_url('time-series') + 'fundementals/{symbol}/{period}'

@@ -1,4 +1,4 @@
-from _common import *
+from ._common import *
 
 IEX_DATA_POINT_URL = 'https://cloud.iexapis.com/stable/data-points/'
 IEX_TIME_SERIES_URL = 'https://cloud.iexapis.com/stable/time-series/'
