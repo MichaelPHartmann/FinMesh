@@ -1,10 +1,4 @@
-import os
-
-from FinMesh import iex
 # List of all available functions grouped by package and sub-package
-print(dir(iex))
-
-
 
 # IEX - STOCK
 iex_stock_functions = {
@@ -83,23 +77,22 @@ edgarFiler_functions = {
 'retrieve_xlsx_report':'Streams financial statement Excel file, may only work on statements in the last 10 years.'
 }
 
-def create_old_docs():
-    output = []
+output = []
 
-    for key,value in iex_stock_functions.items():
-        docstring_template = f"{key}.__doc__='{value}'"
-        output.append(docstring_template)
-    for key,value in iex_forex_functions.items():
-        docstring_template = f"{key}.__doc__='{value}'"
-        output.append(docstring_template)
-    for key,value in iex_market_functions.items():
-        docstring_template = f"{key}.__doc__='{value}'"
-        output.append(docstring_template)
-    for key,value in usgov_fred_functions.items():
-        docstring_template = f"{key}.__doc__='{value}'"
-        output.append(docstring_template)
-    for key,value in edgarFiler_functions.items():
-        docstring_template = f"{key}.__doc__='{value}'"
-        output.append(docstring_template)
+for key,value in iex_stock_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in iex_forex_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in iex_market_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in usgov_fred_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
+for key,value in edgarFiler_functions.items():
+    docstring_template = f"{key}.__doc__='{value}'"
+    output.append(docstring_template)
 
-    print(output)
+print(output)

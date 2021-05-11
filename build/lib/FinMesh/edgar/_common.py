@@ -82,29 +82,3 @@ def pick_bad_apples(word,ignore_list):
                 ignore = True
     return ignore
 pick_bad_apples.__doc__= "Determines whether or not to ignore certain words."
-
-def find_all_tables(text, debug=True):
-    # Import text and lower-case everything
-    f = text
-    f = f.lower()
-    table_starts = []
-    table_ends = []
-
-    # Find the number of tables in the document
-    number_of_tables = len(re.findall('</table>',text))
-
-    # Iterate the string until all the tables are located
-    while len(table_ends) < number_of_tables:
-        if len(table_ends) is 0:
-            last_table_end = 0
-        else:
-            last_table_end = table_ends[len(table_ends) - 1]
-
-        # Append starts and ends
-        table_start = f.find('<table', last_table_end+1)
-        table_starts.append(table_start)
-        table_end = f.find('</table>', last_table_end+1)
-        table_ends.append(table_end)
-
-    return table_starts, table_ends
-find_all_tables.__doc__='Returns two lists containing the start and end indexes for all tables in an SEC filing.'

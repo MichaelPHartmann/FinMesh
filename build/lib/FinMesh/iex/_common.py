@@ -17,19 +17,16 @@ def prepend_iex_url(section):
         url = f'https://cloud.iexapis.com/stable/{section}/'
     return url
 
-def append_iex_token(url, external=False):
+def append_iex_token(url):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
-    if external is True:
-        pass
+    if sandboxState is True:
+        token = os.getenv('IEX_SANDBOX_TOKEN')
     else:
-        if sandboxState is True:
-            token = os.getenv('IEX_SANDBOX_TOKEN')
-        else:
-            token = os.getenv('IEX_TOKEN')
-        return f"{url}&token={token}"
+        token = os.getenv('IEX_TOKEN')
+    return f"{url}&token={token}"
 
-def get_iex_json_request(url, external=False, vprint=False):
-    url = append_iex_token(url, external=external)
+def get_iex_json_request(url, vprint=False):
+    url = append_iex_token(url)
     if vprint: print(f"Making request: {url}")
     result = requests.get(url)
     if vprint: print(f"Request status code: {result.status_code}")
