@@ -1,4 +1,5 @@
 from ._common import *
+"""Should mostly use class from now on and use these functions as the 'backend'"""
 
 IEX_DATA_POINT_URL = 'https://cloud.iexapis.com/stable/data-points/'
 IEX_TIME_SERIES_URL = 'https://cloud.iexapis.com/stable/time-series/'

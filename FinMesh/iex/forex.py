@@ -1,4 +1,5 @@
 from ._common import *
+"""Should mostly use class from now on and use these functions as the 'backend'"""
 
 # Latest Rates
 FOREX_LATEST_URL = prepend_iex_url('fx') + 'latest?'

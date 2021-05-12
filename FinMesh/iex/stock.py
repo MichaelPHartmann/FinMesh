@@ -1,4 +1,5 @@
 from ._common import *
+"""Should mostly use class from now on and use these functions as the 'backend'"""
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url('stock') + '{symbol}/balance-sheet'
