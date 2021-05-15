@@ -11,21 +11,48 @@ Second, global environment variables are accessible ANYWHERE, meaning you can ha
 Third, it is a generally accepted good practice for handling sensitive API token data.
 """
 
-# environment setup class
-# types of environment variables that can be set as class attributes
-# method for ingesting desired variables to be modified or added
+import subprocess
+
+
 # python bash method - subprocess.Popen(bash commands as strings) first import
-#
+
 class FinMeshSetup():
     def __init__(self):
-        self.variables_to_define = ['IEX_TOKEN', 'IEX_SANDBOX_TOKEN', 'IEX_SANDBOX', 'FRED_TOKEN']
+        self.tokens_to_define = ['IEX_TOKEN', 'IEX_SANDBOX_TOKEN', 'FRED_TOKEN']
+        self.booleans_to_define = ['IEX_SANDBOX_BOOL']
 
-    def _bash_builder(variable, value):
+    def _arg_to_bool(self, string):
+        affirmative = ['True','TRUE','true','Yes','YES','yes','On','ON','on']
+        if string in affirmative:
+            return True
+        else:
+            return False
+
+    def _bash_builder(self, variable, value):
         """Builds a bash command to export the specified variable"""
         command = f'export {variable}={value}'
         return command
 
-    def set_all_environment_variables():
+    def set_all_environment_variables(self):
         """Prompts the user to enter all of the needed variables for FinMesh.
         Useful for first-time users who have not set any variables yet.
         If you would like to skip through a particular variable, just hit enter to assign a blank; no variable will be created in your environment."""
+        cmd_to_run = []
+        for variable in self.tokens_to_define:
+            token = input(f"Setting the {variable} variable. Please enter the desired value. Hit enter to skip."
+            if token == "":
+                pass
+            else:
+                cmd = _bash_builder(variable, token)
+                cmd_to_run.append(cmd)
+        for variable in self.booleans_to_define:
+            bool_input = input(f"Would you like to set {variable} to True? Hit enter to skip.")
+            if bool_input == "":
+                pass
+            else:
+                if self.arg_to_bool(bool_input):
+                    bool_set = 'TRUE'
+                else:
+                    boll_set = 'FALSE'
+                cmd = _bash_builder(variable, token)
+                cmd_to_run.append(cmd)
