@@ -1,6 +1,6 @@
 """
 The goal is to create a way to automate the setting and changing of environment variables through FinMesh.
-The current moethdo involves getting into your bash profile and adding your tokens manually. While this is not super complicated, it can be daunting for new users who may not have any experience with bash or Python.
+The current method involves getting into your bash profile and adding your tokens manually. While this is not super complicated, it can be daunting for new users who may not have any experience with bash or Python.
 Alternative methods were looked at but they proved to either be more complicated, less secure, or less reliable.
 Having tokens referenced in the functions creates a potential security issue if someone pushes tokens onto their GitHub accidentally.
 Hidden files (such as dot-prefixed files) are another option, but the user must know how to add gitignore files and if they do not, you again end up with API tokens being pushed public.
