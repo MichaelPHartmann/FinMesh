@@ -785,6 +785,16 @@ class symbolsAvailable():
     def __init__(self):
         self.all_symbols = raw_symbols()
 
+
     def raw_symbols():
         SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
         return get_iex_json_request(url, vprint=vprint)
+
+    def symbol_cik_dict():
+        output_dict = []
+        for company in self.all_symbols:
+            output_dict[company['symbol']] = company['cik']
+        setattr(symbolsAvailable, 'symbol_cik_dict', output_dict)
+
+    def symbol_list():
+        pass
