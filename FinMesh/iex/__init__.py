@@ -783,14 +783,21 @@ class IEXMarket():
 class symbolsAvailable():
     """Returns symbols available on IEX"""
     def __init__(self):
-        self.all_symbols = raw_symbols()
-
+        self.all_symbols = self.raw_symbols()
 
     def raw_symbols():
+        """100 credits per request made.
+        The only default return for this class.
+        Simply returns the json dict that IEX supplies through their symbols endpoint.
+        Returns symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
+        """
         SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
         return get_iex_json_request(url, vprint=vprint)
 
     def symbol_cik_dict():
+        """Returns a dictionary containing a symbol and the corrosponding CIK number.
+        This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        """
         output_dict = {}
         for company in self.all_symbols:
             output_dict[company['symbol']] = company['cik']
@@ -798,6 +805,7 @@ class symbolsAvailable():
         return output_dict
 
     def symbol_list():
+        """Returns a list of all the symbols supported by IEX."""
         output_list = []
         for company in self.all_symbols:
             output_list.append(company['symbol'])
