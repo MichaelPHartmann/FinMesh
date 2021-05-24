@@ -4,6 +4,7 @@ import pickle
 
 from .stock import *
 from .market import *
+from ._common import *
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
@@ -778,3 +779,12 @@ class IEXMarket():
                 for key, value in output_data.items():
                     f.write(str(key) + ',' + str(value) + '\n')
         return output_data
+
+class symbolsAvailable():
+    """Returns symbols available on IEX"""
+    def __init__(self):
+        self.all_symbols = raw_symbols()
+
+    def raw_symbols():
+        SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
+        return get_iex_json_request(url, vprint=vprint)
