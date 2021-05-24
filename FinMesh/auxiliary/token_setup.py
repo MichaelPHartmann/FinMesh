@@ -46,7 +46,7 @@ class FinMeshSetup():
             if token == "":
                 pass
             else:
-                cmd = _bash_builder(variable, token)
+                cmd = self._bash_builder(variable, token)
                 cmd_to_run.append(cmd)
         print("Setting booleans, prepare to paste in tokens when prompted...")
         time.sleep(2)
@@ -55,12 +55,20 @@ class FinMeshSetup():
             if bool_input == "":
                 pass
             else:
-                if self.arg_to_bool(bool_input):
+                if self._arg_to_bool(bool_input):
                     bool_set = 'TRUE'
                 else:
                     boll_set = 'FALSE'
                 cmd = _bash_builder(variable, token)
                 cmd_to_run.append(cmd)
 
-        subprocess.Popen(cmd_to_run)
+        for c in cmd_to_run:
+            subprocess.Popen(c)
         return cmd_to_run
+
+    def set_IEX_sandbox(onoff):
+        if self._arg_to_bool():
+            cmd = _bash_builder("IEX_SANDBOX_BOOL", "TRUE")
+        else:
+            cmd = _bash_builder("IEX_SANDBOX_BOOL", "FALSE")
+        subprocess.Popen(cmd)
