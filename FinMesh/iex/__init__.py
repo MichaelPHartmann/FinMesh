@@ -791,10 +791,15 @@ class symbolsAvailable():
         return get_iex_json_request(url, vprint=vprint)
 
     def symbol_cik_dict():
-        output_dict = []
+        output_dict = {}
         for company in self.all_symbols:
             output_dict[company['symbol']] = company['cik']
         setattr(symbolsAvailable, 'symbol_cik_dict', output_dict)
+        return output_dict
 
     def symbol_list():
-        pass
+        output_list = []
+        for company in self.all_symbols:
+            output_list.append(company['symbol'])
+        setattr(symbolsAvailable, 'symbol_list', output_list)
+        return output_list
