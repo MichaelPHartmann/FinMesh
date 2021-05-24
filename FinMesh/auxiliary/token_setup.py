@@ -12,6 +12,7 @@ Third, it is a generally accepted good practice for handling sensitive API token
 """
 
 import subprocess
+import time
 
 
 # python bash method - subprocess.Popen(bash commands as strings) first import
@@ -38,6 +39,8 @@ class FinMeshSetup():
         Useful for first-time users who have not set any variables yet.
         If you would like to skip through a particular variable, just hit enter to assign a blank; no variable will be created in your environment."""
         cmd_to_run = []
+        print("Setting tokens, prepare to paste in tokens when prompted...")
+        time.sleep(2)
         for variable in self.tokens_to_define:
             token = input(f"Setting the {variable} variable. Please enter the desired value. Hit enter to skip."
             if token == "":
@@ -45,6 +48,8 @@ class FinMeshSetup():
             else:
                 cmd = _bash_builder(variable, token)
                 cmd_to_run.append(cmd)
+        print("Setting booleans, prepare to paste in tokens when prompted...")
+        time.sleep(2)
         for variable in self.booleans_to_define:
             bool_input = input(f"Would you like to set {variable} to True? Hit enter to skip.")
             if bool_input == "":
@@ -56,3 +61,6 @@ class FinMeshSetup():
                     boll_set = 'FALSE'
                 cmd = _bash_builder(variable, token)
                 cmd_to_run.append(cmd)
+
+        subprocess.Popen(cmd_to_run)
+        return cmd_to_run
