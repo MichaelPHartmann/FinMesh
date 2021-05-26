@@ -34,7 +34,7 @@ class IEXStock:
                 self.load_state(input='plaintext')
 
     def set_date(self):
-        """Set's the date attribute.
+        """Sets the date attribute.
         This is needed keep save and load funcionality smooth.
         """
         result = str(date.today())
