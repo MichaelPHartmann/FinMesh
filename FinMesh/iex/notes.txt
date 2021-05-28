@@ -2,42 +2,43 @@ All IEX EndPoints by Type
 This is meant to be a master list of the available endpoints through IEX.
 As FinMesh grows this is a sort of to-do list, although some of the premium data may never be supported fully due to cost.
 At this point all of the bsic, non-premium endpoints except for some of the reference data should be fully supported.
+Endpoints should not be considered fully supported until they are available as part of a class and exist as standalone functions in their respective sub-module.
 
 # Stocks / Equities
-Advanced Fundamentals
-Advanced Stats
-Balance Sheet
+--Advanced Fundamentals  !Fin-Info!
+--Advanced Stats  !Gen-Info!
+--Balance Sheet !Fin_Stat!
 Book
-Cash Flow
+--Cash Flow !Fin_Stat!
 Charts
-Company
-Delayed Quote
-Dividends (Basic)
-Extended Hours Quote
-Financials
-Financials As Reported
-Fund Ownership
-Historical Prices
-Income Statement
-Insider Roster
-Insider Summary
-Insider Transactions
-Institutional Ownership
-Intraday Prices
-Key Stats
-Largest Trades
-Logo
-OHLC
-Open / Close Price
-Peer Groups
+--Company !Gen-Info!
+--Delayed Quote
+--Dividends (Basic) !Fin-Info!
+--Extended Hours Quote
+--Financials !Fin-Info!
+--Financials As Reported
+--Fund Ownership !Own-Info!
+--Historical Prices !Prices!
+--Income Statement !Fin_Stat!
+--Insider Roster !Own-Info!
+--Insider Summary !Own-Info!
+--Insider Transactions !Own-Info!
+--Institutional Ownership !Own-Info!
+--Intraday Prices
+--Key Stats  !Gen-Info!
+--Largest Trades
+--Logo
+--OHLC
+--Open / Close Price
+--Peer Groups  !Gen-Info!
 Previous Day Price
-Price Only
-Quote
-Real-time Quote
-SEC Filings
-Splits (Basic)
-Technical Indicators
-Volume by Venue
+--Price Only
+--Quote
+--Real-time Quote
+--SEC Filings
+--Splits (Basic)
+--Technical Indicators
+--Volume by Venue
 
 # Corporate Actions
 Bonus Issue
@@ -90,34 +91,34 @@ CEO Compensation
 Daily Treasury Rates
 
 # Commodities
-Oil Prices
-Natural Gas Price
-Heating Oil Prices
-Jet Fuel Prices
-Diesel Price
-Gas Prices
-Propane Prices
+--Oil Prices
+--Natural Gas Price
+--Heating Oil Prices
+--Jet Fuel Prices
+--Diesel Price
+--Gas Prices
+--Propane Prices
 
 # Economic Data
-CD Rates
-Consumer Price Index
-Credit Card Interest Rate
-Federal Fund Rates
-Real GDP
-Institutional Money Funds
-Initial Claims
-Industrial Production Index
-Mortgage Rates
-Total Housing Starts
-Total Payrolls
-Total Vehicle Sales
-Retail Money Funds
-Unemployment Rate
-US Recession Probabilities
+--CD Rates
+--Consumer Price Index
+--Credit Card Interest Rate
+--Federal Fund Rates
+--Real GDP
+--Institutional Money Funds
+--Initial Claims
+--Industrial Production Index
+--Mortgage Rates
+--Total Housing Starts
+--Total Payrolls
+--Total Vehicle Sales
+--Retail Money Funds
+--Unemployment Rate
+--US Recession Probabilities
 
 # Reference Data
 Search
-Symbols
+--Symbols
 IEX Symbols
 Options Symbols
 International Symbols

@@ -201,8 +201,10 @@ class IEXStock:
 
     def write_block_to_csv(self, doc_to_write, filename_addition):
         """Writes a block or list of preformated string(s) to a csv file.
+        Functionally identical to 'custom_write_block_to_csv' method but uses a standardized method to build the filename.
+        Mainly used as optional output in class and csv savestate methods.
         Parameters:
-        doc_to_write -> the preformatted string or list to write
+        doc_to_write -> the preformatted string or list of preformated strings to write.
         filename_addition -> the identifier that will be tacked onto the filename.
         """
         if isinstance(doc_to_write, list):
@@ -213,6 +215,23 @@ class IEXStock:
                 f.write(block_to_write)
         else:
             with open(self.csvfile_base.replace('%s', filename_addition), 'w+') as f:
+                f.write(doc_to_write)
+
+    def custom_write_block_to_csv(self, docs_to_write, filename):
+        """Writes a block or list of preformated string(s) to a csv file.
+        Functionally identical to 'write_block_to_csv' method but does not use a standardized filename builder to determine the file name.
+        Parameters:
+        doc_to_write -> the preformatted string or list of preformated strings to write.
+        filename -> the filename to write to. If the file exists it will be over written. Include '.csv' appendation.
+        """
+        if isinstance(doc_to_write, list):
+            block_to_write = ''
+            for string in list_to_write:
+                block_to_write += string
+            with open(filename, 'w+') as f:
+                f.write(block_to_write)
+        else:
+            with open(filename, 'w+') as f:
                 f.write(doc_to_write)
 
 
