@@ -722,6 +722,22 @@ class IEXStock:
             self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
         return result
 
+
+
+    def get_price_target(self):
+        pass
+
+    def get_analyst_recommendations(self):
+        pass
+
+    def get_analyst_estimates(self):
+        pass
+
+    def get_earnings(self):
+        pass
+
+
+
 class IEXMarket():
     def __init__(self):
         self.date = date.today()

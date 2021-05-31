@@ -32,7 +32,7 @@ today_earnings.__doc__='Returns earnings data released today, grouped by timing 
 
 #   Estimates
 IEX_ESTIMATES_URL = prepend_iex_url('stock') + '{symbol}/estimates?'
-def estimates(symbol, vprint=False):
+def future_estimates(symbol, vprint=False):
     # Returns latest future earnings estimates for the requested ticker.
     url = replace_url_var(IEX_ESTIMATES_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
