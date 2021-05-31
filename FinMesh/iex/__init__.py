@@ -729,18 +729,19 @@ class IEXStock:
     def get_price_target(self):
         """Premium Data. 500 premium credits per symbol requested.
         Returns the latest avg, high, and low analyst price target for a symbol.
+        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'price_target'.
         Parameters:
         csv -> string. Determines the processing for csv files. Valid arguments are:
         - 'output' will create a new CSV file with just the data from this endpoint.
         - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
         """
-        result = premium.price_target()
+        result = premium.price_target(self.ticker)
         self.price_target = result
         if csv == 'prep':
             self.price_target = self.prep_singledict_csv(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
+            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'price_target')
         return result
 
     def get_analyst_recommendations(self):
@@ -748,7 +749,14 @@ class IEXStock:
         Returns analyst stock recommendations for the requested stock from the last four months.
         Sets class attribute 'analyst_recommendations'.
         """
-        pass
+        result = premium.recommendation_trends(self.ticker)
+        self.analyst_recommendations = result
+        if csv == 'prep':
+            self.analyst_recommendations = self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_block_to_csv(self.prep_listofdict_csv(result), 'analyst_recommendations')
+        return result
+
 
     def get_analyst_estimates(self):
         """Premium Data. 10,000 premium credits per symbol requested.
