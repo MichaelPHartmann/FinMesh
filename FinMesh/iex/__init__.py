@@ -3,8 +3,10 @@ import types
 import pickle
 
 from .stock import *
+from .premium import *
 from .market import *
 from ._common import *
+
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
@@ -725,15 +727,42 @@ class IEXStock:
 
 
     def get_price_target(self):
-        pass
+        """Premium Data. 500 premium credits per symbol requested.
+        Returns the latest avg, high, and low analyst price target for a symbol.
+        Sets class attribute 'price_target'.
+        Parameters:
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+        """
+        result = premium.price_target()
+        self.price_target = result
+        if csv == 'prep':
+            self.price_target = self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
+        return result
 
     def get_analyst_recommendations(self):
+        """Premium Data. 1,000 premium credits per symbol requested.
+        Returns analyst stock recommendations for the requested stock from the last four months.
+        Sets class attribute 'analyst_recommendations'.
+        """
         pass
 
     def get_analyst_estimates(self):
+        """Premium Data. 10,000 premium credits per symbol requested.
+        Returns the latest consensus estimate for the next fiscal period for the requested symbol.
+        Sets class attribute 'analyst_estimates'.
+        """
         pass
 
     def get_earnings(self):
+        """Premium Data. 1,000 premium credits per symbol requested.
+        Returns earnings data for a given company including the actual EPS, consensus, and fiscal period.
+        Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
+        Sets class attribute 'earnings'.
+        """
         pass
 
 
