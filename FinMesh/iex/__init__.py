@@ -726,7 +726,7 @@ class IEXStock:
 
 
 
-    def get_price_target(self):
+    def get_price_target(self, csv=None):
         """Premium Data. 500 premium credits per symbol requested.
         Returns the latest avg, high, and low analyst price target for a symbol.
         CSV is formatted vertically with keys in the first column.
@@ -744,7 +744,7 @@ class IEXStock:
             self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'price_target')
         return result
 
-    def get_analyst_recommendations(self):
+    def get_analyst_recommendations(self, csv=None):
         """Premium Data. 1,000 premium credits per symbol requested.
         Returns analyst stock recommendations for the requested stock from the last four months.
         Sets class attribute 'analyst_recommendations'.
@@ -763,6 +763,10 @@ class IEXStock:
         Returns the latest consensus estimate for the next fiscal period for the requested symbol.
         Sets class attribute 'analyst_estimates'.
         """
+        result = premium.future_estimates(self.ticker)
+        self.analyst_estimates = result
+        return result
+        # Needs a custom csv builder for the weirdly packaged JSON
         pass
 
     def get_earnings(self):
@@ -771,6 +775,10 @@ class IEXStock:
         Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
         Sets class attribute 'earnings'.
         """
+        result = premium.earnings(self.ticker)
+        self.earnings = result
+        return result
+        # Needs a custom csv builder for the weirdly packaged JSON
         pass
 
 
