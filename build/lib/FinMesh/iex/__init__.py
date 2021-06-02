@@ -3,7 +3,10 @@ import types
 import pickle
 
 from .stock import *
+from .premium import *
 from .market import *
+from ._common import *
+
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
@@ -33,7 +36,7 @@ class IEXStock:
                 self.load_state(input='plaintext')
 
     def set_date(self):
-        """Set's the date attribute.
+        """Sets the date attribute.
         This is needed keep save and load funcionality smooth.
         """
         result = str(date.today())
@@ -200,8 +203,10 @@ class IEXStock:
 
     def write_block_to_csv(self, doc_to_write, filename_addition):
         """Writes a block or list of preformated string(s) to a csv file.
+        Functionally identical to 'custom_write_block_to_csv' method but uses a standardized method to build the filename.
+        Mainly used as optional output in class and csv savestate methods.
         Parameters:
-        doc_to_write -> the preformatted string or list to write
+        doc_to_write -> the preformatted string or list of preformated strings to write.
         filename_addition -> the identifier that will be tacked onto the filename.
         """
         if isinstance(doc_to_write, list):
@@ -212,6 +217,23 @@ class IEXStock:
                 f.write(block_to_write)
         else:
             with open(self.csvfile_base.replace('%s', filename_addition), 'w+') as f:
+                f.write(doc_to_write)
+
+    def custom_write_block_to_csv(self, docs_to_write, filename):
+        """Writes a block or list of preformated string(s) to a csv file.
+        Functionally identical to 'write_block_to_csv' method but does not use a standardized filename builder to determine the file name.
+        Parameters:
+        doc_to_write -> the preformatted string or list of preformated strings to write.
+        filename -> the filename to write to. If the file exists it will be over written. Include '.csv' appendation.
+        """
+        if isinstance(doc_to_write, list):
+            block_to_write = ''
+            for string in list_to_write:
+                block_to_write += string
+            with open(filename, 'w+') as f:
+                f.write(block_to_write)
+        else:
+            with open(filename, 'w+') as f:
                 f.write(doc_to_write)
 
 
@@ -702,6 +724,68 @@ class IEXStock:
             self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
         return result
 
+    #       ___                _
+    #      / _ \_______ __ _  (_)_ ____ _
+    #     / ___/ __/ -_)  ' \/ / // /  ' \
+    #    /_/  /_/  \__/_/_/_/_/\_,_/_/_/_/
+
+    def get_price_target(self, csv=None):
+        """Premium Data. 500 premium credits per symbol requested.
+        Returns the latest avg, high, and low analyst price target for a symbol.
+        CSV is formatted vertically with keys in the first column.
+        Sets class attribute 'price_target'.
+        Parameters:
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+        """
+        result = premium.price_target(self.ticker)
+        self.price_target = result
+        if csv == 'prep':
+            self.price_target = self.prep_singledict_csv(result, orientation='vertical')
+        if csv == 'output':
+            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'price_target')
+        return result
+
+    def get_analyst_recommendations(self, csv=None):
+        """Premium Data. 1,000 premium credits per symbol requested.
+        Returns analyst stock recommendations for the requested stock from the last four months.
+        Sets class attribute 'analyst_recommendations'.
+        """
+        result = premium.recommendation_trends(self.ticker)
+        self.analyst_recommendations = result
+        if csv == 'prep':
+            self.analyst_recommendations = self.prep_listofdict_csv(result)
+        if csv == 'output':
+            self.write_block_to_csv(self.prep_listofdict_csv(result), 'analyst_recommendations')
+        return result
+
+
+    def get_analyst_estimates(self):
+        """Premium Data. 10,000 premium credits per symbol requested.
+        Returns the latest consensus estimate for the next fiscal period for the requested symbol.
+        Sets class attribute 'analyst_estimates'.
+        """
+        result = premium.future_estimates(self.ticker)
+        self.analyst_estimates = result
+        return result
+        # Needs a custom csv builder for the weirdly packaged JSON
+        pass
+
+    def get_earnings(self):
+        """Premium Data. 1,000 premium credits per symbol requested.
+        Returns earnings data for a given company including the actual EPS, consensus, and fiscal period.
+        Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
+        Sets class attribute 'earnings'.
+        """
+        result = premium.earnings(self.ticker)
+        self.earnings = result
+        return result
+        # Needs a custom csv builder for the weirdly packaged JSON
+        pass
+
+
+
 class IEXMarket():
     def __init__(self):
         self.date = date.today()
@@ -778,3 +862,35 @@ class IEXMarket():
                 for key, value in output_data.items():
                     f.write(str(key) + ',' + str(value) + '\n')
         return output_data
+
+class symbolsAvailable():
+    """Returns symbols available on IEX"""
+    def __init__(self):
+        self.all_symbols = self.raw_symbols()
+
+    def raw_symbols():
+        """100 credits per request made.
+        The only default return for this class.
+        Simply returns the json dict that IEX supplies through their symbols endpoint.
+        Returns symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
+        """
+        SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
+        return get_iex_json_request(url, vprint=vprint)
+
+    def symbol_cik_dict():
+        """Returns a dictionary containing a symbol and the corrosponding CIK number.
+        This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        """
+        output_dict = {}
+        for company in self.all_symbols:
+            output_dict[company['symbol']] = company['cik']
+        setattr(symbolsAvailable, 'symbol_cik_dict', output_dict)
+        return output_dict
+
+    def symbol_list():
+        """Returns a list of all the symbols supported by IEX."""
+        output_list = []
+        for company in self.all_symbols:
+            output_list.append(company['symbol'])
+        setattr(symbolsAvailable, 'symbol_list', output_list)
+        return output_list

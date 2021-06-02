@@ -724,7 +724,10 @@ class IEXStock:
             self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
         return result
 
-
+    #       ___                _
+    #      / _ \_______ __ _  (_)_ ____ _
+    #     / ___/ __/ -_)  ' \/ / // /  ' \
+    #    /_/  /_/  \__/_/_/_/_/\_,_/_/_/_/
 
     def get_price_target(self, csv=None):
         """Premium Data. 500 premium credits per symbol requested.
