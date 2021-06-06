@@ -36,7 +36,7 @@ def future_estimates(symbol, vprint=False):
     # Returns latest future earnings estimates for the requested ticker.
     url = replace_url_var(IEX_ESTIMATES_URL, symbol=symbol)
     return get_iex_json_request(url, vprint=vprint)
-estimates.__doc__='Returns latest future earnings estimates for the requested stock. Requires premium credits to access.'
+future_estimates.__doc__='Returns latest future earnings estimates for the requested stock. Requires premium credits to access.'
 
 #   List
 IEX_MARKET_LIST_URL = prepend_iex_url('stock') + '{symbol}/list/{list_type}?'
