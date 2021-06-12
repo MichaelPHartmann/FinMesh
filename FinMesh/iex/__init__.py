@@ -383,6 +383,22 @@ class IEXStock:
             self.write_block_to_csv(self.prep_financial_json_csv(result, 'cashflow'), 'cashflow')
         return result
 
+    def get_financial_statements(self, period=None, last=None, csv=None):
+        """5,000 credits per symbol requested.
+        Returns all financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
+        This is useful if you want to update the query parameters after you've made some requests. It's just a time saver.
+        Parameters:
+        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
+        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+        """
+        self.get_balance_sheet(period=period, last=last, csv=csv)
+        self.get_cash_flow_statement(period=period, last=last, csv=csv)
+        self.get_income_statement(period=period, last=last, csv=csv)
+        return [self.balance_sheet, self.cash_flow_statement, self.income_statement]
+
     #  ___ _____  __  __  __     _   _            _
     # |_ _| __\ \/ / |  \/  |___| |_| |_  ___  __| |___
     #  | || _| >  <  | |\/| / -_)  _| ' \/ _ \/ _` (_-<
