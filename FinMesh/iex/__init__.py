@@ -13,6 +13,7 @@ class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
     All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
     All data is available in CSV format, and can be grouped together for bulk file writing.
+    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options. New versions will use Pandas.
     All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
     Parameters:
@@ -122,6 +123,11 @@ class IEXStock:
 
 
     def pandas_financial_json(self, json, statement):
+        """Returns a dataframe for the requested financial statement.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing financial statement data.
+        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
+        """
         data_to_frame = {}
         header = []
         for key in json[statement][0].keys():
@@ -129,18 +135,17 @@ class IEXStock:
         for key in header:
             list_of_values = []
             for year in range(len(json[statement])-1):
-                value = json[statement][year][key]
-                list_of_values.append(value)
+                list_of_values.append(json[statement][year][key])
             data_to_frame[key] = list_of_values
         dataframe = pandas.DataFrame(data_to_frame)
-        pass
+        return dataframe
 
 
     def prep_financial_json(self, json, statement):
         """Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
-        json_doc -> a raw json document containing financial data
-        statement ->
+        json -> a raw json document containing financial data
+        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
         """
         doc_to_write = ''
         header = []
@@ -154,7 +159,25 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
+
+    def pandas_price_json(self, json):
+        """Returns a dataframe for the requested price statement.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing daily price data.
+        """
+        data_to_frame = {}
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        for key in header:
+            list_of_values = []
+            for day in range(len(json)-1):
+                list_of_values.append(json[day][key])
+            data_to_frame[key] = list_of_values
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
     def prep_price_json(self, json_doc):
         """Prepares a JSON document containing a stock price data for writing to a CSV file.
         Parameters:
