@@ -195,7 +195,24 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
+    def pandas_listofdict_json(self, json):
+        """Returns a dataframe for the requested list of dictionaries json document.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing a list of dictionary.
+        """
+        data_to_frame = {}
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        for key in header:
+            list_of_values = []
+            for entry in json:
+                list_of_values.append(entry[key])
+            data_to_frame[key] = list_of_values
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
     def prep_listofdict_json(self, json_doc):
         """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
         Parameters:
