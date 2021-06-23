@@ -1,6 +1,7 @@
 from datetime import date
 import types
 import pickle
+import pandas
 
 from .stock import *
 from .premium import *
@@ -12,6 +13,7 @@ class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
     All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
     All data is available in CSV format, and can be grouped together for bulk file writing.
+    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options. New versions will use Pandas.
     All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
     Parameters:
@@ -120,11 +122,30 @@ class IEXStock:
     #            |_|
 
 
-    # NEW
-    def prep_financial_json_csv(self, json, statement):
+    def pandas_financial_json(self, json, statement):
+        """Returns a dataframe for the requested financial statement.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing financial statement data.
+        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
+        """
+        data_to_frame = {}
+        header = []
+        for key in json[statement][0].keys():
+            header.append(key)
+        for key in header:
+            list_of_values = []
+            for year in range(len(json[statement])-1):
+                list_of_values.append(json[statement][year][key])
+            data_to_frame[key] = list_of_values
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
+    def prep_financial_json(self, json, statement):
         """Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
-        json_doc -> a raw json document containing financial data
+        json -> a raw json document containing financial data
+        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
         """
         doc_to_write = ''
         header = []
@@ -138,8 +159,26 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
-    def prep_price_json_csv(self, json_doc):
+
+    def pandas_price_json(self, json):
+        """Returns a dataframe for the requested price statement.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing daily price data.
+        """
+        data_to_frame = {}
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        for key in header:
+            list_of_values = []
+            for day in range(len(json)-1):
+                list_of_values.append(json[day][key])
+            data_to_frame[key] = list_of_values
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
+    def prep_price_json(self, json_doc):
         """Prepares a JSON document containing a stock price data for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing price data
@@ -156,8 +195,26 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
-    def prep_listofdict_csv(self, json_doc):
+
+    def pandas_listofdict_json(self, json):
+        """Returns a dataframe for the requested list of dictionaries json document.
+        Parameters:
+        json -> the raw json output from IEX Cloud containing a list of dictionary.
+        """
+        data_to_frame = {}
+        header = []
+        for key in json_doc[0].keys():
+            header.append(key)
+        for key in header:
+            list_of_values = []
+            for entry in json:
+                list_of_values.append(entry[key])
+            data_to_frame[key] = list_of_values
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
+    def prep_listofdict_json(self, json_doc):
         """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a list of dictionaries
@@ -173,8 +230,19 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
-    def prep_singledict_csv(self, json_dict, orientation='horizontal', in_list=False):
+    def pandas_singledict_json(self, json, in_list=False):
+        data_to_frame = {}
+        if in_list:
+            dictionary = json[0]
+        else:
+            dictionary = json
+        for key, value in dictionary.items():
+            data_to_frame[key] = value
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
+    def prep_singledict_json(self, json_dict, orientation='horizontal', in_list=False):
         """Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a single dictionary
@@ -300,9 +368,9 @@ class IEXStock:
         attribute_name = f"{period}_historical_price"
         setattr(IEXStock, attribute_name, result)
         if csv == 'prep':
-            return self.prep_price_json_csv(result)
+            return self.prep_price_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_price_json_csv(result), 'time_frame')
+            self.write_block_to_csv(self.prep_price_json(result), 'time_frame')
             return result
         else:
             return result
@@ -332,9 +400,9 @@ class IEXStock:
         result = stock.balance_sheet(self.ticker, period=period, last=last)
         self.balance_sheet = result
         if csv == 'prep':
-            self.balance_sheet = self.prep_financial_json_csv(result, 'balancesheet')
+            self.balance_sheet = self.prep_financial_json(result, 'balancesheet')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json_csv(result, 'balancesheet'), 'balancesheet')
+            self.write_block_to_csv(self.prep_financial_json(result, 'balancesheet'), 'balancesheet')
         return result
 
     def get_income_statement(self, period=None, last=None, csv=None):
@@ -355,9 +423,9 @@ class IEXStock:
         result = stock.income_statement(self.ticker, period=period, last=last)
         self.income_statement = result
         if csv == 'prep':
-            self.income_statement =  self.prep_financial_json_csv(result, 'income')
+            self.income_statement =  self.prep_financial_json(result, 'income')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json_csv(result, 'income'), 'incomestatement')
+            self.write_block_to_csv(self.prep_financial_json(result, 'income'), 'incomestatement')
         return result
 
     def get_cash_flow_statement(self, period=None, last=None, csv=None):
@@ -378,10 +446,26 @@ class IEXStock:
         result = stock.cash_flow(self.ticker, period=period, last=last)
         self.cash_flow_statement = result
         if csv == 'prep':
-            self.cash_flow_statement = self.prep_financial_json_csv(result, 'cashflow')
+            self.cash_flow_statement = self.prep_financial_json(result, 'cashflow')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json_csv(result, 'cashflow'), 'cashflow')
+            self.write_block_to_csv(self.prep_financial_json(result, 'cashflow'), 'cashflow')
         return result
+
+    def get_financial_statements(self, period=None, last=None, csv=None):
+        """5,000 credits per symbol requested.
+        Returns all financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
+        This is useful if you want to update the query parameters after you've made some requests. It's just a time saver.
+        Parameters:
+        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
+        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        csv -> string. Determines the processing for csv files. Valid arguments are:
+        - 'output' will create a new CSV file with just the data from this endpoint.
+        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+        """
+        self.get_balance_sheet(period=period, last=last, csv=csv)
+        self.get_cash_flow_statement(period=period, last=last, csv=csv)
+        self.get_income_statement(period=period, last=last, csv=csv)
+        return [self.balance_sheet, self.cash_flow_statement, self.income_statement]
 
     #  ___ _____  __  __  __     _   _            _
     # |_ _| __\ \/ / |  \/  |___| |_| |_  ___  __| |___
@@ -404,9 +488,9 @@ class IEXStock:
         result = stock.advanced_fundementals(self.ticker, period)
         self.advanced_fundementals = result
         if csv == 'prep':
-            self.advanced_fundementals = self.prep_singledict_csv(result, orientation='vertical', in_list=True)
+            self.advanced_fundementals = self.prep_singledict_json(result, orientation='vertical', in_list=True)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical', in_list=True), 'advanced_fundementals')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical', in_list=True), 'advanced_fundementals')
         return result
 
     def get_advanced_stats(self, csv=None):
@@ -423,9 +507,9 @@ class IEXStock:
         result = stock.advanced_stats(self.ticker)
         self.advanced_stats = result
         if csv == 'prep':
-            self.advanced_stats = self.prep_singledict_csv(result, orientation='vertical')
+            self.advanced_stats = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'advanced_stats')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'advanced_stats')
         return result
 
     #  ___         _            _ #
@@ -465,9 +549,9 @@ class IEXStock:
         result = stock.company(self.ticker)
         self.company = result
         if csv == 'prep':
-            self.company = self.prep_singledict_csv(result, orientation='vertical')
+            self.company = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'company')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'company')
         return result
 
     def get_delayed_quote(self, csv=None):
@@ -485,9 +569,9 @@ class IEXStock:
         result = stock.delayed_quote(self.ticker)
         self.delayed_quote = result
         if csv == 'prep':
-            self.delayed_quote = self.prep_singledict_csv(result, orientation='vertical')
+            self.delayed_quote = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'delayed_quote')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'delayed_quote')
         return result
 
     def get_dividends(self, scope, csv=None):
@@ -505,9 +589,9 @@ class IEXStock:
         result = stock.dividends(self.ticker, scope)
         self.dividends = result
         if csv == 'prep':
-            self.dividends = self.prep_listofdict_csv(result)
+            self.dividends = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'dividends')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'dividends')
         return result
 
     def get_basic_financials(self, csv=None):
@@ -524,9 +608,9 @@ class IEXStock:
         result = stock.financials(self.ticker)
         self.basic_financials = result
         if csv == 'prep':
-            self.basic_financials = self.prep_financial_json_csv(result, 'financials')
+            self.basic_financials = self.prep_financial_json(result, 'financials')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json_csv(result, 'financials'), 'basic_financials')
+            self.write_block_to_csv(self.prep_financial_json(result, 'financials'), 'basic_financials')
         return result
 
     def get_fund_ownership(self, csv=None):
@@ -542,9 +626,9 @@ class IEXStock:
         result = stock.fund_ownership(self.ticker)
         self.fund_ownership = result
         if csv == 'prep':
-            self.fund_ownership = self.prep_listofdict_csv(result)
+            self.fund_ownership = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'fund_ownership')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'fund_ownership')
         return result
 
     def get_insider_roster(self, output_csv):
@@ -561,9 +645,9 @@ class IEXStock:
         result = stock.insider_roster(self.ticker)
         self.insider_roster = result
         if csv == 'prep':
-            self.insider_roster = self.prep_listofdict_csv(result)
+            self.insider_roster = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'insider_roster')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_roster')
         return result
 
     def get_insider_transactions(self, output_csv):
@@ -579,9 +663,9 @@ class IEXStock:
         result = stock.insider_transactions(self.ticker)
         self.insider_transactions = result
         if csv == 'prep':
-            self.insider_transactions = self.prep_listofdict_csv(result)
+            self.insider_transactions = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'insider_transactions')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_transactions')
         return result
 
     def get_institutional_ownership(self, csv=None):
@@ -597,9 +681,9 @@ class IEXStock:
         result = stock.institutional_ownership(self.ticker)
         self.institutional_ownership = result
         if csv == 'prep':
-            self.institutional_ownership = self.prep_listofdict_csv(result)
+            self.institutional_ownership = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'institutional_ownership')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'institutional_ownership')
         return result
 
     def get_key_stats(self, stat=None, csv=None):
@@ -617,9 +701,9 @@ class IEXStock:
         result = stock.key_stats(self.ticker, stat=stat)
         self.key_stats = result
         if csv == 'prep':
-            self.key_stats = self.prep_singledict_csv(result, orientation='vertical')
+            self.key_stats = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'key_stats')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'key_stats')
         return result
 
     def get_largest_trades(self, csv=None):
@@ -635,9 +719,9 @@ class IEXStock:
         result = stock.largest_trades(self.ticker)
         self.largest_trades = result
         if csv == 'prep':
-            self.largest_trades = self.prep_listofdict_csv(result)
+            self.largest_trades = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'largest_trades')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'largest_trades')
         return result
 
     def get_logo(self):
@@ -663,9 +747,9 @@ class IEXStock:
         result = stock.news(self.ticker, last=last)
         self.news = result
         if csv == 'prep':
-            self.news = self.prep_listofdict_csv(result)
+            self.news = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'news')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'news')
         return result
 
     def get_ohlc(self, csv=None):
@@ -719,9 +803,9 @@ class IEXStock:
         result = stock.quote(self.ticker)
         self.quote = result
         if csv == 'prep':
-            self.quote = self.prep_singledict_csv(result, orientation='vertical')
+            self.quote = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'quote')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'quote')
         return result
 
     #       ___                _
@@ -742,9 +826,9 @@ class IEXStock:
         result = premium.price_target(self.ticker)
         self.price_target = result
         if csv == 'prep':
-            self.price_target = self.prep_singledict_csv(result, orientation='vertical')
+            self.price_target = self.prep_singledict_json(result, orientation='vertical')
         if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_csv(result, orientation='vertical'), 'price_target')
+            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'price_target')
         return result
 
     def get_analyst_recommendations(self, csv=None):
@@ -755,9 +839,9 @@ class IEXStock:
         result = premium.recommendation_trends(self.ticker)
         self.analyst_recommendations = result
         if csv == 'prep':
-            self.analyst_recommendations = self.prep_listofdict_csv(result)
+            self.analyst_recommendations = self.prep_listofdict_json(result)
         if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_csv(result), 'analyst_recommendations')
+            self.write_block_to_csv(self.prep_listofdict_json(result), 'analyst_recommendations')
         return result
 
 
