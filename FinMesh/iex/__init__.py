@@ -195,6 +195,7 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
+
     def pandas_listofdict_json(self, json):
         """Returns a dataframe for the requested list of dictionaries json document.
         Parameters:
@@ -229,7 +230,18 @@ class IEXStock:
             doc_to_write += ('\n')
         return doc_to_write
 
-    # NEW
+    def pandas_singledict_json(self, json, in_list=False):
+        data_to_frame = {}
+        if in_list:
+            dictionary = json[0]
+        else:
+            dictionary = json
+        for key, value in dictionary.items():
+            data_to_frame[key] = value
+        dataframe = pandas.DataFrame(data_to_frame)
+        return dataframe
+
+
     def prep_singledict_json(self, json_dict, orientation='horizontal', in_list=False):
         """Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
