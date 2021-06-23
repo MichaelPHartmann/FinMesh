@@ -238,7 +238,7 @@ class IEXStock:
             dictionary = json
         for key, value in dictionary.items():
             data_to_frame[key] = value
-        dataframe = pandas.DataFrame(data_to_frame)
+        dataframe = pandas.DataFrame(data_to_frame, index=[0])
         return dataframe
 
 
