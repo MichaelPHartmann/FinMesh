@@ -366,18 +366,20 @@ class IEXStock:
         output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-
+        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
+
+        if output:
+            result = pandas_price_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv', period))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', period))
+
         setattr(IEXStock, attribute_name, result)
-        if csv == 'prep':
-            return self.prep_price_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_price_json(result), 'time_frame')
-            return result
-        else:
-            return result
+        return result
 
     #  ___ _                   _      _   ___ _        _                     _
     # | __(_)_ _  __ _ _ _  __(_)__ _| | / __| |_ __ _| |_ ___ _ __  ___ _ _| |_ ___
@@ -626,11 +628,15 @@ class IEXStock:
 
         """
         result = stock.dividends(self.ticker, scope)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','dividends'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','dividends'))
+
         self.dividends = result
-        if csv == 'prep':
-            self.dividends = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'dividends')
         return result
 
     def get_basic_financials(self, output=None):
@@ -665,11 +671,15 @@ class IEXStock:
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.fund_ownership(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','fund_ownership'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','fund_ownership'))
+
         self.fund_ownership = result
-        if csv == 'prep':
-            self.fund_ownership = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'fund_ownership')
         return result
 
     def get_insider_roster(self, output_csv):
@@ -685,11 +695,15 @@ class IEXStock:
 
         """
         result = stock.insider_roster(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','insider_roster'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','insider_roster'))
+
         self.insider_roster = result
-        if csv == 'prep':
-            self.insider_roster = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_roster')
         return result
 
     def get_insider_transactions(self, output_csv):
@@ -704,11 +718,15 @@ class IEXStock:
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.insider_transactions(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','insider_transactions'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','insider_transactions'))
+
         self.insider_transactions = result
-        if csv == 'prep':
-            self.insider_transactions = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_transactions')
         return result
 
     def get_institutional_ownership(self, output=None):
@@ -723,11 +741,15 @@ class IEXStock:
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.institutional_ownership(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','institutional_ownership'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','institutional_ownership'))
+
         self.institutional_ownership = result
-        if csv == 'prep':
-            self.institutional_ownership = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'institutional_ownership')
         return result
 
     def get_key_stats(self, stat=None, output=None):
@@ -766,11 +788,15 @@ class IEXStock:
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.largest_trades(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','largest_trades'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','largest_trades'))
+
         self.largest_trades = result
-        if csv == 'prep':
-            self.largest_trades = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'largest_trades')
         return result
 
     def get_logo(self):
@@ -795,11 +821,15 @@ class IEXStock:
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
         """
         result = stock.news(self.ticker, last=last)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','news'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','news'))
+
         self.news = result
-        if csv == 'prep':
-            self.news = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'news')
         return result
 
     def get_ohlc(self, output=None):
@@ -894,11 +924,15 @@ class IEXStock:
         Sets class attribute 'analyst_recommendations'.
         """
         result = premium.recommendation_trends(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','analyst_recommendations'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','analyst_recommendations'))
+
         self.analyst_recommendations = result
-        if csv == 'prep':
-            self.analyst_recommendations = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'analyst_recommendations')
         return result
 
 
