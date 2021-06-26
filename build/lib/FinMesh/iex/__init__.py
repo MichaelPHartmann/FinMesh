@@ -137,7 +137,7 @@ class IEXStock:
             for year in range(len(json[statement])-1):
                 list_of_values.append(json[statement][year][key])
             data_to_frame[key] = list_of_values
-        dataframe = pandas.DataFrame(data_to_frame, index=[0])
+        dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
 
@@ -174,7 +174,7 @@ class IEXStock:
             for day in range(len(json)-1):
                 list_of_values.append(json[day][key])
             data_to_frame[key] = list_of_values
-        dataframe = pandas.DataFrame(data_to_frame, index=[0])
+        dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
 
@@ -210,7 +210,7 @@ class IEXStock:
             for entry in json:
                 list_of_values.append(entry[key])
             data_to_frame[key] = list_of_values
-        dataframe = pandas.DataFrame(data_to_frame, index=[0])
+        dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
 
