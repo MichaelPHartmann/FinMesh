@@ -363,7 +363,9 @@ class IEXStock:
         time_frame -> String. Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
         date -> String. If 'date' is specified in time_frame, this is the date that you wish to access.
         chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -394,7 +396,9 @@ class IEXStock:
         Parameters:
         period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -452,7 +456,9 @@ class IEXStock:
         Parameters:
         period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -480,7 +486,9 @@ class IEXStock:
         Parameters:
         period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -504,7 +512,9 @@ class IEXStock:
         Sets class attribute 'advanced_fundementals'.
         Parameters:
         period -> string, accepted values ['annual', 'quarterly', 'ttm']
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -527,7 +537,9 @@ class IEXStock:
         Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         Sets class attribute 'advanced_stats'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -557,7 +569,9 @@ class IEXStock:
 #        CSV is formatted vertically with keys in the first column.
 #        Sets class attribute 'book'.
 #        Parameters:
-#        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+#        output -> string. Determines the output of the data. Default is raw JSON.
+#        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+#        Valid arguments are:
 #        - 'dataframe' will create a pandas data frame with the data from this endpoint.
 #        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
 #        """
@@ -573,7 +587,9 @@ class IEXStock:
         Returns general information on the company requested.
         Sets class attribute 'company'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -596,7 +612,9 @@ class IEXStock:
         Returns 15 minute delayed quote for the requested symbol.
         Sets class attribute 'delayed_quote'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -621,7 +639,9 @@ class IEXStock:
         Sets class attribute 'dividends'.
         Parameters:
         scope -> string, the range of data needed. Accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next']
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -646,7 +666,9 @@ class IEXStock:
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
         Sets class attribute 'basic_financials'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -665,7 +687,9 @@ class IEXStock:
         Returns the 10 largest institutional holders of the requested company.
         Sets class attribute 'fund_ownership'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -688,7 +712,9 @@ class IEXStock:
         Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -712,7 +738,9 @@ class IEXStock:
         Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -735,7 +763,9 @@ class IEXStock:
         Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
         Sets class attribute 'institutional_ownership'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -759,7 +789,9 @@ class IEXStock:
         Sets class attribute 'key_stats'.
         Parameters:
         stat -> String. If you would like to querie one single stat, you can enter that here.
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -782,7 +814,9 @@ class IEXStock:
         This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -815,7 +849,9 @@ class IEXStock:
         Sets class attribute 'news'.
         Parameters ->
         last -> Integer. Number of article to return. Min = 1 Max = 50 Defualt = 10
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -838,7 +874,9 @@ class IEXStock:
         Returns the official open and close for a give symbol.
         Sets class attribute 'ohlc'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -877,7 +915,9 @@ class IEXStock:
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'quote'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -905,7 +945,9 @@ class IEXStock:
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'price_target'.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
@@ -1014,7 +1056,7 @@ class IEXMarket():
         """18,000 credits per request per day.
         Returns all available current economic indicator datapoints.
         Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON. Valid arguments are:
+        output -> string. Determines the output of the data. Default is raw JSON.
         """
         output_data = {}
         for key in self.available_commodity_symbols.keys():
