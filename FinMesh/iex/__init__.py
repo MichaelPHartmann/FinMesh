@@ -46,6 +46,8 @@ class IEXStock:
         result = str(date.today())
         setattr(IEXStock, 'date', result)
 
+
+    # TO BE DEPRECATED #
     def build_savestate_file(self, addin=None):
         """Builds a standard file name based on an add-in.
         This allows automatic retrieval of savestate files because the files are created using the exact same method.
@@ -58,6 +60,7 @@ class IEXStock:
         else:
             result = result + '.txt'
 
+    # TO BE DEPRECATED #
     def save_state(self, output='plaintext', directory=None):
         """Saves the current initialized state attributes in a serialized text file.
         Currently only outputs dicts into a .txt file.
@@ -93,6 +96,7 @@ class IEXStock:
             with open(filepath, 'w+') as f:
                 f.write(raw_to_write)
 
+    # TO BE DEPRECATED #
     def load_state(self, input='plaintext', directory=None):
         """Loads the attributes of a previous serialized class and it's attributes from a file.
         Parameters:
