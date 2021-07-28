@@ -26,8 +26,8 @@ class IEXStock:
         self.ticker = ticker
         self.period = period
         self.last = last
-        self.csvfile_base = f'{ticker}_%s.csv'
-        self.excelfile_base = f'{ticker}_%s.xlsx'
+        self.csvfile_base = f'{ticker}_%s.csv' # TO BE DEPRECATED #
+        self.excelfile_base = f'{ticker}_%s.xlsx' # TO BE DEPRECATED #
         self.genfile_base = f'{ticker}_%s'
         self.set_date()
 
@@ -142,7 +142,7 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_financial_json(self, json, statement):
         """Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
@@ -179,7 +179,7 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_price_json(self, json_doc):
         """Prepares a JSON document containing a stock price data for writing to a CSV file.
         Parameters:
@@ -215,7 +215,7 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_listofdict_json(self, json_doc):
         """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
         Parameters:
@@ -243,7 +243,7 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame, index=[0])
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_singledict_json(self, json_dict, orientation='horizontal', in_list=False):
         """Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
@@ -271,6 +271,7 @@ class IEXStock:
                 doc_to_write += (str(key) + ',' + str(value) + '\n')
         return doc_to_write
 
+    # TO BE DEPRECATED #
     def write_block_to_csv(self, doc_to_write, filename_addition):
         """Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'custom_write_block_to_csv' method but uses a standardized method to build the filename.
@@ -289,6 +290,7 @@ class IEXStock:
             with open(self.csvfile_base.replace('%s', filename_addition), 'w+') as f:
                 f.write(doc_to_write)
 
+    # TO BE DEPRECATED #
     def custom_write_block_to_csv(self, doc_to_write, filename):
         """Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'write_block_to_csv' method but does not use a standardized filename builder to determine the file name.
@@ -427,7 +429,7 @@ class IEXStock:
         period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
         last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
         output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        If any other output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
         Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
