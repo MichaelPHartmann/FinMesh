@@ -13,7 +13,8 @@ class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
     All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
     All data is available in CSV format, and can be grouped together for bulk file writing.
-    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options. New versions will use Pandas.
+    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options.
+    Beta version will use Pandas. This is currently about 75% completed.
     All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
     Parameters:
@@ -45,6 +46,19 @@ class IEXStock:
         """
         result = str(date.today())
         setattr(IEXStock, 'date', result)
+
+    def save_class_state(self, output='pickle'):
+        #1 Create list of all attributes generated - built
+        #2 Take the data from each attribute and attach it to the attribute name in dict format - built needs mods
+        #3 Build filename using filename_builder
+        #4a If output=pickle, Pickle the dict, preserving the format of each attribute object (dataframe or JSON) - trivial
+        #4b If output=plaintext, save the dictionary as a JSON file
+        pass
+
+    def load_class_state(self, input='pickle'):
+        #1 Create target filename using filename_builder
+        #2 For each dict entry, us setattr to set attributes equal to the corrosponding dict value
+        pass
 
 
     # TO BE DEPRECATED #
