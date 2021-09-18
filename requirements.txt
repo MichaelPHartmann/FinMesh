@@ -1,0 +1,16 @@
+bs4
+csv
+datetime
+json
+nltk
+os
+pandas
+pickle
+requests
+shutil
+subprocess
+time
+types
+webbrowser
+xmltodict
+xml.etree.ElementTree
