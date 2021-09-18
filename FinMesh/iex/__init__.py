@@ -10,12 +10,12 @@ from ._common import *
 
 
 class IEXStock:
-    """:return: A class that is built around retrieving data from the IEX Cloud API service.
-    All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
+    """A class that is built around retrieving data from the IEX Cloud API service.
+    All available data is derived from functions defined in the stock.py module, and are implemented here with a "get_" prefix.
     All data is available in CSV format, and can be grouped together for bulk file writing.
     CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options.
     Beta version will use Pandas. This is currently about 75% completed.
-    All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
+    All data retrieved is automatically stored in the corrosponding class attribute (sans "get_" prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
 
     :param ticker: The symbol or ticker of the stock for which the class is to be created.
@@ -331,7 +331,7 @@ class IEXStock:
                 f.write(doc_to_write)
 
     def filename_builder(extension, filename_addition):
-        return self.genfile_base.replace('%s', filename_addition) += append(extension)
+        return self.genfile_base.replace('%s', filename_addition).append(extension)
 
     #  ___          _                   _   ___     _          ___       __                    _   _
     # | _ ) __ _ __(_)__   __ _ _ _  __| | | _ \_ _(_)__ ___  |_ _|_ _  / _|___ _ _ _ __  __ _| |_(_)___ _ _
