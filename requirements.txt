@@ -3,13 +3,13 @@ bs4
 datetime
 
 nltk
-os
+
 pandas
 pickle
-requests
+
 shutil
-subprocess
-time
+
+
 types
 webbrowser
 xmltodict

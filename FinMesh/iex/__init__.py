@@ -148,9 +148,11 @@ class IEXStock:
 
     def pandas_financial_json(self, json, statement):
         """Returns a dataframe for the requested financial statement.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing financial statement data.
-        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
+
+        :param json: the raw json output from IEX Cloud containing financial statement data.
+        :type json: string, raw json, required
+        :param statement: the name of the statement as used by IEX Cloud.
+        :type statement: accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
         """
         data_to_frame = {}
         header = []
@@ -186,8 +188,9 @@ class IEXStock:
 
     def pandas_price_json(self, json):
         """Returns a dataframe for the requested price statement.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing daily price data.
+
+        :param json: the raw json output from IEX Cloud containing daily price data.
+        :type json: raw json
         """
         data_to_frame = {}
         header = []
@@ -222,8 +225,9 @@ class IEXStock:
 
     def pandas_listofdict_json(self, json):
         """Returns a dataframe for the requested list of dictionaries json document.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing a list of dictionary.
+
+        :param json: the raw json output from IEX Cloud containing a list of dictionary.
+        :type json: raw json
         """
         data_to_frame = {}
         header = []
@@ -255,6 +259,13 @@ class IEXStock:
         return doc_to_write
 
     def pandas_singledict_json(self, json, in_list=False):
+        """Returns a dataframe for the requested dictionary json document.
+
+        :param json: the raw json output from IEX Cloud containing a list of dictionary.
+        :type json: raw json
+        :param in_list: whether the disctionary is conatined within a list element, that is, inside square braces.
+        :type in_list: boolean
+        """
         data_to_frame = {}
         if in_list:
             dictionary = json[0]
@@ -343,10 +354,15 @@ class IEXStock:
         """6 credits per symbol requested.
         Makes requests to the company and key stat IEX endpoints.
         Sets class attributes for:
+
         Company name (self.company_name)
+
         Industry (self.industry)
+
         Market Capitalization (self.market_cap)
+
         P/E Ratio (self.pe_ratio)
+
         Beta (self.beta)
         """
         company_request = stock.company(self.ticker)
@@ -361,8 +377,11 @@ class IEXStock:
         """6 credits per symbol requested.
         Makes requests to the key stat and price endpoints.
         Sets class attributes for:
+
         52 week high (week52_high), 52 week low (week52_low)
+
         200 day moving average (moving_average_200), 50 day moving average (moving_average_50)
+
         Most recent price (self.price)
         """
         key_stat_request = stock.key_stats(self.ticker)
@@ -374,7 +393,8 @@ class IEXStock:
 
     def price(self):
         """1 credit per symbol requested.
-        Returns the most recent price for the requested company and sets class attribute 'self.price'.
+
+        :return: Most recent price for the requested company and sets class attribute 'self.price'.
         """
         result = stock.price(self.ticker)
         self.price = result
@@ -383,16 +403,22 @@ class IEXStock:
     def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, output=None):
         """10 credits per day requested when part of a time frame. (Full Data)
         50 credits per single day, minute data.
-        Parameters:
-        time_frame -> String. Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
-        date -> String. If 'date' is specified in time_frame, this is the date that you wish to access.
-        chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param time_frame: Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
+        :type time_frame: string
+        :param date: If 'date' is specified in time_frame, this is the date that you wish to access.
+        :type date: string
+        :param chart_by_date: If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
+        :type chart_by_date: boolean
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: string
+
         Valid arguments are:
         - 'dataframe' will create a pandas data frame with the data from this endpoint.
         - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
         - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
         """
         result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
@@ -415,17 +441,20 @@ class IEXStock:
 
     def get_balance_sheet(self, period=None, last=None, output=None):
         """3,000 credits per symbol requested.
-        Returns balance sheet data for the requested company.
-        Sets class attribute 'self.balance_sheet'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        Sets class attribute 'self.balance_sheet'
+
+        :return: Balance sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
+        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
+        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
+        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
@@ -446,16 +475,20 @@ class IEXStock:
     def get_income_statement(self, period=None, last=None, output=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
-        Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any other output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        Sets class attribute 'self.income_sheet'
+
+        :return: Income sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
+        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
+        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
+        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
@@ -476,16 +509,20 @@ class IEXStock:
     def get_cash_flow_statement(self, period=None, last=None, output=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
-        Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        Sets class attribute 'self.cash_flow_statement'
+
+        :return: Cash flow statement data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
+        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
+        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
+        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
