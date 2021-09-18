@@ -2,8 +2,3 @@ bs4
 datetime
 nltk
 pandas
-shutil
-types
-webbrowser
-xmltodict
-xml.etree.ElementTree
