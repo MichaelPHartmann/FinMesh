@@ -10,6 +10,7 @@ Welcome to FinMesh's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+FinMesh.iex
 
 
 Indices and tables
