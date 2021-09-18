@@ -1,15 +1,8 @@
 bs4
-
 datetime
-
 nltk
-
 pandas
-pickle
-
 shutil
-
-
 types
 webbrowser
 xmltodict

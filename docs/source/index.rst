@@ -13,7 +13,7 @@ Welcome to FinMesh's documentation!
 iex.IEXStock
 ============
 
-.. automodule:: iex
+.. autoclass:: iex.IEXStock
   :members:
 
 Indices and tables
