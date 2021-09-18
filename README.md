@@ -55,6 +55,8 @@ If you would like to reach out, feel free to connect with me one of three ways:
 
 If there are issues, be it major or semantic, please open an issue on GitHub.
 
+You can donate to the project [HERE](https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD). This project is 100% maintained in my free time (although I'm currently unemployed so I guess that doesn't mean anything) and any donations are greatly appreciated. If FinMesh has helped you make money, consider contributing!
+
 
 [5]: https://github.com/MichaelPHartmann
 [6]: https://www.linkedin.com/in/michael-hartmann/
