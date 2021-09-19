@@ -1078,9 +1078,10 @@ class IEXMarket():
 
     def get_all_economic_data(self, output_csv=False):
         """18,000 credits per request per day.
-        Returns all available current economic indicator datapoints.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
+        :return: All available current economic indicator datapoints.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: boolean, optional
         """
         output_data = {}
         for key in self.available_commodity_symbols.keys():
@@ -1094,6 +1095,9 @@ class IEXMarket():
     def get_all_commodity_data(self, output_csv=False):
         """10,000 credits per request per day.
         Returns all available current commodity datapoints.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: boolean, optional
         """
         output_data = {}
         for key in self.available_commodity_symbols.keys():
@@ -1113,14 +1117,14 @@ class symbolsAvailable():
         """100 credits per request made.
         The only default return for this class.
         Simply returns the json dict that IEX supplies through their symbols endpoint.
-        Returns symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
+        :return: Symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
         """
         SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
         return get_iex_json_request(url, vprint=vprint)
 
     def symbol_cik_dict():
-        """Returns a dictionary containing a symbol and the corrosponding CIK number.
-        This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        """This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        :return: Dictionary containing a symbol and the corrosponding CIK number.
         """
         output_dict = {}
         for company in self.all_symbols:
@@ -1129,7 +1133,7 @@ class symbolsAvailable():
         return output_dict
 
     def symbol_list():
-        """Returns a list of all the symbols supported by IEX."""
+        """:return: List of all the symbols supported by IEX."""
         output_list = []
         for company in self.all_symbols:
             output_list.append(company['symbol'])
