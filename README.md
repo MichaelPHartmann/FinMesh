@@ -7,6 +7,11 @@ FinMesh is a python-based package that brings together financial data from vario
 [3]: https://fred.stlouisfed.org/
 [4]: https://www.sec.gov/edgar/searchedgar/companysearch.html
 
+## [Read The Docs!](https://finmesh.readthedocs.io/en/latest/)
+
+Documentation is currently under construction but installation and all IEX functionality is covered on [Read The Docs](https://finmesh.readthedocs.io/en/latest/).
+This documentation will now take over for the extremely basic function lists found on my personal website.
+
 ## Purpose
 ---
 The purpose of this package and its sub-packages was originally to practice interacting with API data. With third-party API packages there is always the risk of outages or bugs. In building the original IEX wrapper we sought to build something easy to understand and use, that can be updated quickly and accurately.
