@@ -16,6 +16,9 @@ iex.IEXStock
 .. autoclass:: iex.IEXStock
   :members:
 
+..automodule:: iex.stock
+  :members:
+
 Indices and tables
 ==================
 
