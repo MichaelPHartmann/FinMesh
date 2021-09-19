@@ -23,6 +23,9 @@ In doing so we hope to create a low-barrier way for beginners to play with large
 In the future, this package will be updated with new financial and economic APIs.
 If you know of a low or no cost API that could be incorporated please raise it as an issue and we will work to have it done ASAP.
 
+You can donate to this project `HERE <https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD>`_.
+If FinMesh has brought you value please consider supporting the project.
+
 .. toctree::
    :maxdepth: 3
    :caption: Table of Contents:
