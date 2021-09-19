@@ -8,8 +8,8 @@ def balance_sheet(symbol, vprint=False, **queries):
 
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
-    :param **queries: Standard **kwargs parameter.
-    :type **queries: key value pair where key is variable and value is string
+    :param queries: Standard kwargs parameter.
+    :type queries: key value pair where key is variable and value is string
     """
     # Returns balance sheet data for the requested ticker.
     url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
@@ -44,8 +44,8 @@ def cash_flow(symbol, vprint=False, **queries):
 
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
-    :param **queries: Standard **kwargs parameter.
-    :type **queries: key value pair where key is variable and value is string
+    :param queries: Standard kwargs parameter.
+    :type queries: key value pair where key is variable and value is string
     """
     url = replace_url_var(IEX_CASH_FLOW_URL, symbol=symbol)
     url += '?'
@@ -203,8 +203,8 @@ def income_statement(symbol, vprint=False, **queries):
 
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
-    :param **queries: Standard **kwargs parameter.
-    :type **queries: key value pair where key is variable and value is string
+    :param queries: Standard kwargs parameter.
+    :type queries: key value pair where key is variable and value is string
     """
     url = replace_url_var(IEX_INCOME_STATEMENT_URL, symbol=symbol)
     url += '?'

@@ -67,7 +67,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def build_savestate_file(self, addin=None):
-        """Builds a standard file name based on an add-in.
+        """:meta private:
+        Builds a standard file name based on an add-in.
         This allows automatic retrieval of savestate files because the files are created using the exact same method.
         Parameters:
         addin -> String. File identifier to aid in automated loading of savestate files.
@@ -80,7 +81,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def save_state(self, output='plaintext', directory=None):
-        """Saves the current initialized state attributes in a serialized text file.
+        """:meta private:
+        Saves the current initialized state attributes in a serialized text file.
         Currently only outputs dicts into a .txt file.
         Parameters:
         output -> String. Defines the type of output. Default is plaintext.
@@ -116,7 +118,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def load_state(self, input='plaintext', directory=None):
-        """Loads the attributes of a previous serialized class and it's attributes from a file.
+        """:meta private:
+        Loads the attributes of a previous serialized class and it's attributes from a file.
         Parameters:
         input -> String. Defines the type of input. Default is plaintext.
         directoy -> String. If the saved file is in a directory, this is the name of that directory.
@@ -168,7 +171,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def prep_financial_json(self, json, statement):
-        """Prepares a JSON document containing a financial data for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
         json -> a raw json document containing financial data
         statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
@@ -206,7 +210,9 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def prep_price_json(self, json_doc):
-        """Prepares a JSON document containing a stock price data for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a stock price data for writing to a CSV file.
+
         Parameters:
         json_doc -> a raw json document containing price data
         """
@@ -243,7 +249,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def prep_listofdict_json(self, json_doc):
-        """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a list of dictionaries
         """
@@ -278,7 +285,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def prep_singledict_json(self, json_dict, orientation='horizontal', in_list=False):
-        """Prepares a JSON document containing a single dictionary for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a single dictionary
         orientation -> the layout of the data. Accepted arguments:
@@ -306,7 +314,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def write_block_to_csv(self, doc_to_write, filename_addition):
-        """Writes a block or list of preformated string(s) to a csv file.
+        """:meta private:
+        Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'custom_write_block_to_csv' method but uses a standardized method to build the filename.
         Mainly used as optional output in class and csv savestate methods.
         Parameters:
@@ -325,7 +334,8 @@ class IEXStock:
 
     # TO BE DEPRECATED #
     def custom_write_block_to_csv(self, doc_to_write, filename):
-        """Writes a block or list of preformated string(s) to a csv file.
+        """:meta private:
+        Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'write_block_to_csv' method but does not use a standardized filename builder to determine the file name.
         Parameters:
         doc_to_write -> the preformatted string or list of preformated strings to write.
@@ -911,8 +921,9 @@ class IEXStock:
 
     def get_peers(self):
         """500 credits per symbol requested.
-        Returns a list of peer company's tickers in Python list form.
         Sets class attribute 'peers'.
+
+        :return: List of peer company's tickers in Python list form.
         """
         result = stock.peers(self.ticker)
         self.peers = result

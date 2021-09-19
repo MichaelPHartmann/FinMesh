@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IEXStock General Class" href="iexstockclass.html" />
+    <link rel="prev" title="Welcome to FinMesh’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies-and-module-specific-requirements">Dependencies and Module-Specific Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-token-setup">API Token Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-an-environment-variable">What is an Environment Variable?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-your-token-variables">Setting Up Your Token Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/install.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<p>Install FinMesh using pip for a tested, up-to-date version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">FinMesh</span>
+</pre></div>
+</div>
+<section id="dependencies-and-module-specific-requirements">
+<h2>Dependencies and Module-Specific Requirements<a class="headerlink" href="#dependencies-and-module-specific-requirements" title="Permalink to this headline"></a></h2>
+<p>Depending on your use-case, there may be dependencies that are required for complete functionality.
+If you are only interested in accessing IEX Cloud, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> will be the only required install.
+Below is a list of non-standard packages that are required and the modules that require them:</p>
+<ul class="simple">
+<li><p>Pandas [iex] <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pandas</span></code></p></li>
+<li><p>xmltodict [usgov] <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">xmltodict</span></code></p></li>
+<li><p>Beautiful Soup [edgar] <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bs4</span></code></p></li>
+<li><p>Natural Language Toolkit [edgar] <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nltk</span></code></p></li>
+</ul>
+</section>
+<section id="api-token-setup">
+<h2>API Token Setup<a class="headerlink" href="#api-token-setup" title="Permalink to this headline"></a></h2>
+<p>Some APIs require authentication through the use of tokens.
+These tokens should be set up as environment variables in the bash profile.
+A great article on how to do this on Mac is available here:</p>
+<p><a class="reference external" href="https://natelandau.com/my-mac-osx-bash_profile/">My Mac OSX Bash Profile</a></p>
+<p>Or you can follow the guide down below for Mac and Linux.</p>
+<p>Click <a class="reference external" href="https://iexcloud.io/">HERE</a> for your free IEX token.
+This token must be stored as IEX_TOKEN in your environment variables.</p>
+<p>Click <a class="reference external" href="https://fred.stlouisfed.org/">HERE</a> for your free FRED token.
+This token must be stored as FRED_TOKEN in your environment variables.</p>
+<section id="what-is-an-environment-variable">
+<h3>What is an Environment Variable?<a class="headerlink" href="#what-is-an-environment-variable" title="Permalink to this headline"></a></h3>
+<p>Environment variables are used in FinMesh to store API tokens and token-related data.
+Tokens are like passwords that API providers use to authenticate the requests being made.
+This ensures that (1) unauthorized parties cannot access the data or spam the API with bogus requests (such as in DDOS attacks) and (2) users can track their useage and manage permissions.
+The IEX Cloud and FRED APIs both use tokens to authenticate users, and IEX in particular uses tokens to track useage and manage the level of services available.</p>
+<p>In these examples we will be setting global environment variables using the standard bash profiles available on both MacOS and Linux.
+You’ll want to fire up a terminal window now so you can follow along.</p>
+<p>For Mac users, your bash profile is called <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code>, pretty simple.
+When you open this, you’ll likely find an empty file.</p>
+<p>For Linux users, your bash profile is called <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.
+Depending on your distribution, you may or may not find some pre-made bash shortcuts and other assorted code inside, we don’t need to worry about any of that right now.</p>
+<p>Your bash profile is stored in the User’s home directory, this is the directory that a new terminal window will automatically open into so if you have just opened a new window, you’re in the right place! This directory is most commonly denoted with a ‘~’ before a ‘$’. If you have navigated into a folder, simply type ‘cd’ to return to the home directory. Now that you are in the correct directory lets open your bash profile using nano. Nano is simply a text editor that is built into terminal. Type this and then hit enter, and you’ll be taken to your bash profile.</p>
+<p>Mac:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nano</span> <span class="o">.</span><span class="n">bash_profile</span>
+</pre></div>
+</div>
+<p>Linux:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nano</span> <span class="o">.</span><span class="n">bashrc</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-up-your-token-variables">
+<h3>Setting Up Your Token Variables<a class="headerlink" href="#setting-up-your-token-variables" title="Permalink to this headline"></a></h3>
+<p>Now that you are ready to add some token variables, you can go ahead and collect them from IEX and/or FRED from the links at the beginning of this page.</p>
+<p>In the standard <code class="docutils literal notranslate"><span class="pre">IEX_TOKEN</span></code> variable, you’ll want to paste your PUBLIC token from IEX.
+This way if you accidentally publish this code, or otherwise have the token compromised you can simply cut that token off from API privileges.
+You can of course use the secret key, but you are setting yourself up for a security vulnerability.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">IEX_SANDBOX_TOKEN</span></code> is also fairly self-explanatory.
+You can find this by switching to ‘Sandbox Mode’ in the IEX Console and looking where your regular tokens would normally be.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SANDBOX</span></code> boolean variable will tell FinMesh whether you want to access Sandbox data instead of the real data.
+This is really useful when you are testing code and don’t want to use credits.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">FRED</span></code> token is even more straight forward.
+There are no sandbox options and no public/private versions of keys.
+Simply paste in your token and you are good to go!</p>
+<p>Once you’ve written out the code below and filled in the blanks with the appropriate tokens, your bash profile is all set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># FinMesh Token Setup</span>
+
+<span class="c1"># Public IEX Cloud Token</span>
+<span class="n">IEX_TOKEN</span><span class="o">=</span><span class="c1">#PLACE-YOUR-TOKEN-HERE#</span>
+<span class="c1"># Sandbox IEX Token</span>
+<span class="n">IEX_SANDBOX_TOKEN</span><span class="o">=</span><span class="c1">#PLACE-YOUR-TOKEN-HERE#</span>
+<span class="c1"># Sandbox State</span>
+<span class="n">SANBOX</span><span class="o">=</span><span class="kc">False</span>
+<span class="c1"># FRED Token</span>
+<span class="n">FRED_TOKEN</span><span class="o">=</span><span class="c1">#PLACE-YOUR-TOKEN-HERE#</span>
+</pre></div>
+</div>
+<p>You can now exit nano by hitting <code class="docutils literal notranslate"><span class="pre">CTRL+O</span></code> to writeout(save) your work and then <code class="docutils literal notranslate"><span class="pre">CTRL+X</span></code> to close the nano editor.
+Once you are back into the terminal, type the following to apply the changes to your environment.</p>
+<dl class="simple">
+<dt>Mac:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">.bash_profile</span></code></p>
+</dd>
+<dt>Linux:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">.bashrc</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="conclusion">
+<h3>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline"></a></h3>
+<p>You are now all set up to use FinMesh! If you have questions or concerns you are always free to reach out to me at the links below! In the future this type of setup may not be neccesary as we look at other ways to supply tokens that retains the security and seamlessness of this method while being easier to configure.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to FinMesh’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iexstockclass.html" class="btn btn-neutral float-right" title="IEXStock General Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

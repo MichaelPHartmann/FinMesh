@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEX Cloud Endpoint Function List &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="IEXStock General Class" href="iexstockclass.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IEX Cloud Endpoint Function List</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-iex.stock">Stock Endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iex.market">Market Endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iex.forex">Forex Endpoint</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>IEX Cloud Endpoint Function List</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/iex.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="iex-cloud-endpoint-function-list">
+<h1>IEX Cloud Endpoint Function List<a class="headerlink" href="#iex-cloud-endpoint-function-list" title="Permalink to this headline"></a></h1>
+<section id="module-iex.stock">
+<span id="stock-endpoint"></span><h2>Stock Endpoint<a class="headerlink" href="#module-iex.stock" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.balance_sheet">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">balance_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.balance_sheet" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Balance sheet financial statement for the requested stock.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>queries</strong> (<em>key value pair where key is variable and value is string</em>) – Standard kwargs parameter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.book">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">book</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.book" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Book price for the requested stock.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.cash_flow">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">cash_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.cash_flow" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Cash sheet financial statment for the requested stock.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>queries</strong> (<em>key value pair where key is variable and value is string</em>) – Standard kwargs parameter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.collection">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collectionType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectionName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.collection" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Quotes for stock in the requested collection type.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>collectionType</strong> (<em>accepted values are</em><em> [</em><em>'sector'</em><em>, </em><em>'tag'</em><em>, </em><em>'list'</em><em>]</em><em>, </em><em>required</em>) – The type of data returned by the endpoint.</p></li>
+<li><p><strong>collectionName</strong> (<em>string</em><em>, </em><em>required</em>) – Name of the sector, tag, or list to return. List of names available on IEX Cloud.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.company">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.company" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Company data such as website, address, and description for the requested company.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.delayed_quote">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">delayed_quote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.delayed_quote" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>15-minute delayed market quote for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.dividends">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">dividends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.dividends" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns dividend information for a requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>scope</strong> (<em>accepted arguments:</em><em> [</em><em>'5y'</em><em>,</em><em>'2y'</em><em>,</em><em>'1y'</em><em>,</em><em>'ytd'</em><em>,</em><em>'6m'</em><em>,</em><em>'3m'</em><em>,</em><em>'1m'</em><em>,</em><em>'next'</em><em>]</em><em>, </em><em>required</em>) – The range of data needed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.earnings">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">earnings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.earnings" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Earnings data such as actual EPS, beat/miss, and date for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>last</strong> (<em>string</em><em>, </em><em>optional</em>) – The number of previous earnings to return.</p></li>
+<li><p><strong>field</strong> (<em>string</em><em>, </em><em>optional</em>) – The specific field from the earnings report ot return.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.estimates">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.estimates" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Latest future earnings estimates for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.financials">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">financials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.financials" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Brief overview of a company’s financial statements.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – The time interval of financial statements returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.fund_ownership">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">fund_ownership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.fund_ownership" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Largest 10 fund owners of the requested ticker. This excludes explicit buy or sell-side firms.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.historical_price">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">historical_price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.historical_price" title="Permalink to this definition"></a></dt>
+<dd><p>This is a mess and will soon be deprecated in favour of an args and kwargs based approach.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.income_statement">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">income_statement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.income_statement" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Income statement financial data for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>queries</strong> (<em>key value pair where key is variable and value is string</em>) – Standard kwargs parameter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.insider_roster">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">insider_roster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.insider_roster" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>10 largest insider owners for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.insider_summary">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">insider_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.insider_summary" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Summary of the insiders and their actions within the last 6 months for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.insider_transactions">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">insider_transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.insider_transactions" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Summary of insider transactions for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.institutional_ownership">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">institutional_ownership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.institutional_ownership" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>10 largest instituional owners for the requested ticker. This is defined as explicitly buy or sell-side only.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.ipo_today">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">ipo_today</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.ipo_today" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of IPOs happening today.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.ipo_upcoming">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">ipo_upcoming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.ipo_upcoming" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of upcoming IPOs for the current and next month.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.key_stats">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">key_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.key_stats" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Important and key statistics for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>stat</strong> (<em>string</em><em>, </em><em>optional</em>) – The specific stat which you would like to return.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.largest_trades">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">largest_trades</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.largest_trades" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Delayed list of largest trades for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.logo">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">logo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.logo" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Google APIs link to the logo for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.market_list">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">market_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayPercent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.market_list" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>10 largest companies in the specified list.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>list_type</strong> (<em>accepted values are</em><em> [</em><em>'mostactive'</em><em>, </em><em>'gainers'</em><em>, </em><em>'losers'</em><em>, </em><em>'iexvolume'</em><em>, </em><em>'iexpercent'</em><em>, </em><em>'premarket_losers'</em><em>, </em><em>'postmarket_losers'</em><em>, </em><em>'premarket_gainers'</em><em>, </em><em>'postmarket_gainers'</em><em>]</em><em>, </em><em>required</em>) – The list that you would like to return.</p></li>
+<li><p><strong>displayPercent</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether you would like to see the percentage values multiplied by 100</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.market_volume">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">market_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.market_volume" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Market wide trading volume.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>format</strong> (<em>accepted value is 'csv'</em><em>, </em><em>optional</em>) – The output format of the endpoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.news">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">news</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.news" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>News item summaries for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – The number of news items to return.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.ohlc">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">ohlc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.ohlc" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Most recent days open, high, low, and close data for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.peers">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">peers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.peers" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of a requested ticker’s peers.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.previous">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">previous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.previous" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Previous day’s price data for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.price">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.price" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Single float value of the requested ticker’s price.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.price_target">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">price_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.price_target" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Analyst’s price targets for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.quote">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">quote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.quote" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>rice quote data for the requested ticker. Fields are able to be called individually.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>field</strong> (<em>string</em><em>, </em><em>optional</em>) – The specific field from the quote endpoint you would like to return.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.recommendation_trends">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">recommendation_trends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.recommendation_trends" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Analyst recommendations for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.sector_performance">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">sector_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.sector_performance" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Market performance for all sectors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.splits">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.splits" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Record of stock splits for the requested ticker.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p></li>
+<li><p><strong>scope</strong> (<em>accepted arguments:</em><em> [</em><em>'5y'</em><em>,</em><em>'2y'</em><em>,</em><em>'1y'</em><em>,</em><em>'ytd'</em><em>,</em><em>'6m'</em><em>,</em><em>'3m'</em><em>,</em><em>'1m'</em><em>,</em><em>'next'</em><em>]</em><em>, </em><em>optional</em>) – The range of data needed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.today_earnings">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">today_earnings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.today_earnings" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Earnings data released today, grouped by timing and stock.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.stock.volume_by_venue">
+<span class="sig-prename descclassname"><span class="pre">iex.stock.</span></span><span class="sig-name descname"><span class="pre">volume_by_venue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.stock.volume_by_venue" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>rading volume for the requested ticker by venue.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker or symbol of the stock you would like to request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-iex.market">
+<span id="market-endpoint"></span><h2>Market Endpoint<a class="headerlink" href="#module-iex.market" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.market.commodities">
+<span class="sig-prename descclassname"><span class="pre">iex.market.</span></span><span class="sig-name descname"><span class="pre">commodities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.market.commodities" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Commodites data for the requested commodities symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the commodity you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.market.economic_data">
+<span class="sig-prename descclassname"><span class="pre">iex.market.</span></span><span class="sig-name descname"><span class="pre">economic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.market.economic_data" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Economic data for the requested economic indicator symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the economic indicator you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.market.generic_data_point">
+<span class="sig-prename descclassname"><span class="pre">iex.market.</span></span><span class="sig-name descname"><span class="pre">generic_data_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.market.generic_data_point" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Generic endpoint used to access all ‘Data Point’ data sets on IEX</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the data point you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.market.generic_time_series">
+<span class="sig-prename descclassname"><span class="pre">iex.market.</span></span><span class="sig-name descname"><span class="pre">generic_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.market.generic_time_series" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Generic endpoint used to access all ‘Time Series’ data sets on IEX</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the time series data you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-iex.forex">
+<span id="forex-endpoint"></span><h2>Forex Endpoint<a class="headerlink" href="#module-iex.forex" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.forex.forex_conversion">
+<span class="sig-prename descclassname"><span class="pre">iex.forex.</span></span><span class="sig-name descname"><span class="pre">forex_conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.forex.forex_conversion" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Converts one currency to another using up-to-date currency information.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the currency pair you would like to return.</p></li>
+<li><p><strong>amount</strong> (<em>float</em><em>, </em><em>required</em>) – The amount of the primary currency you wish to calculate and exchange rate on.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.forex.forex_historical">
+<span class="sig-prename descclassname"><span class="pre">iex.forex.</span></span><span class="sig-name descname"><span class="pre">forex_historical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.forex.forex_historical" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Historical FOREX rates for the requested currency pair symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the currency pair you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="iex.forex.forex_latest_rate">
+<span class="sig-prename descclassname"><span class="pre">iex.forex.</span></span><span class="sig-name descname"><span class="pre">forex_latest_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.forex.forex_latest_rate" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Latest FOREX rate for the requested currency pair symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the currency pair you would like to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iexstockclass.html" class="btn btn-neutral float-left" title="IEXStock General Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
