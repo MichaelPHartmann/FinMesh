@@ -411,14 +411,7 @@ class IEXStock:
         :param chart_by_date: If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
         :type chart_by_date: boolean
         :param output: Determines the output of the data. Default is raw JSON.
-        :type output: string
-
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
-
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
@@ -452,9 +445,6 @@ class IEXStock:
         :type last: integer, optional
         :param output: Determines the output of the data. Default is raw JSON.
         :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
-        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
-        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
-        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
@@ -486,9 +476,6 @@ class IEXStock:
         :type last: integer, optional
         :param output: Determines the output of the data. Default is raw JSON.
         :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
-        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
-        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
-        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
@@ -520,9 +507,6 @@ class IEXStock:
         :type last: integer, optional
         :param output: Determines the output of the data. Default is raw JSON.
         :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
-        :var dataframe: Creates will create a pandas data frame with the data from this endpoint.
-        :var csv: Creates a CSV file with the data from this endpoint. Uses Pandas.
-        :var excel: Creates an Excel file with the data from this endpoint. Uses Pandas
         """
         if period is None:
             period = self.period
@@ -542,17 +526,16 @@ class IEXStock:
 
     def get_financial_statements(self, period=None, last=None, output=None):
         """5,000 credits per symbol requested.
-        Returns all financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
         This is useful if you want to update the query parameters after you've made some requests. It's just a time saver.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: All financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         self.get_balance_sheet(period=period, last=last, csv=csv)
         self.get_cash_flow_statement(period=period, last=last, csv=csv)
@@ -568,17 +551,17 @@ class IEXStock:
     def get_advanced_fundementals(self, period, output=None):
         # Vertical
         """75,000 credits per symbol requested.
-        Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
         CSV is formatted vertically with keys in the first column.
-        Sets class attribute 'advanced_fundementals'.
-        Parameters:
-        period -> string, accepted values ['annual', 'quarterly', 'ttm']
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+        Sets class attribute 'advanced_fundementals'
+
+        :return: Immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.advanced_fundementals(self.ticker, period)
 
@@ -595,15 +578,12 @@ class IEXStock:
     def get_advanced_stats(self, output=None):
         # Vertical
         """3,005 credits per symbol requested.
-        Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
         Sets class attribute 'advanced_stats'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.advanced_stats(self.ticker)
 
@@ -645,15 +625,12 @@ class IEXStock:
     def get_company(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns general information on the company requested.
         Sets class attribute 'company'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: General information on the company requested.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.company(self.ticker)
 
@@ -670,16 +647,13 @@ class IEXStock:
     def get_delayed_quote(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns 15 minute delayed quote for the requested symbol.
         Sets class attribute 'delayed_quote'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
 
+        :return: 15 minute delayed quote for the requested symbol.
+
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.delayed_quote(self.ticker)
 
@@ -696,17 +670,15 @@ class IEXStock:
     def get_dividends(self, scope, output=None):
         # Vertical
         """10 credits per symbol requested.
-        Returns basic dividend information for the requested symbol.
         Sets class attribute 'dividends'.
-        Parameters:
-        scope -> string, the range of data needed. Accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next']
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
 
+        :return: Basic dividend information for the requested symbol.
+
+
+        :param scope: the range of data needed.
+        :type scope: accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next'], required
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.dividends(self.ticker, scope)
 
@@ -723,16 +695,13 @@ class IEXStock:
     def get_basic_financials(self, output=None):
         # Horizontal
         """5000 credits per symbol requested.
-        Returns basic financial data from the requested company.
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
         Sets class attribute 'basic_financials'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Basic financial data from the requested company.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.financials(self.ticker)
         self.basic_financials = result
@@ -745,15 +714,12 @@ class IEXStock:
     def get_fund_ownership(self, output=None):
         # Horizontal - Needs to be Changed
         """10,000 credits per symbol requested.
-        Returns the 10 largest institutional holders of the requested company.
         Sets class attribute 'fund_ownership'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: 10 largest institutional holders of the requested company.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.fund_ownership(self.ticker)
 
@@ -767,19 +733,15 @@ class IEXStock:
         self.fund_ownership = result
         return result
 
-    def get_insider_roster(self, output_csv):
+    def get_insider_roster(self, output=None):
         # Horizontal
         """5,000 credits per symbol requested.
-        Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
 
+        :return: Top 10 insiders, with the most recent information.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.insider_roster(self.ticker)
 
@@ -793,18 +755,15 @@ class IEXStock:
         self.insider_roster = result
         return result
 
-    def get_insider_transactions(self, output_csv):
+    def get_insider_transactions(self, output=None):
         # Horizontal
         """50 credits per transaction per symbol requested.
-        Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Insider transactions with the most recent information.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.insider_transactions(self.ticker)
 
@@ -820,16 +779,13 @@ class IEXStock:
 
     def get_institutional_ownership(self, output=None):
         # Horizontal
-        """10,000 credits per symbol requested
-        Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
+        """10,000 credits per symbol requested.
         Sets class attribute 'institutional_ownership'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.institutional_ownership(self.ticker)
 
@@ -846,16 +802,14 @@ class IEXStock:
     def get_key_stats(self, stat=None, output=None):
         # Vertical
         """5 credits per symbol requested, 1 credit per stat per symbol requested.
-        Returns important stats for the requested company.
         Sets class attribute 'key_stats'.
-        Parameters:
-        stat -> String. If you would like to querie one single stat, you can enter that here.
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Important stats for the requested company.
+
+        :param stat: If you would like to querie one single stat, you can enter that here.
+        :type stat: string, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.key_stats(self.ticker, stat=stat)
 
@@ -872,15 +826,14 @@ class IEXStock:
     def get_largest_trades(self, output=None):
         # Horizontal
         """1 credit per trade per symbol requested.
-        This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: 15 minute delayed, last sale eligible trades.
+
+        :param stat: If you would like to querie one single stat, you can enter that here.
+        :type stat: string, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.largest_trades(self.ticker)
 
@@ -895,9 +848,10 @@ class IEXStock:
         return result
 
     def get_logo(self):
-        """1 credit per symbol requested
-        Returns a Google APIs link (bare url string) to the logo for the requested stock.
+        """1 credit per symbol requested.
         Sets class attribute 'logo'.
+
+        :return: Google APIs link (bare url string) to the logo for the requested stock.
         """
         result = stock.logo(self.ticker)['url']
         self.logo = result
@@ -906,16 +860,14 @@ class IEXStock:
     def get_news(self,last=10, output=None):
         # Horizontal
         """1 credit per news article per symbol requested.
-        Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
         Sets class attribute 'news'.
-        Parameters ->
-        last -> Integer. Number of article to return. Min = 1 Max = 50 Defualt = 10
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Intraday news from over 3,000 global news sources including major publications, regional media, and social.
+
+        :param last: Number of article to return. Defualt = 10
+        :type last: integer, min = 1 max = 50
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.news(self.ticker, last=last)
 
@@ -932,15 +884,12 @@ class IEXStock:
     def get_ohlc(self, output=None):
         # Horizontal
         """2 credits per symbol requested.
-        Returns the official open and close for a give symbol.
         Sets class attribute 'ohlc'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Official open and close for a give symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.ohlc(self.ticker)
         self.ohlc = result
@@ -972,16 +921,13 @@ class IEXStock:
     def get_quote(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns quote data for the requested symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'quote'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Quote data for the requested symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.quote(self.ticker)
 
@@ -1002,16 +948,13 @@ class IEXStock:
 
     def get_price_target(self, output=None):
         """Premium Data. 500 premium credits per symbol requested.
-        Returns the latest avg, high, and low analyst price target for a symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'price_target'.
-        Parameters:
-        output -> string. Determines the output of the data. Default is raw JSON.
-        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
-        Valid arguments are:
-        - 'dataframe' will create a pandas data frame with the data from this endpoint.
-        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
-        - 'excel' will create an Excel file with the data from this endpoint. Uses Pandas.
+
+        :return: Latest avg, high, and low analyst price target for a symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.price_target(self.ticker)
         self.price_target = result
@@ -1023,8 +966,12 @@ class IEXStock:
 
     def get_analyst_recommendations(self, output=None):
         """Premium Data. 1,000 premium credits per symbol requested.
-        Returns analyst stock recommendations for the requested stock from the last four months.
         Sets class attribute 'analyst_recommendations'.
+
+        :return: Analyst stock recommendations for the requested stock from the last four months.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.recommendation_trends(self.ticker)
 
@@ -1039,27 +986,38 @@ class IEXStock:
         return result
 
 
-    def get_analyst_estimates(self):
+    def get_analyst_estimates(self, output=None):
         """Premium Data. 10,000 premium credits per symbol requested.
-        Returns the latest consensus estimate for the next fiscal period for the requested symbol.
         Sets class attribute 'analyst_estimates'.
+        Not yet implemented.
+
+        :return: Latest consensus estimate for the next fiscal period for the requested symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.future_estimates(self.ticker)
         self.analyst_estimates = result
         return result
-        # Needs a custom csv builder for the weirdly packaged JSON
+
         pass
 
-    def get_earnings(self):
+    def get_earnings(self, output=None):
         """Premium Data. 1,000 premium credits per symbol requested.
-        Returns earnings data for a given company including the actual EPS, consensus, and fiscal period.
         Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
         Sets class attribute 'earnings'.
+        Not yet implemented.
+
+        :return: Earnings data for a given company including the actual EPS, consensus, and fiscal period.
+
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.earnings(self.ticker)
         self.earnings = result
         return result
-        # Needs a custom csv builder for the weirdly packaged JSON
+
         pass
 
 
@@ -1102,12 +1060,17 @@ class IEXMarket():
 
     def get_market_datapoint(self, symbol, key='market', **queries):
         """1,000 credits per symbol requested per date.
-        Returns various economic and commodity values as a datapoint.
         Sets a class attribute equal to the symbol requested.
-        Parameters:
-        symbol -> The symbol of the economic indicator or commodity datapoint requested.
+
         Class attribute 'available_economic_symbols' is a dictionary of available economic symbols and their description.
         Class attribute 'available_commodity_symbols' is a dictionary of available commodity symbols and their description
+
+        :return: Various economic and commodity values as a datapoint.
+
+        :param symbol: The symbol of the economic indicator or commodity datapoint requested.
+        :type symbol: string, required
+        :param **queries: Additional query parameters you want to include as listed in IEX Docs.
+        :type **queries: key value pair as string
         """
         result = market.generic_data_point(symbol, key, **queries)
         setattr(IEXMarket, symbol, result)
