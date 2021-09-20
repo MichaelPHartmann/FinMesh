@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessing IEX Cloud &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IEXStock General Class" href="iexstockclass.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Accessing IEX Cloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-iexstock-class-to-access-data">Using the IEXStock Class to Access Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#importing-and-initializing">Importing and Initializing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calling-methods-basic">Calling Methods - Basic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calling-methods-advanced">Calling Methods - Advanced</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#class-attributes">Class Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-base-methods-to-access-data">Using Base methods to Access Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Accessing IEX Cloud</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/iextutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="accessing-iex-cloud">
+<h1>Accessing IEX Cloud<a class="headerlink" href="#accessing-iex-cloud" title="Permalink to this headline"></a></h1>
+<p>These tutorials are meant for those who are new to programming, and cover each step fairly thoroughly.
+If you are experienced in Python, the docs</p>
+<section id="using-the-iexstock-class-to-access-data">
+<h2>Using the IEXStock Class to Access Data<a class="headerlink" href="#using-the-iexstock-class-to-access-data" title="Permalink to this headline"></a></h2>
+<p>The easiest way to access data for a particular stock (or group of stocks) is using the IEXStock class.
+It stores relevant information like ticker, date, and data period preferences so you can request data and get it in a single line.
+It also stores all the requests you’ve made as dynamic class attributes, meaning you can save on credits.
+You can output data as JSON or as Pandas, and then through Pandas as either excel or csv format.</p>
+<p>The IEXStock class is contained in the <code class="docutils literal notranslate"><span class="pre">iex</span></code> directory’s <code class="docutils literal notranslate"><span class="pre">__init__</span></code> file so there is no need to specify further than the directory level.</p>
+<section id="importing-and-initializing">
+<h3>Importing and Initializing<a class="headerlink" href="#importing-and-initializing" title="Permalink to this headline"></a></h3>
+<p>When you attach the variable name <code class="docutils literal notranslate"><span class="pre">AAPL</span></code> to the class, you are doing what is called initializing the class.
+When you initialize a class, sometimes you are required to input some details about the class. These are called arguments.
+The IEXStock class only requires a single argument, and that is <code class="docutils literal notranslate"><span class="pre">'ticker'</span></code>. This is the ticker or symbol of the stock as a string.</p>
+<p>The program will tell you if you forgot an argument and that will look something like this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span> <span class="o">=</span> <span class="n">IEXStock</span><span class="p">()</span>
+<span class="go">TypeError: __init__() missing 1 required positional argument: &#39;ticker&#39;</span>
+</pre></div>
+</div>
+<p>In these examples I’ll look at three ways one can get FinMesh into their code.
+They all accomplish the same thing.</p>
+<p>You can import the whole package and call the directory and class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">FinMesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span> <span class="o">=</span> <span class="n">FinMesh</span><span class="o">.</span><span class="n">iex</span><span class="o">.</span><span class="n">IEXStock</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can import the specific IEX module and call the class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">FinMesh</span> <span class="kn">import</span> <span class="n">iex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span> <span class="o">=</span> <span class="n">iex</span><span class="o">.</span><span class="n">IEXStock</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or you can import just the class and save yourself some typing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">FinMesh.iex</span> <span class="kn">import</span> <span class="n">IEXStock</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span> <span class="o">=</span> <span class="n">IEXStock</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="calling-methods-basic">
+<h3>Calling Methods - Basic<a class="headerlink" href="#calling-methods-basic" title="Permalink to this headline"></a></h3>
+<p>Once you have the method (or function) and have initialized it with the ticker of the stock you want to look at, you can start requesting data.
+The naming of all the methods in the IEXStock class follow two rigid rules:</p>
+<p>1. All method names will match as closely as possible with their names according to IEX Cloud documentation, with all spaces as underscores
+and
+2. All data request methods under the IEXStock class have the prefix ‘get_’</p>
+<p>Here we will request some key stats about the company and their latest quarterly balance sheet.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">get_key_stats</span><span class="p">()</span>
+<span class="go"># A whole bunch of JSON containing the keys and values from the Key Stats endpoint</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">get_balance_sheet</span><span class="p">()</span>
+<span class="go"># A whole bunch of JSON containing the keys and values from the latest balance sheet</span>
+</pre></div>
+</div>
+</section>
+<section id="calling-methods-advanced">
+<h3>Calling Methods - Advanced<a class="headerlink" href="#calling-methods-advanced" title="Permalink to this headline"></a></h3>
+<p>These methods will return some nice JSON data, but we don’t always want JSON data. Pandas is the solution for that.
+Pandas take data and formats it into <code class="docutils literal notranslate"><span class="pre">dataframes</span></code>, otherwise known as tables.
+This makes it easier to work with in Python and export to Excel.
+If you want to output a Pandas dataframe, simply specify the output:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">get_key_stats</span><span class="p">(</span><span class="n">ouput</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="go"># A nice dataframe containing the keys and values from the Key Stats endpoint</span>
+</pre></div>
+</div>
+</section>
+<section id="class-attributes">
+<h3>Class Attributes<a class="headerlink" href="#class-attributes" title="Permalink to this headline"></a></h3>
+<p>Every time you call a method, you are making a request to the IEX Cloud API, thus costing you credits.
+Even the lowest teir has more than enough credits to work with small projects, but as soon as you want to start gathering lots of data, you might run out.</p>
+<p>One limited solution to this is keeping the responses from the methods as a class attribute.
+A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound.
+When you call a method, the result will automatically be assigned to an attribute of the same name, minus the ‘get’ prefix.
+You call it with the class anme and no parenthesis.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">key_stats</span>
+<span class="go"># A nice dataframe containing the keys and values from the Key Stats endpoint</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">balance_sheet</span>
+<span class="go"># A whole bunch of JSON containing the keys and values from the latest balance sheet</span>
+</pre></div>
+</div>
+<p>Notice that when we call the attributes they return different data types.
+That is because the attribute will be whatever output type (JSON or DataFrame) was requested last.</p>
+</section>
+</section>
+<section id="using-base-methods-to-access-data">
+<h2>Using Base methods to Access Data<a class="headerlink" href="#using-base-methods-to-access-data" title="Permalink to this headline"></a></h2>
+<p>The IEXStock class is built on a collection of sub-modules containing simple methods that request and receive JSON.
+These have no Pandas output and are purposefully minimum viable methods for accessing IEX Cloud data.</p>
+<p>The base methods for IEX Cloud are contained in the <code class="docutils literal notranslate"><span class="pre">stock</span></code>, <code class="docutils literal notranslate"><span class="pre">premium</span></code>, <code class="docutils literal notranslate"><span class="pre">market</span></code>, and <code class="docutils literal notranslate"><span class="pre">forex</span></code> modules.
+You will need to specify which module you would like to access in the <code class="docutils literal notranslate"><span class="pre">import</span></code> path.
+All the methods you need for stock specific data will be in the <code class="docutils literal notranslate"><span class="pre">stock</span></code> directory.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iexstockclass.html" class="btn btn-neutral float-right" title="IEXStock General Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

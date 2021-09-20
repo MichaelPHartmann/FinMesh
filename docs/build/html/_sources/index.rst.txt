@@ -31,6 +31,7 @@ If FinMesh has brought you value please consider supporting the project.
    :caption: Table of Contents:
 
    install
+   iextutorial
    iexstockclass
    iex
 
