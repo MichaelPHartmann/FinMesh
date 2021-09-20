@@ -43,14 +43,16 @@ Or you can import just the class and save yourself some typing:
   >>> from FinMesh.iex import IEXStock
   >>> AAPL = IEXStock('AAPL')
 
-Calling Methods - Basic
-^^^^^^^^^^^^^^^^^^^^^^^
+Calling Methods - The Basics
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once you have the method (or function) and have initialized it with the ticker of the stock you want to look at, you can start requesting data.
 The naming of all the methods in the IEXStock class follow two rigid rules:
 
 1. All method names will match as closely as possible with their names according to IEX Cloud documentation, with all spaces as underscores
+
 and
+
 2. All data request methods under the IEXStock class have the prefix '\get_'
 
 Here we will request some key stats about the company and their latest quarterly balance sheet.
@@ -60,9 +62,6 @@ Here we will request some key stats about the company and their latest quarterly
 
   >>> AAPL.get_balance_sheet()
   # A whole bunch of JSON containing the keys and values from the latest balance sheet
-
-Calling Methods - Advanced
-^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 These methods will return some nice JSON data, but we don't always want JSON data. Pandas is the solution for that.
 Pandas take data and formats it into ``dataframes``, otherwise known as tables.
@@ -80,6 +79,7 @@ Even the lowest teir has more than enough credits to work with small projects, b
 
 One limited solution to this is keeping the responses from the methods as a class attribute.
 A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound.
+
 When you call a method, the result will automatically be assigned to an attribute of the same name, minus the '\get' prefix.
 You call it with the class anme and no parenthesis.
 
@@ -101,4 +101,4 @@ These have no Pandas output and are purposefully minimum viable methods for acce
 
 The base methods for IEX Cloud are contained in the ``stock``, ``premium``, ``market``, and ``forex`` modules.
 You will need to specify which module you would like to access in the ``import`` path.
-All the methods you need for stock specific data will be in the ``stock`` directory.
+All the methods you need for stock specific data will be in the ``stock`` sub-module.

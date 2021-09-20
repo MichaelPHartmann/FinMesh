@@ -27,7 +27,7 @@ You can donate to this project `HERE <https://www.paypal.com/donate?business=5G2
 If FinMesh has brought you value please consider supporting the project.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :caption: Table of Contents:
 
    install
