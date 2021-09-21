@@ -51,19 +51,18 @@ class IEXStock:
         result = str(date.today())
         setattr(IEXStock, 'date', result)
 
-    def save_class_state(self, output='pickle'):
-        #1 Create list of all attributes generated - built
-        #2 Take the data from each attribute and attach it to the attribute name in dict format - built needs mods
-        #3 Build filename using filename_builder
-        #4a If output=pickle, Pickle the dict, preserving the format of each attribute object (dataframe or JSON) - trivial
-        #4b If output=plaintext, save the dictionary as a JSON file
-        pass
+    def filename_builder(extension, filename_addition):
+        return self.genfile_base.replace('%s', filename_addition).append(extension)
 
-    def load_class_state(self, input='pickle'):
-        #1 Create target filename using filename_builder
-        #2 For each dict entry, us setattr to set attributes equal to the corrosponding dict value
-        pass
-
+    def pickle_class_state(self):
+        """This method takes the current state of the class and pickles it as-is.
+        This will preserve all attributes of the current class instance.
+        Recalling/loading the class can be done with the ``iex.unpickle_class_state()``
+        Filename is automatically created as '#ticker#_#date#_pickle.pickle'
+        """
+        filename = filename_builder('.pickle', f'{self.date}_pickle')
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
 
     # TO BE DEPRECATED #
     def build_savestate_file(self, addin=None):
@@ -351,8 +350,6 @@ class IEXStock:
             with open(filename, 'w+') as f:
                 f.write(doc_to_write)
 
-    def filename_builder(extension, filename_addition):
-        return self.genfile_base.replace('%s', filename_addition).append(extension)
 
     #  ___          _                   _   ___     _          ___       __                    _   _
     # | _ ) __ _ __(_)__   __ _ _ _  __| | | _ \_ _(_)__ ___  |_ _|_ _  / _|___ _ _ _ __  __ _| |_(_)___ _ _
