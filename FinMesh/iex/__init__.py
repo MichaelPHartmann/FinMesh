@@ -1008,7 +1008,6 @@ class IEXStock:
         self.analyst_estimates = result
         return result
 
-        pass
 
     def get_earnings(self, output=None):
         """Premium Data. 1,000 premium credits per symbol requested.
@@ -1026,8 +1025,17 @@ class IEXStock:
         self.earnings = result
         return result
 
-        pass
+##### UNPICKLER METHOD #####
+def unpickle_class_state(file):
+    """This method unpickles/loads pickled class states.
+    It will actually load any sort of pickled file, as it's just opening and calling pickle.load() on a file.
 
+    :param file: The file containing the object you would like to unpickle.
+    :type file: string, required
+    """
+    with open(file, 'rb') as f:
+        pickle.load(f)
+##### UNPICKLER METHOD #####
 
 
 class IEXMarket():
