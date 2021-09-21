@@ -92,6 +92,27 @@ You call it with the class anme and no parenthesis.
 Notice that when we call the attributes they return different data types.
 That is because the attribute will be whatever output type (JSON or DataFrame) was requested last.
 
+Saving and Loading Class Instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+FinMesh uses ``Pickle`` to save and load states. It's a Python standard library and is perfect for the task.
+When we 'pickle' something (like a cucumber or a class instance) we are preserving it for later.
+
+Pickling is useful because every time you call a class method, you are using IEX Cloud credits.
+To keep from having to make the same request over and over, we can save the class (and the information that has been assigned to a class attribute) for later.
+Pickling is fairly straight forward. Let's say we create an instance of IEXStock for AAPL, and call the key stats method.
+Then we will pickle the result to save it for later:
+
+  >>> AAPL = IEXStock('AAPL')
+  >>> AAPL.get_key_stats()
+  # A whole bunch of JSON containing the keys and values from the Key Stats endpoint
+  >>> AAPL.pickle_class_state()
+  # Output a file with the pickled class inside.
+
+In this example, assuming the date is January 27th, 2022, the output file would be called ``'AAPL_2022-01-27.pickle'``.
+An internal method takes care of naming the file so that every one is predictable and standard.
+
+In order to load a pickled class, we can call the ``unpickle_class_state(*file*)`` method, specifying the file name of the pickled state.
 
 Using Base methods to Access Data
 ===================================

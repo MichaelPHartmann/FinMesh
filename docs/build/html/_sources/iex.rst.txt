@@ -7,6 +7,9 @@ Stock Endpoint
 .. automodule:: iex.stock
   :members:
 
+..automethod:: unpickle_class_state
+  :members:
+
 Market Endpoint
 ===================
 

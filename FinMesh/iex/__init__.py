@@ -60,7 +60,7 @@ class IEXStock:
         Recalling/loading the class can be done with the ``iex.unpickle_class_state()``
         Filename is automatically created as '#ticker#_#date#_pickle.pickle'
         """
-        filename = filename_builder('.pickle', f'{self.date}_pickle')
+        filename = filename_builder('.pickle', f'{self.date}')
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
 

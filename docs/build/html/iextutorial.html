@@ -43,9 +43,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Accessing IEX Cloud</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#using-the-iexstock-class-to-access-data">Using the IEXStock Class to Access Data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#importing-and-initializing">Importing and Initializing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#calling-methods-basic">Calling Methods - Basic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#calling-methods-advanced">Calling Methods - Advanced</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calling-methods-the-basics">Calling Methods - The Basics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#class-attributes">Class Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-and-loading-class-instances">Saving and Loading Class Instances</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#using-base-methods-to-access-data">Using Base methods to Access Data</a></li>
@@ -118,13 +118,17 @@ They all accomplish the same thing.</p>
 </pre></div>
 </div>
 </section>
-<section id="calling-methods-basic">
-<h3>Calling Methods - Basic<a class="headerlink" href="#calling-methods-basic" title="Permalink to this headline"></a></h3>
+<section id="calling-methods-the-basics">
+<h3>Calling Methods - The Basics<a class="headerlink" href="#calling-methods-the-basics" title="Permalink to this headline"></a></h3>
 <p>Once you have the method (or function) and have initialized it with the ticker of the stock you want to look at, you can start requesting data.
 The naming of all the methods in the IEXStock class follow two rigid rules:</p>
-<p>1. All method names will match as closely as possible with their names according to IEX Cloud documentation, with all spaces as underscores
-and
-2. All data request methods under the IEXStock class have the prefix ‘get_’</p>
+<ol class="arabic simple">
+<li><p>All method names will match as closely as possible with their names according to IEX Cloud documentation, with all spaces as underscores</p></li>
+</ol>
+<p>and</p>
+<ol class="arabic simple" start="2">
+<li><p>All data request methods under the IEXStock class have the prefix ‘get_’</p></li>
+</ol>
 <p>Here we will request some key stats about the company and their latest quarterly balance sheet.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">get_key_stats</span><span class="p">()</span>
 <span class="go"># A whole bunch of JSON containing the keys and values from the Key Stats endpoint</span>
@@ -134,9 +138,6 @@ and
 <span class="go"># A whole bunch of JSON containing the keys and values from the latest balance sheet</span>
 </pre></div>
 </div>
-</section>
-<section id="calling-methods-advanced">
-<h3>Calling Methods - Advanced<a class="headerlink" href="#calling-methods-advanced" title="Permalink to this headline"></a></h3>
 <p>These methods will return some nice JSON data, but we don’t always want JSON data. Pandas is the solution for that.
 Pandas take data and formats it into <code class="docutils literal notranslate"><span class="pre">dataframes</span></code>, otherwise known as tables.
 This makes it easier to work with in Python and export to Excel.
@@ -151,8 +152,8 @@ If you want to output a Pandas dataframe, simply specify the output:</p>
 <p>Every time you call a method, you are making a request to the IEX Cloud API, thus costing you credits.
 Even the lowest teir has more than enough credits to work with small projects, but as soon as you want to start gathering lots of data, you might run out.</p>
 <p>One limited solution to this is keeping the responses from the methods as a class attribute.
-A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound.
-When you call a method, the result will automatically be assigned to an attribute of the same name, minus the ‘get’ prefix.
+A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound.</p>
+<p>When you call a method, the result will automatically be assigned to an attribute of the same name, minus the ‘get’ prefix.
 You call it with the class anme and no parenthesis.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">key_stats</span>
 <span class="go"># A nice dataframe containing the keys and values from the Key Stats endpoint</span>
@@ -165,6 +166,25 @@ You call it with the class anme and no parenthesis.</p>
 <p>Notice that when we call the attributes they return different data types.
 That is because the attribute will be whatever output type (JSON or DataFrame) was requested last.</p>
 </section>
+<section id="saving-and-loading-class-instances">
+<h3>Saving and Loading Class Instances<a class="headerlink" href="#saving-and-loading-class-instances" title="Permalink to this headline"></a></h3>
+<p>FinMesh uses <code class="docutils literal notranslate"><span class="pre">Pickle</span></code> to save and load states. It’s a Python standard library and is perfect for the task.
+When we ‘pickle’ something (like a cucumber or a class instance) we are preserving it for later.</p>
+<p>Pickling is useful because every time you call a class method, you are using IEX Cloud credits.
+To keep from having to make the same request over and over, we can save the class (and the information that has been assigned to a class attribute) for later.
+Pickling is fairly straight forward. Let’s say we create an instance of IEXStock for AAPL, and call the key stats method.
+Then we will pickle the result to save it for later:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span> <span class="o">=</span> <span class="n">IEXStock</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">get_key_stats</span><span class="p">()</span>
+<span class="go"># A whole bunch of JSON containing the keys and values from the Key Stats endpoint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AAPL</span><span class="o">.</span><span class="n">pickle_class_state</span><span class="p">()</span>
+<span class="go"># Output a file with the pickled class inside.</span>
+</pre></div>
+</div>
+<p>In this example, assuming the date is January 27th, 2022, the output file would be called <code class="docutils literal notranslate"><span class="pre">'AAPL_2022-01-27.pickle'</span></code>.
+An internal method takes care of naming the file so that every one is predictable and standard.</p>
+<p>In order to load a pickled class, we can call the <code class="docutils literal notranslate"><span class="pre">unpickle_class_state(*file*)</span></code> method, specifying the file name of the pickled state.</p>
+</section>
 </section>
 <section id="using-base-methods-to-access-data">
 <h2>Using Base methods to Access Data<a class="headerlink" href="#using-base-methods-to-access-data" title="Permalink to this headline"></a></h2>
@@ -172,7 +192,7 @@ That is because the attribute will be whatever output type (JSON or DataFrame) w
 These have no Pandas output and are purposefully minimum viable methods for accessing IEX Cloud data.</p>
 <p>The base methods for IEX Cloud are contained in the <code class="docutils literal notranslate"><span class="pre">stock</span></code>, <code class="docutils literal notranslate"><span class="pre">premium</span></code>, <code class="docutils literal notranslate"><span class="pre">market</span></code>, and <code class="docutils literal notranslate"><span class="pre">forex</span></code> modules.
 You will need to specify which module you would like to access in the <code class="docutils literal notranslate"><span class="pre">import</span></code> path.
-All the methods you need for stock specific data will be in the <code class="docutils literal notranslate"><span class="pre">stock</span></code> directory.</p>
+All the methods you need for stock specific data will be in the <code class="docutils literal notranslate"><span class="pre">stock</span></code> sub-module.</p>
 </section>
 </section>
 
