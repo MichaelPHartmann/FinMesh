@@ -2,7 +2,7 @@ Accessing IEX Cloud
 ###################
 
 These tutorials are meant for those who are new to programming, and cover each step fairly thoroughly.
-If you are experienced in Python, the docs
+If you are experienced in Python, the docs are more in depth on the actual methods available.
 
 Using the IEXStock Class to Access Data
 =======================================
