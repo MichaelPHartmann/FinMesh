@@ -205,15 +205,13 @@ def new_historical_price(symbol, period, date=None, chartByDay=False, **query_st
     :param period: The period of data you would like to have returned.
     Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
     :type period: string, required
-    :param date: If used with the query parameter chartByDay, then this returns historical OHLCV data for that date.
-    Otherwise, it returns data by minute for a specified date. Date format YYYYMMDD
+    :param date: If used with the query parameter chartByDay, then this returns historical OHLCV data for that date. Otherwise, it returns data by minute for a specified date. Date format YYYYMMDD
     :type date: string, optional
     :param chartByDay: If single date is specified, this returns historical OHLCV data for that date.
     :type chartByDay: boolean, optional
 
     Query string parameters allow you to specify what data you want on a finer scale.
-    Boolean parameters should be typed as strings in the following format:
-    '``key=value``'
+    Boolean parameters should be typed as strings in the following format: '``key=value``'
 
     A full list of these parameters can be found in the IEX documentation.
     """
