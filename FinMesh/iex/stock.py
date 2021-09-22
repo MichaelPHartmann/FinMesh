@@ -195,6 +195,42 @@ def historical_price(symbol, period, date=None, vprint=False, **queries):
     result = result.json()
     return result
 
+#   HISTORICAL PRICE
+IEX_HISTORICAL_URL = prepend_iex_url('stock')
+def new_historical_price(symbol, period, date=None, chartByDay=False, **query_string_params):
+    """:return: Adjusted and unadjusted historical data for up to 15 years, and historical minute-by-minute intraday prices for the last 30 trailing calendar days.
+
+    :param symbol: The ticker or symbol of the stock you would like to request.
+    :type symbol: string, required
+    :param period: The period of data you would like to have returned.
+    Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
+    :type period: string, required
+    :param date: If used with the query parameter chartByDay, then this returns historical OHLCV data for that date.
+    Otherwise, it returns data by minute for a specified date. Date format YYYYMMDD
+    :type date: string, optional
+    :param chartByDay: If single date is specified, this returns historical OHLCV data for that date.
+    :type chartByDay: boolean, optional
+
+    Query string parameters allow you to specify what data you want on a finer scale.
+    Boolean parameters should be typed as strings in the following format:
+    '``key=value``'
+
+    A full list of these parameters can be found in the IEX documentation.
+    """
+    url = IEX_HISTORICAL_URL + f'{symbol}/chart/{period}'
+    if chartByDay and period == 'date': url += f'{date}?chartByDay=True'
+    else:
+        url += '?'
+        for key, value in query_string_params.items():
+            url += f'{key}={value}?'
+    url = append_iex_token(url)
+    if vprint: print(f"Now fetching: {url}")
+    result = requests.get(url)
+    if vprint: print(f"Request status code: {result.status_code}")
+    if result.status_code != 200:
+        raise BaseException(result.text)
+    return result
+
 
 #   Income Statement
 IEX_INCOME_STATEMENT_URL = prepend_iex_url('stock') + '{symbol}/income'
