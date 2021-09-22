@@ -215,12 +215,17 @@ def new_historical_price(symbol, period, date=None, chartByDay=False, vprint=Fal
 
     A full list of these parameters can be found in the IEX documentation.
     """
-    url = IEX_HISTORICAL_URL + f'{symbol}/chart/{period}'
-    if chartByDay and period == 'date': url += f'{date}?chartByDay=True&'
+    url = IEX_HISTORICAL_URL + f'{symbol}/chart/{period}/'
+    if period == 'date':
+        url += f'{date}'
+        if chartByDay is True:
+            url += '?chartByDay=true'
+        else:
+            url += '?chartByDay=false'
 
     for key, value in query_string_params.items():
         url += f'&{key}={value}'
-        
+
     url = append_iex_token(url)
     if vprint: print(f"Now fetching: {url}")
     result = requests.get(url)
