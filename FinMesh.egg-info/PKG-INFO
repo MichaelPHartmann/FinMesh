@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: FinMesh
-Version: 2.0a6
+Version: 2.0a7
 Summary: A Python wrapper to bring together various financial APIs.
 Home-page: UNKNOWN
 Author: Michael and Josh Hartmann
@@ -14,6 +14,11 @@ Description: # FinMesh
         [2]: https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
         [3]: https://fred.stlouisfed.org/
         [4]: https://www.sec.gov/edgar/searchedgar/companysearch.html
+        
+        ## [Read The Docs!](https://finmesh.readthedocs.io/en/latest/)
+        
+        Documentation is currently under construction but installation and all IEX functionality is covered on [Read The Docs](https://finmesh.readthedocs.io/en/latest/).
+        This documentation will now take over for the extremely basic function lists found on my personal website.
         
         ## Purpose
         ---
@@ -62,6 +67,8 @@ Description: # FinMesh
         3. [Via Email][7]
         
         If there are issues, be it major or semantic, please open an issue on GitHub.
+        
+        You can donate to the project [HERE](https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD). This project is 100% maintained in my free time (although I'm currently unemployed so I guess that doesn't mean anything) and any donations are greatly appreciated. If FinMesh has helped you make money, consider contributing!
         
         
         [5]: https://github.com/MichaelPHartmann

@@ -11,22 +11,29 @@ from ._common import *
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
-    All available data is derived from functions defined in the stock.py module, and are implemented here with a 'get_' prefix.
+    All available data is derived from functions defined in the stock.py module, and are implemented here with a "get_" prefix.
     All data is available in CSV format, and can be grouped together for bulk file writing.
-    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options. New versions will use Pandas.
-    All data retrieved is automatically stored in the corrosponding class attribute (sans 'get_' prefix).
+    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options.
+    Beta version will use Pandas. This is currently about 75% completed.
+    All data retrieved is automatically stored in the corrosponding class attribute (sans "get_" prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
-    Parameters:
-    ticker -> String. The symbol or ticker of the stock for which the class is to be created.
-    period -> String. Default is 'quarter'. Allows a user to set period data for all income statement requests.
-    last -> Integer. Default is 1. Allows a user to specify how many statements to retrieve of financial statement data.
-    autopopulate -> Boolean. Automatically populates key information as class attributes. Uses methods 'basic_information' and 'price_information'
+
+    :param ticker: The symbol or ticker of the stock for which the class is to be created.
+    :type ticker: string, required
+    :param period: Default is 'quarter'. Allows a user to set period data for all income statement requests.
+    :type period: string, optional
+    :param last: Default is 1. Allows a user to specify how many statements to retrieve of financial statement data.
+    :type last: integer, optional
+    :param autopopulate: Automatically populates key information as class attributes. Uses methods 'basic_information' and 'price_information'
+    :type autopopulate: boolean, optional
     """
     def __init__(self, ticker, period='quarter', last=1, autopopulate=False):
         self.ticker = ticker
         self.period = period
         self.last = last
-        self.csvfile_base = f'{ticker}_%s.csv'
+        self.csvfile_base = f'{ticker}_%s.csv' # TO BE DEPRECATED #
+        self.excelfile_base = f'{ticker}_%s.xlsx' # TO BE DEPRECATED #
+        self.genfile_base = f'{ticker}_%s'
         self.set_date()
 
         if autopopulate:
@@ -44,8 +51,23 @@ class IEXStock:
         result = str(date.today())
         setattr(IEXStock, 'date', result)
 
+    def filename_builder(extension, filename_addition):
+        return self.genfile_base.replace('%s', filename_addition).append(extension)
+
+    def pickle_class_state(self):
+        """This method takes the current state of the class and pickles it as-is.
+        This will preserve all attributes of the current class instance.
+        Recalling/loading the class can be done with the ``iex.unpickle_class_state()``
+        Filename is automatically created as '#ticker#_#date#_pickle.pickle'
+        """
+        filename = filename_builder('.pickle', f'{self.date}')
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    # TO BE DEPRECATED #
     def build_savestate_file(self, addin=None):
-        """Builds a standard file name based on an add-in.
+        """:meta private:
+        Builds a standard file name based on an add-in.
         This allows automatic retrieval of savestate files because the files are created using the exact same method.
         Parameters:
         addin -> String. File identifier to aid in automated loading of savestate files.
@@ -56,8 +78,10 @@ class IEXStock:
         else:
             result = result + '.txt'
 
+    # TO BE DEPRECATED #
     def save_state(self, output='plaintext', directory=None):
-        """Saves the current initialized state attributes in a serialized text file.
+        """:meta private:
+        Saves the current initialized state attributes in a serialized text file.
         Currently only outputs dicts into a .txt file.
         Parameters:
         output -> String. Defines the type of output. Default is plaintext.
@@ -91,8 +115,10 @@ class IEXStock:
             with open(filepath, 'w+') as f:
                 f.write(raw_to_write)
 
+    # TO BE DEPRECATED #
     def load_state(self, input='plaintext', directory=None):
-        """Loads the attributes of a previous serialized class and it's attributes from a file.
+        """:meta private:
+        Loads the attributes of a previous serialized class and it's attributes from a file.
         Parameters:
         input -> String. Defines the type of input. Default is plaintext.
         directoy -> String. If the saved file is in a directory, this is the name of that directory.
@@ -124,9 +150,11 @@ class IEXStock:
 
     def pandas_financial_json(self, json, statement):
         """Returns a dataframe for the requested financial statement.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing financial statement data.
-        statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
+
+        :param json: the raw json output from IEX Cloud containing financial statement data.
+        :type json: string, raw json, required
+        :param statement: the name of the statement as used by IEX Cloud.
+        :type statement: accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
         """
         data_to_frame = {}
         header = []
@@ -140,9 +168,10 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_financial_json(self, json, statement):
-        """Prepares a JSON document containing a financial data for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a financial data for writing to a CSV file.
         Parameters:
         json -> a raw json document containing financial data
         statement -> the name of the statement as used by IEX Cloud. Accepted values are : 'balancesheet', 'incomestatement', and 'cashflow'.
@@ -162,8 +191,9 @@ class IEXStock:
 
     def pandas_price_json(self, json):
         """Returns a dataframe for the requested price statement.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing daily price data.
+
+        :param json: the raw json output from IEX Cloud containing daily price data.
+        :type json: raw json
         """
         data_to_frame = {}
         header = []
@@ -177,9 +207,11 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_price_json(self, json_doc):
-        """Prepares a JSON document containing a stock price data for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a stock price data for writing to a CSV file.
+
         Parameters:
         json_doc -> a raw json document containing price data
         """
@@ -198,8 +230,9 @@ class IEXStock:
 
     def pandas_listofdict_json(self, json):
         """Returns a dataframe for the requested list of dictionaries json document.
-        Parameters:
-        json -> the raw json output from IEX Cloud containing a list of dictionary.
+
+        :param json: the raw json output from IEX Cloud containing a list of dictionary.
+        :type json: raw json
         """
         data_to_frame = {}
         header = []
@@ -213,9 +246,10 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame)
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_listofdict_json(self, json_doc):
-        """Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a list of dictionaries for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a list of dictionaries
         """
@@ -231,6 +265,13 @@ class IEXStock:
         return doc_to_write
 
     def pandas_singledict_json(self, json, in_list=False):
+        """Returns a dataframe for the requested dictionary json document.
+
+        :param json: the raw json output from IEX Cloud containing a list of dictionary.
+        :type json: raw json
+        :param in_list: whether the disctionary is conatined within a list element, that is, inside square braces.
+        :type in_list: boolean
+        """
         data_to_frame = {}
         if in_list:
             dictionary = json[0]
@@ -241,9 +282,10 @@ class IEXStock:
         dataframe = pandas.DataFrame(data_to_frame, index=[0])
         return dataframe
 
-
+    # TO BE DEPRECATED #
     def prep_singledict_json(self, json_dict, orientation='horizontal', in_list=False):
-        """Prepares a JSON document containing a single dictionary for writing to a CSV file.
+        """:meta private:
+        Prepares a JSON document containing a single dictionary for writing to a CSV file.
         Parameters:
         json_doc -> a raw json document containing a single dictionary
         orientation -> the layout of the data. Accepted arguments:
@@ -269,8 +311,10 @@ class IEXStock:
                 doc_to_write += (str(key) + ',' + str(value) + '\n')
         return doc_to_write
 
+    # TO BE DEPRECATED #
     def write_block_to_csv(self, doc_to_write, filename_addition):
-        """Writes a block or list of preformated string(s) to a csv file.
+        """:meta private:
+        Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'custom_write_block_to_csv' method but uses a standardized method to build the filename.
         Mainly used as optional output in class and csv savestate methods.
         Parameters:
@@ -287,8 +331,10 @@ class IEXStock:
             with open(self.csvfile_base.replace('%s', filename_addition), 'w+') as f:
                 f.write(doc_to_write)
 
+    # TO BE DEPRECATED #
     def custom_write_block_to_csv(self, doc_to_write, filename):
-        """Writes a block or list of preformated string(s) to a csv file.
+        """:meta private:
+        Writes a block or list of preformated string(s) to a csv file.
         Functionally identical to 'write_block_to_csv' method but does not use a standardized filename builder to determine the file name.
         Parameters:
         doc_to_write -> the preformatted string or list of preformated strings to write.
@@ -315,10 +361,15 @@ class IEXStock:
         """6 credits per symbol requested.
         Makes requests to the company and key stat IEX endpoints.
         Sets class attributes for:
+
         Company name (self.company_name)
+
         Industry (self.industry)
+
         Market Capitalization (self.market_cap)
+
         P/E Ratio (self.pe_ratio)
+
         Beta (self.beta)
         """
         company_request = stock.company(self.ticker)
@@ -333,8 +384,11 @@ class IEXStock:
         """6 credits per symbol requested.
         Makes requests to the key stat and price endpoints.
         Sets class attributes for:
+
         52 week high (week52_high), 52 week low (week52_low)
+
         200 day moving average (moving_average_200), 50 day moving average (moving_average_50)
+
         Most recent price (self.price)
         """
         key_stat_request = stock.key_stats(self.ticker)
@@ -346,34 +400,38 @@ class IEXStock:
 
     def price(self):
         """1 credit per symbol requested.
-        Returns the most recent price for the requested company and sets class attribute 'self.price'.
+
+        :return: Most recent price for the requested company and sets class attribute 'self.price'.
         """
         result = stock.price(self.ticker)
         self.price = result
         return result
 
-    def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, csv=None):
+    def get_historical_price(self, time_frame, date=None, chart_by_day=False, chart_close_only=False, output=None):
         """10 credits per day requested when part of a time frame. (Full Data)
         50 credits per single day, minute data.
-        Parameters:
-        time_frame -> String. Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
-        date -> String. If 'date' is specified in time_frame, this is the date that you wish to access.
-        chart_by_date -> Boolean. If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
 
+        :param time_frame: Determines how far back to retrieve data. Set to 'date' if only one specific day is required.
+        :type time_frame: string
+        :param date: If 'date' is specified in time_frame, this is the date that you wish to access.
+        :type date: string
+        :param chart_by_date: If a single date is requested, setting param to True only returns OHLC data instead of minutely data.
+        :type chart_by_date: boolean
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.new_historical_price(self.ticker, period=time_frame, date=date, chart_by_day=chart_by_day, chart_close_only=chart_close_only)
         attribute_name = f"{period}_historical_price"
+
+        if output:
+            result = pandas_price_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv', period))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', period))
+
         setattr(IEXStock, attribute_name, result)
-        if csv == 'prep':
-            return self.prep_price_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_price_json(result), 'time_frame')
-            return result
-        else:
-            return result
+        return result
 
     #  ___ _                   _      _   ___ _        _                     _
     # | __(_)_ _  __ _ _ _  __(_)__ _| | / __| |_ __ _| |_ ___ _ __  ___ _ _| |_ ___
@@ -381,86 +439,110 @@ class IEXStock:
     # |_| |_|_||_\__,_|_||_\__|_\__,_|_| |___/\__\__,_|\__\___|_|_|_\___|_||_\__/__/
 
 
-    def get_balance_sheet(self, period=None, last=None, csv=None):
-        # HORIZONTAL
+    def get_balance_sheet(self, period=None, last=None, output=None):
         """3,000 credits per symbol requested.
-        Returns balance sheet data for the requested company.
-        Sets class attribute 'self.balance_sheet'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        Sets class attribute 'self.balance_sheet'
+
+        :return: Balance sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         if period is None:
             period = self.period
         if last is None:
             last = self.last
         result = stock.balance_sheet(self.ticker, period=period, last=last)
+
+        if output:
+            result = self.pandas_financial_json(result, 'balancesheet')
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','balancesheet'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'balancesheet'))
+
         self.balance_sheet = result
-        if csv == 'prep':
-            self.balance_sheet = self.prep_financial_json(result, 'balancesheet')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json(result, 'balancesheet'), 'balancesheet')
         return result
 
-    def get_income_statement(self, period=None, last=None, csv=None):
+    def get_income_statement(self, period=None, last=None, output=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
-        Returns income statement data for the requested company and sets class attribute 'self.income_statement'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly']. Defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        Sets class attribute 'self.income_sheet'
+
+        :return: Income sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         if period is None:
             period = self.period
         if last is None:
             last = self.last
         result = stock.income_statement(self.ticker, period=period, last=last)
+
+        if output:
+            result = self.pandas_financial_json(result, 'income')
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','income'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'income'))
+
         self.income_statement = result
-        if csv == 'prep':
-            self.income_statement =  self.prep_financial_json(result, 'income')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json(result, 'income'), 'incomestatement')
         return result
 
-    def get_cash_flow_statement(self, period=None, last=None, csv=None):
+    def get_cash_flow_statement(self, period=None, last=None, output=None):
         # HORIZONTAL
         """1,000 credits per symbol requested.
-        Returns cash flow statement data for the requested company and sets class attribute 'self.cash_flow_statement'.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        Sets class attribute 'self.cash_flow_statement'
+
+        :return: Cash flow statement data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         if period is None:
             period = self.period
         if last is None:
             last = self.last
         result = stock.cash_flow(self.ticker, period=period, last=last)
+
+        if output:
+            result = self.pandas_financial_json(result, 'income')
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','income'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'income'))
+
         self.cash_flow_statement = result
-        if csv == 'prep':
-            self.cash_flow_statement = self.prep_financial_json(result, 'cashflow')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_financial_json(result, 'cashflow'), 'cashflow')
         return result
 
-    def get_financial_statements(self, period=None, last=None, csv=None):
+    def get_financial_statements(self, period=None, last=None, output=None):
         """5,000 credits per symbol requested.
-        Returns all financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
         This is useful if you want to update the query parameters after you've made some requests. It's just a time saver.
-        Parameters:
-        period -> String. Accepts ['annual', 'quarterly'], defaults to quarterly
-        last -> Integer. Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: All financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         self.get_balance_sheet(period=period, last=last, csv=csv)
         self.get_cash_flow_statement(period=period, last=last, csv=csv)
@@ -473,43 +555,53 @@ class IEXStock:
     # |___|___/_/\_\ |_|  |_\___|\__|_||_\___/\__,_/__/
 
 
-    def get_advanced_fundementals(self, period, csv=None):
+    def get_advanced_fundementals(self, period, output=None):
         # Vertical
         """75,000 credits per symbol requested.
-        Returns immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
         CSV is formatted vertically with keys in the first column.
-        Sets class attribute 'advanced_fundementals'.
-        Parameters:
-        period -> string, accepted values ['annual', 'quarterly', 'ttm']
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+        Sets class attribute 'advanced_fundementals'
+
+        :return: Immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.
+
+        :param period: Time interval of statements. Defaults to quarterly
+        :type period: accepted values are ['annual', 'quarterly'], optional
+        :param last: Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.
+        :type last: integer, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.advanced_fundementals(self.ticker, period)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','advanced_fundementals'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'advanced_fundementals'))
+
         self.advanced_fundementals = result
-        if csv == 'prep':
-            self.advanced_fundementals = self.prep_singledict_json(result, orientation='vertical', in_list=True)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical', in_list=True), 'advanced_fundementals')
         return result
 
-    def get_advanced_stats(self, csv=None):
+    def get_advanced_stats(self, output=None):
         # Vertical
         """3,005 credits per symbol requested.
-        Returns a buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
-        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'advanced_stats'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Buffed version of key stats with selected financial data and more. Includes all data points from 'key stats'.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.advanced_stats(self.ticker)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','advanced_stats'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'advanced_stats'))
+
         self.advanced_stats = result
-        if csv == 'prep':
-            self.advanced_stats = self.prep_singledict_json(result, orientation='vertical')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'advanced_stats')
         return result
 
     #  ___         _            _ #
@@ -517,7 +609,7 @@ class IEXStock:
     # | _ \ '_/ _ \ / / -_) ' \|_|#
     # |___/_| \___/_\_\___|_||_(_)#
 
-#    def get_book(self, csv=None):
+#    def get_book(self, output=None):
 #        # Vertical
 #        """1 credit per symbol requested.
 #        Returns quote, bid, ask, etc. data for the requested symbol.
@@ -525,9 +617,11 @@ class IEXStock:
 #        CSV is formatted vertically with keys in the first column.
 #        Sets class attribute 'book'.
 #        Parameters:
-#        csv -> string. Determines the processing for csv files. Valid arguments are:
-#        - 'output' will create a new CSV file with just the data from this endpoint.
-#        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+#        output -> string. Determines the output of the data. Default is raw JSON.
+#        If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.
+#        Valid arguments are:
+#        - 'dataframe' will create a pandas data frame with the data from this endpoint.
+#        - 'csv' will create a CSV file with the data from this endpoint. Uses Pandas.
 #        """
 #        result = stock.book(self.ticker)
 #        self.book = result
@@ -535,75 +629,86 @@ class IEXStock:
 #            self.convert_singledict_csv(result, 'book', orientation='vertical')
 #        return result
 
-    def get_company(self, csv=None):
+    def get_company(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns general information on the company requested.
-        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'company'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: General information on the company requested.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.company(self.ticker)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','company'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'company'))
+
         self.company = result
-        if csv == 'prep':
-            self.company = self.prep_singledict_json(result, orientation='vertical')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'company')
         return result
 
-    def get_delayed_quote(self, csv=None):
+    def get_delayed_quote(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns 15 minute delayed quote for the requested symbol.
-        CSV is formatted vertically with keys in the first column.
         Sets class attribute 'delayed_quote'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
 
+        :return: 15 minute delayed quote for the requested symbol.
+
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.delayed_quote(self.ticker)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv', 'delayed_quote'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'delayed_quote'))
+
         self.delayed_quote = result
-        if csv == 'prep':
-            self.delayed_quote = self.prep_singledict_json(result, orientation='vertical')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'delayed_quote')
         return result
 
-    def get_dividends(self, scope, csv=None):
+    def get_dividends(self, scope, output=None):
         # Vertical
         """10 credits per symbol requested.
-        Returns basic dividend information for the requested symbol.
         Sets class attribute 'dividends'.
-        Parameters:
-        scope -> string, the range of data needed. Accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next']
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
 
+        :return: Basic dividend information for the requested symbol.
+
+
+        :param scope: the range of data needed.
+        :type scope: accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next'], required
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.dividends(self.ticker, scope)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','dividends'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','dividends'))
+
         self.dividends = result
-        if csv == 'prep':
-            self.dividends = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'dividends')
         return result
 
-    def get_basic_financials(self, csv=None):
+    def get_basic_financials(self, output=None):
         # Horizontal
         """5000 credits per symbol requested.
-        Returns basic financial data from the requested company.
         Note that fetching all three full financial statements has the same credit cost as this endpoint.
         Sets class attribute 'basic_financials'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Basic financial data from the requested company.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.financials(self.ticker)
         self.basic_financials = result
@@ -613,154 +718,185 @@ class IEXStock:
             self.write_block_to_csv(self.prep_financial_json(result, 'financials'), 'basic_financials')
         return result
 
-    def get_fund_ownership(self, csv=None):
+    def get_fund_ownership(self, output=None):
         # Horizontal - Needs to be Changed
         """10,000 credits per symbol requested.
-        Returns the 10 largest institutional holders of the requested company.
         Sets class attribute 'fund_ownership'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: 10 largest institutional holders of the requested company.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.fund_ownership(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','fund_ownership'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','fund_ownership'))
+
         self.fund_ownership = result
-        if csv == 'prep':
-            self.fund_ownership = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'fund_ownership')
         return result
 
-    def get_insider_roster(self, output_csv):
+    def get_insider_roster(self, output=None):
         # Horizontal
         """5,000 credits per symbol requested.
-        Returns the top 10 insiders, with the most recent information.
         Sets class attribute 'insider_roster'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
 
+        :return: Top 10 insiders, with the most recent information.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.insider_roster(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','insider_roster'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','insider_roster'))
+
         self.insider_roster = result
-        if csv == 'prep':
-            self.insider_roster = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_roster')
         return result
 
-    def get_insider_transactions(self, output_csv):
+    def get_insider_transactions(self, output=None):
         # Horizontal
         """50 credits per transaction per symbol requested.
-        Returns insider transactions with the most recent information.
         Sets class attribute 'insider_transactions'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Insider transactions with the most recent information.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.insider_transactions(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','insider_transactions'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','insider_transactions'))
+
         self.insider_transactions = result
-        if csv == 'prep':
-            self.insider_transactions = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'insider_transactions')
         return result
 
-    def get_institutional_ownership(self, csv=None):
+    def get_institutional_ownership(self, output=None):
         # Horizontal
-        """10,000 credits per symbol requested
-        Returns the 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
+        """10,000 credits per symbol requested.
         Sets class attribute 'institutional_ownership'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: 10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.institutional_ownership(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','institutional_ownership'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','institutional_ownership'))
+
         self.institutional_ownership = result
-        if csv == 'prep':
-            self.institutional_ownership = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'institutional_ownership')
         return result
 
-    def get_key_stats(self, stat=None, csv=None):
+    def get_key_stats(self, stat=None, output=None):
         # Vertical
         """5 credits per symbol requested, 1 credit per stat per symbol requested.
-        Returns important stats for the requested company.
         Sets class attribute 'key_stats'.
-        CSV is formatted vertically with keys in the first column.
-        Parameters:
-        stat -> String. If you would like to querie one single stat, you can enter that here.
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Important stats for the requested company.
+
+        :param stat: If you would like to querie one single stat, you can enter that here.
+        :type stat: string, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.key_stats(self.ticker, stat=stat)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv', 'key_stats'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'key_stats'))
+
         self.key_stats = result
-        if csv == 'prep':
-            self.key_stats = self.prep_singledict_json(result, orientation='vertical')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'key_stats')
         return result
 
-    def get_largest_trades(self, csv=None):
+    def get_largest_trades(self, output=None):
         # Horizontal
         """1 credit per trade per symbol requested.
-        This returns 15 minute delayed, last sale eligible trades.
         Sets class attribute 'largest_trades'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: 15 minute delayed, last sale eligible trades.
+
+        :param stat: If you would like to querie one single stat, you can enter that here.
+        :type stat: string, optional
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.largest_trades(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','largest_trades'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','largest_trades'))
+
         self.largest_trades = result
-        if csv == 'prep':
-            self.largest_trades = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'largest_trades')
         return result
 
     def get_logo(self):
-        """1 credit per symbol requested
-        Returns a Google APIs link (bare url string) to the logo for the requested stock.
+        """1 credit per symbol requested.
         Sets class attribute 'logo'.
+
+        :return: Google APIs link (bare url string) to the logo for the requested stock.
         """
         result = stock.logo(self.ticker)['url']
         self.logo = result
         return result
 
-    def get_news(self,last=10, csv=None):
+    def get_news(self,last=10, output=None):
         # Horizontal
         """1 credit per news article per symbol requested.
-        Provides intraday news from over 3,000 global news sources including major publications, regional media, and social.
         Sets class attribute 'news'.
-        Parameters ->
-        last -> Integer. Number of article to return. Min = 1 Max = 50 Defualt = 10
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Intraday news from over 3,000 global news sources including major publications, regional media, and social.
+
+        :param last: Number of article to return. Defualt = 10
+        :type last: integer, min = 1 max = 50
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.news(self.ticker, last=last)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','news'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','news'))
+
         self.news = result
-        if csv == 'prep':
-            self.news = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'news')
         return result
 
-    def get_ohlc(self, csv=None):
+    def get_ohlc(self, output=None):
         # Horizontal
         """2 credits per symbol requested.
-        Returns the official open and close for a give symbol.
         Sets class attribute 'ohlc'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Official open and close for a give symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.ohlc(self.ticker)
         self.ohlc = result
@@ -782,30 +918,35 @@ class IEXStock:
 
     def get_peers(self):
         """500 credits per symbol requested.
-        Returns a list of peer company's tickers in Python list form.
         Sets class attribute 'peers'.
+
+        :return: List of peer company's tickers in Python list form.
         """
         result = stock.peers(self.ticker)
         self.peers = result
         return result
 
-    def get_quote(self, csv=None):
+    def get_quote(self, output=None):
         # Vertical
         """1 credit per symbol requested.
-        Returns quote data for the requested symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'quote'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Quote data for the requested symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = stock.quote(self.ticker)
+
+        if output:
+            result = self.pandas_singledict_json(result, in_list=False)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv', 'quote'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx', 'quote'))
+
         self.quote = result
-        if csv == 'prep':
-            self.quote = self.prep_singledict_json(result, orientation='vertical')
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'quote')
         return result
 
     #       ___                _
@@ -813,15 +954,15 @@ class IEXStock:
     #     / ___/ __/ -_)  ' \/ / // /  ' \
     #    /_/  /_/  \__/_/_/_/_/\_,_/_/_/_/
 
-    def get_price_target(self, csv=None):
+    def get_price_target(self, output=None):
         """Premium Data. 500 premium credits per symbol requested.
-        Returns the latest avg, high, and low analyst price target for a symbol.
         CSV is formatted vertically with keys in the first column.
         Sets class attribute 'price_target'.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
-        - 'output' will create a new CSV file with just the data from this endpoint.
-        - 'prep' will set the corrosponding class attribute to the formatted string instead of the raw json.
+
+        :return: Latest avg, high, and low analyst price target for a symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.price_target(self.ticker)
         self.price_target = result
@@ -831,43 +972,70 @@ class IEXStock:
             self.write_block_to_csv(self.prep_singledict_json(result, orientation='vertical'), 'price_target')
         return result
 
-    def get_analyst_recommendations(self, csv=None):
+    def get_analyst_recommendations(self, output=None):
         """Premium Data. 1,000 premium credits per symbol requested.
-        Returns analyst stock recommendations for the requested stock from the last four months.
         Sets class attribute 'analyst_recommendations'.
+
+        :return: Analyst stock recommendations for the requested stock from the last four months.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.recommendation_trends(self.ticker)
+
+        if output:
+            result = pandas_listofdict_json(result)
+            if output == 'csv':
+                result.to_csv(filename_builder('.csv','analyst_recommendations'))
+            if output == 'excel':
+                result.to_excel(filename_builder('.xlsx','analyst_recommendations'))
+
         self.analyst_recommendations = result
-        if csv == 'prep':
-            self.analyst_recommendations = self.prep_listofdict_json(result)
-        if csv == 'output':
-            self.write_block_to_csv(self.prep_listofdict_json(result), 'analyst_recommendations')
         return result
 
 
-    def get_analyst_estimates(self):
+    def get_analyst_estimates(self, output=None):
         """Premium Data. 10,000 premium credits per symbol requested.
-        Returns the latest consensus estimate for the next fiscal period for the requested symbol.
         Sets class attribute 'analyst_estimates'.
+        Not yet implemented.
+
+        :return: Latest consensus estimate for the next fiscal period for the requested symbol.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.future_estimates(self.ticker)
         self.analyst_estimates = result
         return result
-        # Needs a custom csv builder for the weirdly packaged JSON
-        pass
 
-    def get_earnings(self):
+
+    def get_earnings(self, output=None):
         """Premium Data. 1,000 premium credits per symbol requested.
-        Returns earnings data for a given company including the actual EPS, consensus, and fiscal period.
         Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
         Sets class attribute 'earnings'.
+        Not yet implemented.
+
+        :return: Earnings data for a given company including the actual EPS, consensus, and fiscal period.
+
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
         """
         result = premium.earnings(self.ticker)
         self.earnings = result
         return result
-        # Needs a custom csv builder for the weirdly packaged JSON
-        pass
 
+##### UNPICKLER METHOD #####
+def unpickle_class_state(file):
+    """This method unpickles/loads pickled class states.
+    It will actually load any sort of pickled file, as it's just opening and calling pickle.load() on a file.
+
+    :param file: The file containing the object you would like to unpickle.
+    :type file: string, required
+    """
+    with open(file, 'rb') as f:
+        pickle.load(f)
+##### UNPICKLER METHOD #####
 
 
 class IEXMarket():
@@ -908,12 +1076,17 @@ class IEXMarket():
 
     def get_market_datapoint(self, symbol, key='market', **queries):
         """1,000 credits per symbol requested per date.
-        Returns various economic and commodity values as a datapoint.
         Sets a class attribute equal to the symbol requested.
-        Parameters:
-        symbol -> The symbol of the economic indicator or commodity datapoint requested.
+
         Class attribute 'available_economic_symbols' is a dictionary of available economic symbols and their description.
         Class attribute 'available_commodity_symbols' is a dictionary of available commodity symbols and their description
+
+        :return: Various economic and commodity values as a datapoint.
+
+        :param symbol: The symbol of the economic indicator or commodity datapoint requested.
+        :type symbol: string, required
+        :param **queries: Additional query parameters you want to include as listed in IEX Docs.
+        :type **queries: key value pair as string
         """
         result = market.generic_data_point(symbol, key, **queries)
         setattr(IEXMarket, symbol, result)
@@ -921,9 +1094,10 @@ class IEXMarket():
 
     def get_all_economic_data(self, output_csv=False):
         """18,000 credits per request per day.
-        Returns all available current economic indicator datapoints.
-        Parameters:
-        csv -> string. Determines the processing for csv files. Valid arguments are:
+        :return: All available current economic indicator datapoints.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: boolean, optional
         """
         output_data = {}
         for key in self.available_commodity_symbols.keys():
@@ -937,6 +1111,9 @@ class IEXMarket():
     def get_all_commodity_data(self, output_csv=False):
         """10,000 credits per request per day.
         Returns all available current commodity datapoints.
+
+        :param output: Determines the output of the data. Default is raw JSON.
+        :type output: boolean, optional
         """
         output_data = {}
         for key in self.available_commodity_symbols.keys():
@@ -956,14 +1133,14 @@ class symbolsAvailable():
         """100 credits per request made.
         The only default return for this class.
         Simply returns the json dict that IEX supplies through their symbols endpoint.
-        Returns symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
+        :return: Symbol, exchange, name, date, isenabled, type, region, currency, iexId, figi, cik.
         """
         SYMBOL_URL = append_iex_token(prepend_iex_url('ref-data/symbols'))
         return get_iex_json_request(url, vprint=vprint)
 
     def symbol_cik_dict():
-        """Returns a dictionary containing a symbol and the corrosponding CIK number.
-        This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        """This is useful in many applications where having the CIK allows direct access to faw data and filings, such as in EDGAR.
+        :return: Dictionary containing a symbol and the corrosponding CIK number.
         """
         output_dict = {}
         for company in self.all_symbols:
@@ -972,7 +1149,7 @@ class symbolsAvailable():
         return output_dict
 
     def symbol_list():
-        """Returns a list of all the symbols supported by IEX."""
+        """:return: List of all the symbols supported by IEX."""
         output_list = []
         for company in self.all_symbols:
             output_list.append(company['symbol'])
