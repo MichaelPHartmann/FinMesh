@@ -197,7 +197,7 @@ def historical_price(symbol, period, date=None, vprint=False, **queries):
 
 #   HISTORICAL PRICE
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
-def new_historical_price(symbol, period, date=None, chartByDay=False, **query_string_params):
+def new_historical_price(symbol, period, date=None, chartByDay=False, **query_string_params, vprint=False):
     """:return: Adjusted and unadjusted historical data for up to 15 years, and historical minute-by-minute intraday prices for the last 30 trailing calendar days.
 
     :param symbol: The ticker or symbol of the stock you would like to request.
