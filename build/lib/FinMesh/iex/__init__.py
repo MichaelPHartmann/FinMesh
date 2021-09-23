@@ -994,36 +994,36 @@ class IEXStock:
         return result
 
 
-    def get_analyst_estimates(self, output=None):
-        """Premium Data. 10,000 premium credits per symbol requested.
-        Sets class attribute 'analyst_estimates'.
-        Not yet implemented.
-
-        :return: Latest consensus estimate for the next fiscal period for the requested symbol.
-
-        :param output: Determines the output of the data. Default is raw JSON.
-        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
-        """
-        result = premium.future_estimates(self.ticker)
-        self.analyst_estimates = result
-        return result
-
-
-    def get_earnings(self, output=None):
-        """Premium Data. 1,000 premium credits per symbol requested.
-        Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
-        Sets class attribute 'earnings'.
-        Not yet implemented.
-
-        :return: Earnings data for a given company including the actual EPS, consensus, and fiscal period.
+#    def get_analyst_estimates(self, output=None):
+#        """Premium Data. 10,000 premium credits per symbol requested.
+#        Sets class attribute 'analyst_estimates'.
+#        Not yet implemented.
+#
+#        :return: Latest consensus estimate for the next fiscal period for the requested symbol.
+#
+#        :param output: Determines the output of the data. Default is raw JSON.
+#        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
+#        """
+#        result = premium.future_estimates(self.ticker)
+#        self.analyst_estimates = result
+#        return result
 
 
-        :param output: Determines the output of the data. Default is raw JSON.
-        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
-        """
-        result = premium.earnings(self.ticker)
-        self.earnings = result
-        return result
+#    def get_earnings(self, output=None):
+#        """Premium Data. 1,000 premium credits per symbol requested.
+#        Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
+#        Sets class attribute 'earnings'.
+#        Not yet implemented.
+#
+#        :return: Earnings data for a given company including the actual EPS, consensus, and fiscal period.
+#
+#
+#        :param output: Determines the output of the data. Default is raw JSON.
+#        :type output: accepted values are ['dataframe', 'csv', 'excel'], optional
+#        result = premium.earnings(self.ticker)
+#        self.earnings = result
+#        return result
+
 
 ##### UNPICKLER METHOD #####
 def unpickle_class_state(file):
