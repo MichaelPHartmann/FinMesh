@@ -2,7 +2,7 @@ Accessing IEX Cloud
 ###################
 
 These tutorials are meant for those who are new to programming, and cover each step fairly thoroughly.
-If you are experienced in Python, the docs are more in depth on the actual methods available.
+If you are experienced in Python, the docs are more in depth and cover the actual methods available.
 
 Using the IEXStock Class to Access Data
 =======================================
@@ -46,7 +46,8 @@ Or you can import just the class and save yourself some typing:
 Calling Methods - The Basics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once you have the method (or function) and have initialized it with the ticker of the stock you want to look at, you can start requesting data.
+Once you have initialized a new class with the ticker of the stock you want to look at, you can start requesting data.
+Each grouping of data (in API speak we would call them endpoints) uses a function to gather and optionally format the data.
 The naming of all the methods in the IEXStock class follow two rigid rules:
 
 1. All method names will match as closely as possible with their names according to IEX Cloud documentation, with all spaces as underscores
@@ -64,7 +65,7 @@ Here we will request some key stats about the company and their latest quarterly
   # A whole bunch of JSON containing the keys and values from the latest balance sheet
 
 These methods will return some nice JSON data, but we don't always want JSON data. Pandas is the solution for that.
-Pandas take data and formats it into ``dataframes``, otherwise known as tables.
+Pandas takes data and formats it into ``dataframes``, otherwise known as tables.
 This makes it easier to work with in Python and export to Excel.
 If you want to output a Pandas dataframe, simply specify the output:
 
@@ -75,13 +76,13 @@ Class Attributes
 ^^^^^^^^^^^^^^^^
 
 Every time you call a method, you are making a request to the IEX Cloud API, thus costing you credits.
-Even the lowest teir has more than enough credits to work with small projects, but as soon as you want to start gathering lots of data, you might run out.
+Even the lowest teir has more than enough credits to work with small projects, but as soon as you want to start gathering data on a larger scale, you will find yourself needing more credits..
 
 One limited solution to this is keeping the responses from the methods as a class attribute.
-A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound.
+A class attribute is basically just a characteristic of the class. For example, an attribute of moles is they live undergound, and an attribute of our example IEXStock class is the key stats data.
 
 When you call a method, the result will automatically be assigned to an attribute of the same name, minus the '\get' prefix.
-You call it with the class anme and no parenthesis.
+You call it with the class name and no parenthesis.
 
   >>> AAPL.key_stats
   # A nice dataframe containing the keys and values from the Key Stats endpoint

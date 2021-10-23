@@ -140,22 +140,6 @@ Sets class attribute ‘advanced_stats’.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="iex.IEXStock.get_analyst_estimates">
-<span class="sig-name descname"><span class="pre">get_analyst_estimates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_analyst_estimates" title="Permalink to this definition"></a></dt>
-<dd><p>Premium Data. 10,000 premium credits per symbol requested.
-Sets class attribute ‘analyst_estimates’.
-Not yet implemented.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Latest consensus estimate for the next fiscal period for the requested symbol.</p>
-</dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="iex.IEXStock.get_analyst_recommendations">
 <span class="sig-name descname"><span class="pre">get_analyst_recommendations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_analyst_recommendations" title="Permalink to this definition"></a></dt>
 <dd><p>Premium Data. 1,000 premium credits per symbol requested.
@@ -268,23 +252,6 @@ Sets class attribute ‘dividends’.</p>
 <li><p><strong>scope</strong> (<em>accepted arguments:</em><em> [</em><em>'5y'</em><em>,</em><em>'2y'</em><em>,</em><em>'1y'</em><em>,</em><em>'ytd'</em><em>,</em><em>'6m'</em><em>,</em><em>'3m'</em><em>,</em><em>'1m'</em><em>,</em><em>'next'</em><em>]</em><em>, </em><em>required</em>) – the range of data needed.</p></li>
 <li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="iex.IEXStock.get_earnings">
-<span class="sig-name descname"><span class="pre">get_earnings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_earnings" title="Permalink to this definition"></a></dt>
-<dd><p>Premium Data. 1,000 premium credits per symbol requested.
-Earnings are available quarterly (last 4 quarters) and annually (last 4 years).
-Sets class attribute ‘earnings’.
-Not yet implemented.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Earnings data for a given company including the actual EPS, consensus, and fiscal period.</p>
-</dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
 </dd>
 </dl>
 </dd></dl>
