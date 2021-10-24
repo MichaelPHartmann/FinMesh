@@ -14,27 +14,46 @@ EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
 
 
 class edgarFiler(object):
+    """
+    A class designed for retrieving SEC reports.
+    Currently only supports requests for raw reports, and does not take care of parsing.
+    This class may be useful if you are looking for the CIK number of a company.
+    This attribute is set upon initialization.
+    """
 
     def __init__(self, ticker):
         self.ticker = ticker
         self.cik = self.cik()
 
     def cik(self):
-        ## Sets the CIK attribute for the requested company.
+        """Sets the CIK attribute for the requested company"""
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&output=atom"
         search = requests.get(URL)
         search_result = search.text
         root = ET.fromstring(search_result)
         cik = root[1][4].text
         return cik
-    cik.__doc__='Sets the CIK attribute for the requested company.'
 
     # # # # # # # # # # # # # # # # # # # # # # #
     # FULL SERVICE ACCESSION AND REPORT GETTING #
     # # # # # # # # # # # # # # # # # # # # # # #
     def get_report_full(self, count, document, get=False, html=False, xbrl=False, xlsx=False,debug=False):
-    # Returns accession numbers and documents in five forms for all the documents for the desired company
-    # SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+    """Returns accession numbers and documents in five forms for all the documents for the desired company
+    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+
+    :param count: The number of documents to return.
+    :type count: int, required
+    :param document: The name of the document you wish to request (i.e. '10-K')
+    :type document: string, required
+    :param get: Streams a raw text document for the filings staright to your local workspace.
+    :type get: boolean, optional
+    :param html: Returns an html-only version of the raw text document (parsed by switching at html tags)
+    :type html: boolean, optional
+    :param xbrl: Opens a new web page with the interactive xbrl data.
+    :type xbrl: boolean, optional
+    :param xlsx: Downloads the company-supplied xlsx filing document if available
+    :type xlsx: boolean, optional
+    """
         document = document_type_parse(document)
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
         if debug:
@@ -103,15 +122,27 @@ class edgarFiler(object):
                         raise Exception('Please ensure there are valid CIK and accession numbers.')
 
     return accessions_requested
-    accessions.__doc__='Returns accession numbers and documents in five forms for all the documents for the desired company.'
+
 
     # # # # # # # # # # # # # # #
     # GET REPORT FROM ACCESSION #
     # # # # # # # # # # # # # # #
     def get_reports(self, accession, get=False, html=False, xbrl=False, xlsx=False,debug=False):
-    # Returns accession numbers and documents in five forms for all the documents for the desired company
-    # SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+    """Returns document in five forms for the requested accession number.
+    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
 
+
+    :param accession: The accession number of the report you wish to retrieve
+    :type accession: string, required
+    :param get: Streams a raw text document for the filings staright to your local workspace.
+    :type get: boolean, optional
+    :param html: Returns an html-only version of the raw text document (parsed by switching at html tags)
+    :type html: boolean, optional
+    :param xbrl: Opens a new web page with the interactive xbrl data.
+    :type xbrl: boolean, optional
+    :param xlsx: Downloads the company-supplied xlsx filing document if available
+    :type xlsx: boolean, optional
+    """
         fixed_accession = accession.replace("-","")
         URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
 
@@ -152,7 +183,7 @@ class edgarFiler(object):
                 raise Exception('Please ensure there are valid CIK and accession numbers.')
 
         return filename
-    accessions.__doc__='Returns accession numbers and documents in five forms for all the documents for the desired company.'
+
 
     # # # # # # # # # # # # # # # # #
     # GET LIST OF ACCESSION NUMBERS #
@@ -190,87 +221,87 @@ class edgarFiler(object):
     accessions.__doc__='Returns accession numbers and documents in five forms for all the documents for the desired company.'
 
 
-class edgarReport(object):
-
-    def __init__(self,ticker,file):
-        self.ticker = ticker
-        self.file = file
-        self.report_period = ''
-        self.company_name = ''
-
-    def get_report_attributes():
-        with open(self.file, 'r') as f:
-            text = f.read()
-        report_period = "CONFORMED PERIOD OF REPORT:	"
-        file_date = "FILED AS OF DATE:		"
-        company_name = "COMPANY CONFORMED NAME:			"
-        industrial_classification = "STANDARD INDUSTRIAL CLASSIFICATION:	"
-        report_period_start = text.find(report_period)+len(report_period)
-        file_date_start = text.find(file_date)+len(file_date)
-        company_name_start = text.find(company_name)+len(company_name)
-        company_name_end =
-        industrial_classification_start = text.find(industrial_classification)+len(industrial_classification)
-        industrial_classification_end =
-
-    # # # # # # # # # # #
-    # Isolating  Tables #
-    # # # # # # # # # # #
-
-    def isolate_tables(self, debug=True):
-        with open(self.file, 'r') as fo:
-            text = fo.read()
-        starts, ends = find_all_tables(text)
-        if debug: print(starts, ends)
-        table_only_output = f'{self.ticker}_{self.report_period}_tablesonly.html'
-        with open(table_only_output, 'a') as f:
-            for i in range(len(starts)-1):
-                block_to_write = text[starts[i]:ends[i]]
-                f.write(block_to_write)
-    isolate_tables.__doc__='Isolates all the tables in a SEC filing to a new file.'
-
-
-    # # # # # # # # # #
-    # WORD  FREQUENCY #
-    # # # # # # # # # #
-
-    def real_word_frequency(self):
-        # Returns a list fo real words sorted by use frequency
-        with open(self.file,'r') as f:
-            word_list = words.words()
-            alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-            file_words = []
-            # Quick sieve that is used in bad_apples function to quickly throw out obvious unreal words
-            ignore = ['-','_','/','=',':',';','<','>','#','$','@','*','\\']
-            lines = f.readlines()
-            word_freq = {}
-            final_checked = {}
-            # Iterate lines from file
-            for line in lines:
-                words = line.lower().strip().split(' ')
-                # Iterate words from line
-                for word in words:
-                    if not pick_bad_apples(word, ignore):
-                        file_words.append(word)
-            # Iterate words that pass bad apple check
-            for w in file_words:
-                if not w == '':
-                    length = len(w)-1
-                    # Checks if the first and last letter are in the alphabet
-                    if w[0] and w[length] in alphabet:
-                        w.replace('.','').strip('\"')
-                        if w in word_freq.keys():
-                            word_freq[w] += 1
-                        else:
-                            word_freq[w] = 1
-
-            # Runs a final check against an actual dictionary
-            for key in word_freq.keys():
-                if key in word_list:
-                    val = word_freq.get(key)
-                    final_checked[key] = val
-
-            # Sort the words by frequency
-            final_checked_sorted = {k: v for k, v in sorted(final_checked.items(), key=lambda item: item[1])}
-
-            return final_checked_sorted
-    real_word_frequency.__doc__='Returns a list fo real words sorted by use frequency.'
+# class edgarReport(object):
+#
+#     def __init__(self,ticker,file):
+#         self.ticker = ticker
+#         self.file = file
+#         self.report_period = ''
+#         self.company_name = ''
+#
+#     def get_report_attributes():
+#         with open(self.file, 'r') as f:
+#             text = f.read()
+#         report_period = "CONFORMED PERIOD OF REPORT:	"
+#         file_date = "FILED AS OF DATE:		"
+#         company_name = "COMPANY CONFORMED NAME:			"
+#         industrial_classification = "STANDARD INDUSTRIAL CLASSIFICATION:	"
+#         report_period_start = text.find(report_period)+len(report_period)
+#         file_date_start = text.find(file_date)+len(file_date)
+#         company_name_start = text.find(company_name)+len(company_name)
+#         company_name_end = ''
+#         industrial_classification_start = text.find(industrial_classification)+len(industrial_classification)
+#         industrial_classification_end = ''
+#
+#     # # # # # # # # # # #
+#     # Isolating  Tables #
+#     # # # # # # # # # # #
+#
+#     def isolate_tables(self, debug=True):
+#         with open(self.file, 'r') as fo:
+#             text = fo.read()
+#         starts, ends = find_all_tables(text)
+#         if debug: print(starts, ends)
+#         table_only_output = f'{self.ticker}_{self.report_period}_tablesonly.html'
+#         with open(table_only_output, 'a') as f:
+#             for i in range(len(starts)-1):
+#                 block_to_write = text[starts[i]:ends[i]]
+#                 f.write(block_to_write)
+#     isolate_tables.__doc__='Isolates all the tables in a SEC filing to a new file.'
+#
+#
+#     # # # # # # # # # #
+#     # WORD  FREQUENCY #
+#     # # # # # # # # # #
+#
+#     def real_word_frequency(self):
+#         # Returns a list fo real words sorted by use frequency
+#         with open(self.file,'r') as f:
+#             word_list = words.words()
+#             alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+#             file_words = []
+#             # Quick sieve that is used in bad_apples function to quickly throw out obvious unreal words
+#             ignore = ['-','_','/','=',':',';','<','>','#','$','@','*','\\']
+#             lines = f.readlines()
+#             word_freq = {}
+#             final_checked = {}
+#             # Iterate lines from file
+#             for line in lines:
+#                 words = line.lower().strip().split(' ')
+#                 # Iterate words from line
+#                 for word in words:
+#                     if not pick_bad_apples(word, ignore):
+#                         file_words.append(word)
+#             # Iterate words that pass bad apple check
+#             for w in file_words:
+#                 if not w == '':
+#                     length = len(w)-1
+#                     # Checks if the first and last letter are in the alphabet
+#                     if w[0] and w[length] in alphabet:
+#                         w.replace('.','').strip('\"')
+#                         if w in word_freq.keys():
+#                             word_freq[w] += 1
+#                         else:
+#                             word_freq[w] = 1
+#
+#             # Runs a final check against an actual dictionary
+#             for key in word_freq.keys():
+#                 if key in word_list:
+#                     val = word_freq.get(key)
+#                     final_checked[key] = val
+#
+#             # Sort the words by frequency
+#             final_checked_sorted = {k: v for k, v in sorted(final_checked.items(), key=lambda item: item[1])}
+#
+#             return final_checked_sorted
+#     real_word_frequency.__doc__='Returns a list fo real words sorted by use frequency.'
