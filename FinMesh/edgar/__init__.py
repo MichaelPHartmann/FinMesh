@@ -131,7 +131,6 @@ class edgarFiler(object):
     """Returns document in five forms for the requested accession number.
     SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
 
-
     :param accession: The accession number of the report you wish to retrieve
     :type accession: string, required
     :param get: Streams a raw text document for the filings staright to your local workspace.
@@ -188,9 +187,15 @@ class edgarFiler(object):
     # # # # # # # # # # # # # # # # #
     # GET LIST OF ACCESSION NUMBERS #
     # # # # # # # # # # # # # # # # #
-    def get_accessions(self, count, document, get=False, html=False, xbrl=False, xlsx=False,debug=False):
-    # Returns accession numbers for the document for the desired company
-    # SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+    def get_accessions(self, count, document):
+    """Returns accession numbers for the document for the desired company
+    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+
+    :param count: The number of documents to return.
+    :type count: int, required
+    :param document: The name of the document you wish to request (i.e. '10-K')
+    :type document: string, required
+    """
         document = document_type_parse(document)
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
         if debug:
@@ -218,7 +223,6 @@ class edgarFiler(object):
             raise Exception(f'{document} is not a valid document type!')
 
     return accessions_requested
-    accessions.__doc__='Returns accession numbers and documents in five forms for all the documents for the desired company.'
 
 
 # class edgarReport(object):
