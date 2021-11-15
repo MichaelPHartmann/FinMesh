@@ -9,7 +9,7 @@ def arg_to_bool(string):
     else:
         return False
 
-def prepend_iex_url(section):
+def prepend_iex_url(section, external=False):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
     if sandboxState is True:
         url = f'https://sandbox.iexapis.com/stable/{section}/'
@@ -19,9 +19,12 @@ def prepend_iex_url(section):
 
 def append_iex_token(url, external=False):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
-    if external is True:
-        pass
+    if external:
+        # This is where we can pass in a token instead of getting it from the environment
+        token = external
+        return f"{url}&token={token}"
     else:
+        # Default is grab the token and sandbox state from environment variables
         if sandboxState is True:
             token = os.getenv('IEX_SANDBOX_TOKEN')
         else:
