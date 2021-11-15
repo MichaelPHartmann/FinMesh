@@ -3,8 +3,8 @@ import requests
 import xml.etree.ElementTree as ET
 import webbrowser
 import shutil
-from bs4 import BeautifulSoup, SoupStrainer
-from nltk.corpus import words
+# from bs4 import BeautifulSoup, SoupStrainer
+# from nltk.corpus import words
 from ._common import *
 
 
