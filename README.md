@@ -1,7 +1,7 @@
 # FinMesh
 ---
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/FinMesh?style=for-the-badge)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/FinMesh?style=for-the-badge)
 
 FinMesh is a python-based package that brings together financial data from various sources in one place for ease of use and distribution. The four main sections of FinMesh are (1) the [IEX REST API][1], (2) data from the [US treasury][2], data from the [US Federal Reserve Economic Data][3], and (4) data from the [SECs EDGAR][4] system.
 
