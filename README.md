@@ -5,6 +5,8 @@
 
 FinMesh is a python-based package that brings together financial data from various sources in one place for ease of use and distribution. The four main sections of FinMesh are (1) the [IEX REST API][1], (2) data from the [US treasury][2], data from the [US Federal Reserve Economic Data][3], and (4) data from the [SECs EDGAR][4] system.
 
+You can donate to the project [HERE](https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD). This project is 100% maintained in my free time (although I'm currently unemployed so I guess that doesn't mean anything) and any donations are greatly appreciated. If FinMesh has helped you make money, consider contributing!
+
 [1]: https://iexcloud.io/docs/api/
 [2]: https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
 [3]: https://fred.stlouisfed.org/
@@ -62,9 +64,6 @@ If you would like to reach out, feel free to connect with me one of three ways:
 3. [Via Email][7]
 
 If there are issues, be it major or semantic, please open an issue on GitHub.
-
-You can donate to the project [HERE](https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD). This project is 100% maintained in my free time (although I'm currently unemployed so I guess that doesn't mean anything) and any donations are greatly appreciated. If FinMesh has helped you make money, consider contributing!
-
 
 [5]: https://github.com/MichaelPHartmann
 [6]: https://www.linkedin.com/in/michael-hartmann/
