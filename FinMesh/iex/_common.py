@@ -120,7 +120,13 @@ class iexCommon():
         return url_final
 
     def make_iex_request(self):
-        pass
+        request_result = requests.get(self.url)
+        if result.status_code != 200:
+            # This should print out a more verbose error code
+            # Include status_code, reason, url and text
+            raise BaseException(result.text)
+        result = result.json()
+        return result
 
     # Step One
     # Execution of class is split into two parts so that changes to the url can be made halfway through
