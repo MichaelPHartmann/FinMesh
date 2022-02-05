@@ -81,6 +81,11 @@ class iexCommon():
 
     # Simple string comprehension and conversion for use with environment variable settings
     def arg_to_bool(self, string):
+        """Turns a text string into a boolean response, not fancy.
+
+        :param string: The string you would like to convert to boolean.
+        :type string: String, required
+        """
         affirmative = ['True','TRUE','true','Yes','YES','yes','On','ON','on']
         if string in affirmative:
             return True
@@ -90,6 +95,13 @@ class iexCommon():
     # Takes a token string and sets the sandbox state accordingly.
     # All IEX tokens use a 'T' as the first char for sandbox tokens
     def parse_token_sandbox(self, token):
+        """Takes a token string and sets the sandbox state accordingly.
+        All IEX tokens use a 'T' as the first char of a token to indicate whether it is a sandbox token.
+        This method just looks for that T.
+
+        :param token: The token you would like to parse.
+        :type token: String, required
+        """
         if self.token[0] == 'T':
             setattr(self, 'sandbox_state', True)
         else:
@@ -119,13 +131,17 @@ class iexCommon():
         url_final = f"{self.url}&token={self.token}"
         return url_final
 
+    # Make and handle the request to IEX Cloud with verbose error message
     def make_iex_request(self):
-        request_result = requests.get(self.url)
-        if result.status_code != 200:
-            # This should print out a more verbose error code
-            # Include status_code, reason, url and text
-            raise BaseException(result.text)
-        result = result.json()
+        response = requests.get(self.url)
+        if response.status_code != 200:
+            error_response = (F"There was an error with the request to IEX!\n"
+                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                            + F"URL: {response.url}\n"
+                            + "Response Content:\n"
+                            + F"{response.text}")
+            raise Exception(error_response)
+        result = response.json()
         return result
 
     # Step One
@@ -138,13 +154,3 @@ class iexCommon():
     def execute(self):
         self.append_token_to_url()
         self.make_iex_request()
-
-
-
-
-# Basic layout of function in pretty much psuedo code
-def test_iex_retrieval(symbol, **query_params):
-    """DOCUMENTATION"""
-    common = iexCommon(url, symbol, external).pre_execute()
-    # Any weird params that need to be added into the url can go here using the '?' as a landmark
-    common.execute()
