@@ -1,3 +1,11 @@
+"""
+Version naming has been simplified in 2.0 going forward.
+Production releases will be MAJOR.MINOR format.
+Increments to major are reserved for significant updates.
+Increments to minor are available for all new versions
+Test releases are MAJOR.MINOR.PATCH format.
+"""
+
 import setuptools
 
 with open("README.md", "r") as fh:

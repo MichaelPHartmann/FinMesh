@@ -83,6 +83,8 @@ def pick_bad_apples(word,ignore_list):
     return ignore
 pick_bad_apples.__doc__= "Determines whether or not to ignore certain words."
 
+find_all_tables.__doc__='Returns two lists containing the start and end indexes for all tables in an SEC filing.'
+
 def find_all_tables(text, debug=True):
     # Import text and lower-case everything
     f = text
@@ -100,11 +102,10 @@ def find_all_tables(text, debug=True):
         else:
             last_table_end = table_ends[len(table_ends) - 1]
 
-        # Append starts and ends
-        table_start = f.find('<table', last_table_end+1)
-        table_starts.append(table_start)
-        table_end = f.find('</table>', last_table_end+1)
-        table_ends.append(table_end)
+            # Append starts and ends
+            table_start = f.find('<table', last_table_end+1)
+            table_starts.append(table_start)
+            table_end = f.find('</table>', last_table_end+1)
+            table_ends.append(table_end)
 
-    return table_starts, table_ends
-find_all_tables.__doc__='Returns two lists containing the start and end indexes for all tables in an SEC filing.'
+            return table_starts, table_ends

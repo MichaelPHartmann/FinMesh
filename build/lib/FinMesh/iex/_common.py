@@ -9,7 +9,7 @@ def arg_to_bool(string):
     else:
         return False
 
-def prepend_iex_url(section):
+def prepend_iex_url(section, external=False):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
     if sandboxState is True:
         url = f'https://sandbox.iexapis.com/stable/{section}/'
@@ -17,16 +17,22 @@ def prepend_iex_url(section):
         url = f'https://cloud.iexapis.com/stable/{section}/'
     return url
 
-def append_iex_token(url):
+def append_iex_token(url, external=False):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
-    if sandboxState is True:
-        token = os.getenv('IEX_SANDBOX_TOKEN')
+    if external:
+        # This is where we can pass in a token instead of getting it from the environment
+        token = external
+        return f"{url}&token={token}"
     else:
-        token = os.getenv('IEX_TOKEN')
-    return f"{url}&token={token}"
+        # Default is grab the token and sandbox state from environment variables
+        if sandboxState is True:
+            token = os.getenv('IEX_SANDBOX_TOKEN')
+        else:
+            token = os.getenv('IEX_TOKEN')
+        return f"{url}&token={token}"
 
-def get_iex_json_request(url, vprint=False):
-    url = append_iex_token(url)
+def get_iex_json_request(url, external=False, vprint=False):
+    url = append_iex_token(url, external=external)
     if vprint: print(f"Making request: {url}")
     result = requests.get(url)
     if vprint: print(f"Request status code: {result.status_code}")
