@@ -13,6 +13,6 @@ echo Pushing to GitHub repository...
 git push
 
 echo Upgrading FinMesh...
-pip3 install --upgrade FinMesh
+pip3 install --upgrade --force-reinstall FinMesh
 sleep 2s
-pip3 install --upgrade FinMesh
+pip3 install --upgrade --force-reinstall FinMesh
