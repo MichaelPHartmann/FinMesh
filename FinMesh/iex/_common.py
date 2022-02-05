@@ -2,6 +2,7 @@ import os
 import requests
 
 # Simple string comprehension to allow setting of states through environment variables.
+# REFACTORED!
 def arg_to_bool(string):
     affirmative = ['True','TRUE','true','Yes','YES','yes','On','ON','on']
     if string in affirmative:
@@ -10,6 +11,7 @@ def arg_to_bool(string):
         return False
 
 # This may not be needed
+# REFACTORED
 def prepend_iex_url(section, external=False):
     sandboxState = arg_to_bool(os.getenv('SANDBOX'))
     if sandboxState is True:
@@ -108,9 +110,28 @@ class iexCommon():
 
     # Adds query paramters to the url
     def add_query_params_to_url(self, **query_params):
-        for key, value in queries.items():
+        for key, value in query_params.items():
             self.url += (f"&{key}={value}")
         return self.url
+
+    # Finalizes the url with the appropriate token - method does not determine which token to append
+    def append_token_to_url(self):
+        url_final = f"{self.url}&token={self.token}"
+        return url_final
+
+    def make_iex_request(self):
+        pass
+
+    # Step One
+    # Execution of class is split into two parts so that changes to the url can be made halfway through
+    def pre_execute(self, query_params):
+        self.add_query_params_to_url(self, query_params=None)
+
+    # Step Two
+    # Final execution step where token is added and request is made.
+    def execute(self):
+        self.append_token_to_url()
+        self.make_iex_request()
 
 
 
@@ -118,6 +139,6 @@ class iexCommon():
 # Basic layout of function in pretty much psuedo code
 def test_iex_retrieval(symbol, **query_params):
     """DOCUMENTATION"""
-    common = iexCommon(url, symbol, external).execute()
-
-    common.get_request
+    common = iexCommon(url, symbol, external).pre_execute()
+    # Any weird params that need to be added into the url can go here using the '?' as a landmark
+    common.execute()
