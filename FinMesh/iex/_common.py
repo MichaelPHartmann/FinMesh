@@ -66,15 +66,15 @@ class iexCommon():
     :type external: Boolean or String. Default is False, insert token here to bypass using environment variables.
     """
 
-    def __init__(self, endpoint, symbol, external=False):
+    def __init__(self, section, symbol, endpoint, external=False):
         self.url = f'iexapis.com/stable/{section}/{symbol}/{endpoint}?'
-        if external not False:
+        if not external == False:
             self.token = external
             self.parse_token_sandbox(self.token)
         else:
             self.sandbox_state = self.get_env_sandbox()
             self.token = self.get_env_token()
-        if sandbox_state is True:
+        if self.sandbox_state is True:
             self.url = 'https://sandbox.' + self.url
         else:
             self.url = 'https://cloud.' + self.url
@@ -121,14 +121,19 @@ class iexCommon():
         Variable name is either 'IEX_SANDBOX_TOKEN' or 'IEX_TOKEN'
         Whether the sandbox or production token is retrieved is determined by the environment SANDBOX state.
         """
-        if sandboxState:
+        if self.sandbox_state:
             token = os.getenv('IEX_SANDBOX_TOKEN')
         else:
             token = os.getenv('IEX_TOKEN')
         return token
 
+    def append_subdirectory_to_url(self, *subdir):
+        subdirectory_to_add = F"/{subdir}?"
+        self.url  = self.url.replace("?", subdirectory_to_add)
+        return self.url
+
     # Adds query paramters to the url
-    def add_query_params_to_url(self, **query_params):
+    def append_query_params_to_url(self, **query_params):
         """Appends query parameters onto the target URL.
         Performs operations on the url attribute.
         Returns the URL with query parameters attached to the end.
@@ -137,7 +142,7 @@ class iexCommon():
         :type query_params: Keyword arguments, required.
         """
         for key, value in query_params.items():
-            self.url += (f"&{key}={value}")
+            self.url += (F"&{key}={value}")
         return self.url
 
     # Finalizes the url with the appropriate token - method does not determine which token to append
@@ -170,11 +175,20 @@ class iexCommon():
 
     # Step One
     # Execution of class is split into two parts so that changes to the url can be made halfway through
-    def pre_execute(self, query_params):
-        self.add_query_params_to_url(self, query_params=None)
+    def pre_execute(self, **query_params):
+        self.add_query_params_to_url(self, query_params)
 
     # Step Two
     # Final execution step where token is added and request is made.
     def execute(self):
         self.append_token_to_url()
-        self.make_iex_request()
+        return self.make_iex_request()
+
+#
+# # Standard Usage of Class
+# def iex_endpoint_request_dummy(section, symbol, endpoint, external=False):
+#     """Documentation"""
+#     instance = iexCommon(section, symbol, endpoint, external=external).pre_execute()
+#     # Here is where you would add extra things to the url by directly accessing instance.url
+#     return instance.execute()
+#

@@ -70,14 +70,16 @@ def collection(collectionType, collectionName, external=False, vprint=False):
 
 #   Company
 IEX_COMPANY_URL = prepend_iex_url('stock') + '{symbol}/company?'
-def company(symbol, external=False, vprint=False):
+def company(symbol, external=False, vprint=False, **query_params):
     """:return: Company data such as website, address, and description for the requested company.
 
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
     """
-    url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'company', external=external)
+    return instance.execute()
+    # url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
+    # return get_iex_json_request(url, external=external, vprint=vprint)
 
 
 #   Delayed Quote
