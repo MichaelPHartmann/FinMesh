@@ -109,11 +109,18 @@ class iexCommon():
 
     # Gets the sandbox state from environment variable string and parses it into a boolean
     def get_env_sandbox(self):
+        """Returns a boolean from the environment variable 'SANDBOX'
+        When using system level tokens this will determine whether to call the dummy sandbox environment or the production API
+        """
         sandbox_state = self.arg_to_bool(os.getenv('SANDBOX'))
         return sandbox_state
 
     # Gets the IEX token from environment variables based on whether sandbox state is enabled.
     def get_env_token(self):
+        """Returns a token from the appropriate environment variable.
+        Variable name is either 'IEX_SANDBOX_TOKEN' or 'IEX_TOKEN'
+        Whether the sandbox or production token is retrieved is determined by the environment SANDBOX state.
+        """
         if sandboxState:
             token = os.getenv('IEX_SANDBOX_TOKEN')
         else:
@@ -122,18 +129,35 @@ class iexCommon():
 
     # Adds query paramters to the url
     def add_query_params_to_url(self, **query_params):
+        """Appends query parameters onto the target URL.
+        Performs operations on the url attribute.
+        Returns the URL with query parameters attached to the end.
+
+        :param query_params: Catchall for keyword arguments. Will be appended to url like "&key=value".
+        :type query_params: Keyword arguments, required.
+        """
         for key, value in query_params.items():
             self.url += (f"&{key}={value}")
         return self.url
 
     # Finalizes the url with the appropriate token - method does not determine which token to append
     def append_token_to_url(self):
-        url_final = f"{self.url}&token={self.token}"
-        return url_final
+        """Appends the appropriate token to the end of the url.
+        If using environment variables this token is chosen depending on sandbox state.
+        If token has been supplied in initialization then that exact token is used.
+        Sets attribute url_final for class instance.
+        Returns the final URL.
+        """
+        setattr(self, "url_final", f"{self.url}&token={self.token}")
+        return self.url_final
 
     # Make and handle the request to IEX Cloud with verbose error message
     def make_iex_request(self):
-        response = requests.get(self.url)
+        """Performs request to IEX Cloud from the URL defined in url_final.
+        If request does not return a 200 response then a verbose error statement is raised.
+        Returns JSON object of response.
+        """
+        response = requests.get(self.url_final)
         if response.status_code != 200:
             error_response = (F"There was an error with the request to IEX!\n"
                             + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
