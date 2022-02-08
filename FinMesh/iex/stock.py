@@ -16,7 +16,7 @@ def balance_sheet(symbol, external=False, vprint=False, **queries):
     url += '?'
     for key, value in queries.items():
         url += (f"&{key}={value}")
-    return get_iex_json_request(url, external=external, external=external, vprint=vprint)
+    return get_iex_json_request(url, external=external, vprint=vprint)
 
 
 #   Batch Requests
