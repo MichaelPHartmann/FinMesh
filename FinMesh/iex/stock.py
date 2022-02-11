@@ -137,8 +137,7 @@ def earnings(symbol, last=None, field=None, external=False, vprint=False):
 IEX_TODAY_EARNINGS_URL = prepend_iex_url('stock') + 'market/today-earnings?'
 def today_earnings(external=False, vprint=False):
     """:return: Earnings data released today, grouped by timing and stock."""
-    url = IEX_TODAY_EARNINGS_URL
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    return iexCommon('stock', 'market', 'today-earnings').execute()
 
 
 #   Estimates
@@ -304,13 +303,13 @@ def institutional_ownership(symbol, external=False, vprint=False):
 IEX_UPCOMING_IPOS_URL = prepend_iex_url('stock') + 'market/upcoming-ipos?'
 def ipo_upcoming(external=False, vprint=False):
     """:return: List of upcoming IPOs for the current and next month."""
-    return get_iex_json_request(IEX_UPCOMING_IPOS_URL)
+    return iexCommon('stock', 'market', 'upcoming-ipos').execute()
 
 
 IEX_TODAY_IPOS_URL = prepend_iex_url('stock') + 'market/today-ipos?'
 def ipo_today(external=False, vprint=False):
     """:return: List of IPOs happening today."""
-    return get_iex_json_request(IEX_TODAY_IPOS_URL)
+    return iexCommon('stock', 'market', 'today-ipos').execute()
 
 
 #   Key Stats
@@ -379,9 +378,10 @@ def market_volume(format=None, external=False, vprint=False):
     :param format: The output format of the endpoint
     :type format: accepted value is 'csv', optional
     """
-    url = IEX_MARKET_VOLUME_URL
-    url += f'format={format}' if format else ''
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', 'market', 'volume')
+    if format:
+        instance.append_query_params_to_url({'format' : format})
+    return instance.execute()
 
 
 #   News
@@ -492,7 +492,7 @@ def recommendation_trends(symbol, external=False, vprint=False):
 IEX_SECTOR_PERFORMANCE_URL = prepend_iex_url('stock') + 'market/sector-performance?'
 def sector_performance(external=False, vprint=False):
     """:return: Market performance for all sectors."""
-    return get_iex_json_request(IEX_SECTOR_PERFORMANCE_URL)
+    return iexCommon('stock', 'market', 'sector_performance').execute()
 
 
 #   Splits

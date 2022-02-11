@@ -183,12 +183,3 @@ class iexCommon():
     def execute(self):
         self.append_token_to_url()
         return self.make_iex_request()
-
-#
-# # Standard Usage of Class
-# def iex_endpoint_request_dummy(section, symbol, endpoint, external=False):
-#     """Documentation"""
-#     instance = iexCommon(section, symbol, endpoint, external=external).pre_execute()
-#     # Here is where you would add extra things to the url by directly accessing instance.url
-#     return instance.execute()
-#
