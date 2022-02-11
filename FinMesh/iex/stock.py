@@ -67,8 +67,11 @@ def collection(collectionType, collectionName, external=False, vprint=False):
     :param collectionName: Name of the sector, tag, or list to return. List of names available on IEX Cloud.
     :type collectionName: string, required
     """
-    url = replace_url_var(IEX_COLLECTION_URL, collectionType=collectionType, collectionName=collectionName)
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'collection', external=external)
+    instance.append_subdirectory_to_url(collectionType)
+    query_params = {'collectionName' : collectionName}
+    instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
 
 #   Company
@@ -81,17 +84,6 @@ def company(symbol, external=False, vprint=False, **query_params):
     """
     instance = iexCommon('stock', symbol, 'company', external=external)
     return instance.execute()
-    # url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
-    # return get_iex_json_request(url, external=external, vprint=vprint)
-
-def company_test(symbol, external=False, vprint=False, **query_params):
-    """:return: Company data such as website, address, and description for the requested company.
-
-    :param symbol: The ticker or symbol of the stock you would like to request.
-    :type symbol: string, required
-    """
-    url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
-    return get_iex_json_request(url, external=external, vprint=vprint)
 
 
 #   Delayed Quote
@@ -116,9 +108,9 @@ def dividends(symbol, scope, external=False, vprint=False):
     :param scope: The range of data needed.
     :type scope: accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next'], required
     """
-
-    url = replace_url_var(IEX_DIVIDENDS_URL, symbol=symbol, scope=scope)
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'dividends', external=external)
+    instance.append_subdirectory_to_url(scope)
+    return instance.execute()
 
 
 #   Earnings
@@ -133,14 +125,12 @@ def earnings(symbol, last=None, field=None, external=False, vprint=False):
     :param field: The specific field from the earnings report ot return.
     :type field: string, optional
     """
-    url = replace_url_var(IEX_EARNINGS_URL, symbol=symbol)
-    if last and field:
-        url+= f"/{last}/{field}?"
-    elif last:
-        url+= f"/{last}?"
-    else:
-        url += '?'
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'earnings', external=external)
+    if last:
+        instance.append_subdirectory_to_url(last)
+        if field:
+            instance.append_subdirectory_to_url(field)
+    return instance.execute()
 
 
 #   Earnings Today
@@ -173,9 +163,10 @@ def financials(symbol, period=None, external=False, vprint=False):
     :param period: The time interval of financial statements returned.
     :type period: accepted values are ['annual', 'quarterly'], optional
     """
-    url = replace_url_var(IEX_FINANCIALS_URL, symbol=symbol)
-    url += f'period={period}' if period else ''
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'financials', external=external)
+    if period:
+        instance.append_query_params_to_url({'period' : period})
+    return instance.execute()
 
 
 #   Fund Ownership
@@ -335,9 +326,10 @@ def key_stats(symbol, stat=False, external=False, vprint=False):
     :param stat: The specific stat which you would like to return.
     :type stat: string, optional
     """
-    url = replace_url_var(IEX_STATS_URL, symbol=symbol)
-    url += str(stat) if stat else '?'
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'stats', external=external)
+    if stat:
+        instance.append_subdirectory_to_url(stat)
+    return instance.execute()
 
 
 #   Largest Trades
@@ -354,7 +346,7 @@ def largest_trades(symbol, external=False, vprint=False):
 
 #   List
 IEX_MARKET_LIST_URL = prepend_iex_url('stock') + '{symbol}/list/{list_type}?'
-def market_list(list_type, displayPercent=None, external=False, vprint=False):
+def market_list(list_type, display_percent=None, external=False, vprint=False):
     """:return: 10 largest companies in the specified list.
 
     :param list_type: The list that you would like to return.
@@ -362,9 +354,12 @@ def market_list(list_type, displayPercent=None, external=False, vprint=False):
     :param displayPercent: Whether you would like to see the percentage values multiplied by 100
     :type displayPercent: boolean, optional
     """
-    url = replace_url_var(IEX_MARKET_LIST_URL, symbol=symbol, list_type=list_type)
-    url += f'displayPercent={displayPercent}' if displayPercent else ''
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'list', external=external)
+    if list_type:
+        instance.append_subdirectory_to_url(list_type)
+    if display_percent:
+        instance.append_query_params_to_url({'displayPercent' : display_percent})
+    return instance.execute()
 
 
 #   Logo
@@ -402,9 +397,10 @@ def news(symbol, last=None, external=False, vprint=False):
     :param last: The number of news items to return.
     :type last: integer, optional
     """
-    url = replace_url_var(IEX_NEWS_URL, symbol=symbol)
-    url += f'/last/{last}?' if last else '?'
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'news', external=external)
+    if last:
+        instance.append_subdirectory_to_url(last)
+    return instance.execute()
 
 
 #   OHLC
@@ -477,9 +473,10 @@ def quote(symbol, field=None, external=False, vprint=False):
     :param field: The specific field from the quote endpoint you would like to return.
     :type field: string, optional
     """
-    url = replace_url_var(IEX_QUOTE_URL, symbol=symbol)
-    url += f'/{field}?' if field else '?'
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'qoute', external=external)
+    if field:
+        instance.append_subdirectory_to_url(field)
+    return instance.execute()
 
 
 #   Recommended Trends
@@ -511,9 +508,10 @@ def splits(symbol, scope=None, external=False, vprint=False):
     :param scope: The range of data needed.
     :type scope: accepted arguments: ['5y','2y','1y','ytd','6m','3m','1m','next'], optional
     """
-    url = replace_url_var(IEX_SPLITS_URL, symbol=symbol)
-    url += f'/{scope}?' if scope else '?'
-    return get_iex_json_request(url, external=external, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'estimates', external=external)
+    if scope:
+        instance.append_subdirectory_to_url(scope)
+    return instance.execute()
 
 
 #   Volume by Venue
