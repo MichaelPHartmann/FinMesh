@@ -21,7 +21,8 @@ def balance_sheet(symbol, external=False, vprint=False, **query_params):
     :type queries: key value pair where key is variable and value is string
     """
     instance = iexCommon('stock', symbol, 'balance-sheet', external=external)
-    instance.append_query_params_to_url(query_params)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
     return instance.execute()
 
 
@@ -53,7 +54,8 @@ def cash_flow(symbol, external=False, vprint=False, **query_params):
     :type queries: key value pair where key is variable and value is string
     """
     instance = iexCommon('stock', symbol, 'cash-flow', external=external)
-    instance.append_query_params_to_url(query_params)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
     return instance.execute()
 
 
@@ -247,7 +249,8 @@ def income_statement(symbol, external=False, vprint=False, **query_params):
     :type queries: key value pair where key is variable and value is string
     """
     instance = iexCommon('stock', symbol, 'income', external=external)
-    instance.append_query_params_to_url(query_params)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
     return instance.execute()
 
 

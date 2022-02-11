@@ -127,19 +127,19 @@ class iexCommon():
             token = os.getenv('IEX_TOKEN')
         return token
 
-    def append_subdirectory_to_url(self, *subdir):
+    def append_subdirectory_to_url(self, subdir):
         subdirectory_to_add = F"/{subdir}?"
         self.url  = self.url.replace("?", subdirectory_to_add)
         return self.url
 
     # Adds query paramters to the url
-    def append_query_params_to_url(self, **query_params):
+    def append_query_params_to_url(self, query_params):
         """Appends query parameters onto the target URL.
         Performs operations on the url attribute.
         Returns the URL with query parameters attached to the end.
 
         :param query_params: Catchall for keyword arguments. Will be appended to url like "&key=value".
-        :type query_params: Keyword arguments, required.
+        :type query_params: Dictionary, required.
         """
         for key, value in query_params.items():
             self.url += (F"&{key}={value}")
@@ -183,12 +183,3 @@ class iexCommon():
     def execute(self):
         self.append_token_to_url()
         return self.make_iex_request()
-
-#
-# # Standard Usage of Class
-# def iex_endpoint_request_dummy(section, symbol, endpoint, external=False):
-#     """Documentation"""
-#     instance = iexCommon(section, symbol, endpoint, external=external).pre_execute()
-#     # Here is where you would add extra things to the url by directly accessing instance.url
-#     return instance.execute()
-#
