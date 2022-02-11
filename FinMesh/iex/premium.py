@@ -8,8 +8,8 @@ def price_target(symbol, vprint=False):
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
     """
-    url = replace_url_var(IEX_PRICE_TARGET_URL, symbol=symbol)
-    return get_iex_json_request(url, vprint=vprint)
+    instance = iexCommon('stock', symbol, 'price-target', external=external)
+    return instance.execute()
 
 
 #   Earnings
