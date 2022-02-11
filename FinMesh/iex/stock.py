@@ -1,9 +1,18 @@
 from ._common import *
-"""Should mostly use class from now on and use these functions as the 'backend'"""
+"""Should mostly use class from now on and use these functions as the 'backend'"""\
+
+
+def generic_iex_request(section, symbol, endpoint, append_subdirectory_to_url=None, external=False, **query_params):
+    instance  = iexCommon(section, symbol, endpoint, external = external)
+    if not append_subdirectory_to_url == None:
+        instance.append_subdirectory_to_url(append_subdirectory_to_url)
+    if not query_params == None:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
 #   Balance Sheet
 IEX_BALANCE_SHEET_URL = prepend_iex_url('stock') + '{symbol}/balance-sheet'
-def balance_sheet(symbol, external=False, vprint=False, **queries):
+def balance_sheet(symbol, external=False, vprint=False, **query_params):
     """:return: Balance sheet financial statement for the requested stock.
 
     :param symbol: The ticker or symbol of the stock you would like to request.
@@ -11,12 +20,10 @@ def balance_sheet(symbol, external=False, vprint=False, **queries):
     :param queries: Standard kwargs parameter.
     :type queries: key value pair where key is variable and value is string
     """
-    # Returns balance sheet data for the requested ticker.
-    url = replace_url_var(IEX_BALANCE_SHEET_URL, symbol=symbol)
-    url += '?'
-    for key, value in queries.items():
-        url += (f"&{key}={value}")
-    return get_iex_json_request(url, external=external, vprint=vprint)
+
+    instance = iexCommon('stock', symbol, 'balance-sheet', external=external)
+    instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
 
 #   Batch Requests
@@ -80,6 +87,15 @@ def company(symbol, external=False, vprint=False, **query_params):
     return instance.execute()
     # url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
     # return get_iex_json_request(url, external=external, vprint=vprint)
+
+def company_test(symbol, external=False, vprint=False, **query_params):
+    """:return: Company data such as website, address, and description for the requested company.
+
+    :param symbol: The ticker or symbol of the stock you would like to request.
+    :type symbol: string, required
+    """
+    url = replace_url_var(IEX_COMPANY_URL, symbol=symbol)
+    return get_iex_json_request(url, external=external, vprint=vprint)
 
 
 #   Delayed Quote
