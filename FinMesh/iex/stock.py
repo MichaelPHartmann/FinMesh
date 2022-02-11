@@ -182,23 +182,20 @@ def fund_ownership(symbol, external=False, vprint=False):
 
 
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
-def historical_price(symbol, period, date=None, external=False, vprint=False, **queries):
-    """This is a mess and will soon be deprecated in favour of an args and kwargs based approach."""
-    url = IEX_HISTORICAL_URL + f"{symbol}/chart/{period}"
-    if period == 'date':
-        url += f'/{date}?&chartByDay=True'
-    else:
-        url += '?'
-    for key, value in queries.items():
-        url += (f"&{key}={value}")
-    url = append_iex_token(url)
-    if vprint: print(f"Now fetching: {url}")
-    result = requests.get(url)
-    if vprint: print(f"Request status code: {result.status_code}")
-    if result.status_code != 200:
-        raise BaseException(result.text)
-    result = result.json()
-    return result
+def historical_price(symbol, period, date=None, external=False, vprint=False, **query_params):
+    """:return: Adjusted and unadjusted historical data for up to 15 years, and historical minute-by-minute intraday prices for the last 30 trailing calendar days.
+
+    :param symbol: The ticker or symbol of the stock you would like to request.
+    :type symbol: string, required
+    :param period: The period of data you would like to have returned.
+    Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
+    :type period: string, required
+    """
+    instance = iexCommon('stock', symbol, 'chart', external=external)
+    instance.append_subdirectory_to_url(period)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
 #   HISTORICAL PRICE
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
