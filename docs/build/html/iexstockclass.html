@@ -74,11 +74,11 @@
 <dt class="sig sig-object py" id="iex.IEXStock">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">iex.</span></span><span class="sig-name descname"><span class="pre">IEXStock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quarter'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autopopulate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock" title="Permalink to this definition"></a></dt>
 <dd><p>A class that is built around retrieving data from the IEX Cloud API service.
-All available data is derived from functions defined in the stock.py module, and are implemented here with a “<a href="#id1"><span class="problematic" id="id2">get_</span></a>” prefix.
+All available data is derived from functions defined in the stock.py module, and are implemented here with a <cite>get_</cite> prefix.
 All data is available in CSV format, and can be grouped together for bulk file writing.
 CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options.
 Beta version will use Pandas. This is currently about 75% completed.
-All data retrieved is automatically stored in the corrosponding class attribute (sans “<a href="#id3"><span class="problematic" id="id4">get_</span></a>” prefix).
+All data retrieved is automatically stored in the corrosponding class attribute (sans <cite>get_</cite> prefix).
 Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

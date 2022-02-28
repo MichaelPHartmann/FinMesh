@@ -189,7 +189,7 @@ def historical_price(symbol, period, date=None, external=False, vprint=False, **
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
     :param period: The period of data you would like to have returned.
-    Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
+        Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
     :type period: string, required
     """
     instance = iexCommon('stock', symbol, 'chart', external=external)
@@ -207,7 +207,7 @@ def new_historical_price(symbol, period, date=None, chartByDay=False, external=F
     :param symbol: The ticker or symbol of the stock you would like to request.
     :type symbol: string, required
     :param period: The period of data you would like to have returned.
-    Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
+        Accepted arguments are ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm', '5d', '5dm', 'date', 'dynamic']
     :type period: string, required
     :param date: If used with the query parameter chartByDay, then this returns historical OHLCV data for that date. Otherwise, it returns data by minute for a specified date. Date format YYYYMMDD
     :type date: string, optional
