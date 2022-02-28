@@ -198,6 +198,7 @@ def historical_price(symbol, period, date=None, external=False, vprint=False, **
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
+
 #   HISTORICAL PRICE
 IEX_HISTORICAL_URL = prepend_iex_url('stock')
 def new_historical_price(symbol, period, date=None, chartByDay=False, external=False, vprint=False, **query_string_params):
