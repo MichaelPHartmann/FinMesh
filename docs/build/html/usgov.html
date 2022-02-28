@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>US Government Economic Series Data from FRED API &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="IEX Cloud Endpoint Function List" href="iex.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iextutorial.html">Accessing IEX Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">US Government Economic Series Data from FRED API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>US Government Economic Series Data from FRED API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usgov.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-usgov">
+<span id="us-government-economic-series-data-from-fred-api"></span><h1>US Government Economic Series Data from FRED API<a class="headerlink" href="#module-usgov" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="usgov.fred_series">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">fred_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.fred_series" title="Permalink to this definition"></a></dt>
+<dd><p>Returns series data from the US Federal Reserve and Economic Database (FRED) API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (<em>string</em><em>, </em><em>required</em>) – The series ID of the data you want to return.</p></li>
+<li><p><strong>external</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – If you want to use a token from outside your environment variables, use this param</p></li>
+<li><p><strong>file_type</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>realtime_start</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>realtime_end</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>offset</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>sort_order</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>observation_start</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>observation_end</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>aggregation_method</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>output_type</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>vintage_dates</strong> (<em>string</em><em>, </em><em>optional</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns time series historical data for the requested FRED data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="usgov.geofred_regional_series">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">geofred_regional_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.geofred_regional_series" title="Permalink to this definition"></a></dt>
+<dd><p>Returns geographically organized series data from the US Federal Reserve and Economic Database (FRED) API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (<em>string</em><em>, </em><em>required</em>) – The series ID of the data you want to return.</p></li>
+<li><p><strong>external</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – If you want to use a token from outside your environment variables, use this param</p></li>
+<li><p><strong>query_params</strong> (<em>strings</em><em>, </em><em>key-value pairs</em><em>, </em><em>optional</em>) – This function accepts any and all key-value pairs, but does not guarantee the validity of their use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the historical, geographically organized time series data for the requested FRED data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="usgov.geofred_series_meta">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">geofred_series_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.geofred_series_meta" title="Permalink to this definition"></a></dt>
+<dd><p>Returns series meta data from the US Federal Reserve and Economic Database (FRED) API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (<em>string</em><em>, </em><em>required</em>) – The series ID of the data you want to return.</p></li>
+<li><p><strong>external</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – If you want to use a token from outside your environment variables, use this param</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns meta data for the requested FRED data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="usgov.get_yield">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">get_yield</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#usgov.get_yield" title="Permalink to this definition"></a></dt>
+<dd><p>A function that retrieves current Treasury Bond rates from the US Treasury website.
+:return: Dictionary containing all the T-Bond terms as keys (strings) and their rates as values (floats).</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iex.html" class="btn btn-neutral float-left" title="IEX Cloud Endpoint Function List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

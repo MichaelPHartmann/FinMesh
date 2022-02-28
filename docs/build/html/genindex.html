@@ -40,6 +40,7 @@
 <li class="toctree-l1"><a class="reference internal" href="iextutorial.html">Accessing IEX Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usgov.html">US Government Economic Series Data from FRED API</a></li>
 </ul>
 
         </div>
@@ -87,6 +88,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  
 </div>
@@ -97,8 +99,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iexstockclass.html#iex.IEXStock.basic_information">basic_information() (iex.IEXStock method)</a>
-</li>
       <li><a href="iex.html#iex.stock.book">book() (in module iex.stock)</a>
 </li>
   </ul></td>
@@ -153,11 +153,13 @@
 </li>
       <li><a href="iex.html#iex.forex.forex_conversion">forex_conversion() (in module iex.forex)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="iex.html#iex.forex.forex_historical">forex_historical() (in module iex.forex)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="iex.html#iex.forex.forex_latest_rate">forex_latest_rate() (in module iex.forex)</a>
+</li>
+      <li><a href="usgov.html#usgov.fred_series">fred_series() (in module usgov)</a>
 </li>
       <li><a href="iex.html#iex.stock.fund_ownership">fund_ownership() (in module iex.stock)</a>
 </li>
@@ -171,55 +173,13 @@
 </li>
       <li><a href="iex.html#iex.market.generic_time_series">generic_time_series() (in module iex.market)</a>
 </li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_advanced_fundementals">get_advanced_fundementals() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_advanced_stats">get_advanced_stats() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_analyst_recommendations">get_analyst_recommendations() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_balance_sheet">get_balance_sheet() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_basic_financials">get_basic_financials() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_cash_flow_statement">get_cash_flow_statement() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_company">get_company() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_delayed_quote">get_delayed_quote() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_dividends">get_dividends() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_financial_statements">get_financial_statements() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_fund_ownership">get_fund_ownership() (iex.IEXStock method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_historical_price">get_historical_price() (iex.IEXStock method)</a>
+      <li><a href="usgov.html#usgov.geofred_regional_series">geofred_regional_series() (in module usgov)</a>
 </li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_income_statement">get_income_statement() (iex.IEXStock method)</a>
+      <li><a href="usgov.html#usgov.geofred_series_meta">geofred_series_meta() (in module usgov)</a>
 </li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_insider_roster">get_insider_roster() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_insider_transactions">get_insider_transactions() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_institutional_ownership">get_institutional_ownership() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_key_stats">get_key_stats() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_largest_trades">get_largest_trades() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_logo">get_logo() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_news">get_news() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_ohlc">get_ohlc() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_peers">get_peers() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_price_target">get_price_target() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.get_quote">get_quote() (iex.IEXStock method)</a>
+      <li><a href="usgov.html#usgov.get_yield">get_yield() (in module usgov)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -243,6 +203,13 @@
 </li>
       </ul></li>
       <li>
+    iex.IEXStock
+
+      <ul>
+        <li><a href="iexstockclass.html#module-iex.IEXStock">module</a>
+</li>
+      </ul></li>
+      <li>
     iex.market
 
       <ul>
@@ -256,8 +223,6 @@
         <li><a href="iex.html#module-iex.stock">module</a>
 </li>
       </ul></li>
-      <li><a href="iexstockclass.html#iex.IEXStock">IEXStock (class in iex)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="iex.html#iex.stock.income_statement">income_statement() (in module iex.stock)</a>
@@ -310,9 +275,13 @@
       <ul>
         <li><a href="iex.html#module-iex.forex">iex.forex</a>
 </li>
+        <li><a href="iexstockclass.html#module-iex.IEXStock">iex.IEXStock</a>
+</li>
         <li><a href="iex.html#module-iex.market">iex.market</a>
 </li>
         <li><a href="iex.html#module-iex.stock">iex.stock</a>
+</li>
+        <li><a href="usgov.html#module-usgov">usgov</a>
 </li>
       </ul></li>
   </ul></td>
@@ -341,29 +310,13 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iexstockclass.html#iex.IEXStock.pandas_financial_json">pandas_financial_json() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.pandas_listofdict_json">pandas_listofdict_json() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.pandas_price_json">pandas_price_json() (iex.IEXStock method)</a>
-</li>
-      <li><a href="iexstockclass.html#iex.IEXStock.pandas_singledict_json">pandas_singledict_json() (iex.IEXStock method)</a>
-</li>
       <li><a href="iex.html#iex.stock.peers">peers() (in module iex.stock)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iexstockclass.html#iex.IEXStock.pickle_class_state">pickle_class_state() (iex.IEXStock method)</a>
 </li>
       <li><a href="iex.html#iex.stock.previous">previous() (in module iex.stock)</a>
 </li>
-      <li><a href="iexstockclass.html#iex.IEXStock.price">price() (iex.IEXStock method)</a>
-
-      <ul>
-        <li><a href="iex.html#iex.stock.price">(in module iex.stock)</a>
-</li>
-      </ul></li>
-      <li><a href="iexstockclass.html#iex.IEXStock.price_information">price_information() (iex.IEXStock method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="iex.html#iex.stock.price">price() (in module iex.stock)</a>
 </li>
       <li><a href="iex.html#iex.stock.price_target">price_target() (in module iex.stock)</a>
 </li>
@@ -393,8 +346,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iexstockclass.html#iex.IEXStock.set_date">set_date() (iex.IEXStock method)</a>
-</li>
       <li><a href="iex.html#iex.stock.splits">splits() (in module iex.stock)</a>
 </li>
   </ul></td>
@@ -405,6 +356,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="iex.html#iex.stock.today_earnings">today_earnings() (in module iex.stock)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    usgov
+
+      <ul>
+        <li><a href="usgov.html#module-usgov">module</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
