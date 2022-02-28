@@ -22,7 +22,7 @@ FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
 def fred_series(series, external=None, **query_params):
     """ Returns series data from the US Federal Reserve and Economic Database (FRED) API.
 
-    :param series: The series of the data you want to return.
+    :param series: The series ID of the data you want to return.
     :type series: string, required
     :param external: If you want to use a token from outside your environment variables, use this param
     :type external: string, optional, default None
@@ -56,32 +56,66 @@ def fred_series(series, external=None, **query_params):
     :return: Returns time series historical data for the requested FRED data
     """
     url = FRED_SERIES_OBS_URL + f'series_id={series}'
-    for
+    for key, value in query_params.items():
+        url += F'&{key}={value}'
     url = append_fred_token(url, external=external)
     result = requests.get(url)
     return result.text
 
+
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
-def geofred_series_meta(series_id, file_type=None):
-    ## Returns meta data for the requested FRED data.
-    url = GEOFRED_SERIES_META_URL + f'series_id={series_id}'
-    if file_type: url += f'&file_type={file_type}'
-    url = append_fred_token(url)
+def geofred_series_meta(series, external=None, **query_params):
+    """Returns series meta data from the US Federal Reserve and Economic Database (FRED) API.
+
+    :param series: The series ID of the data you want to return.
+    :type series: string, required
+    :param external: If you want to use a token from outside your environment variables, use this param
+    :type external: string, optional, default None
+
+    :return: Returns meta data for the requested FRED data
+    """
+    url = GEOFRED_SERIES_META_URL + f'series_id={series}'
+    for key, value in query_params.items():
+        url += F'&{key}={value}'
+    url = append_fred_token(url, external=external)
     result = requests.get(url)
-    return result.text
-geofred_series_meta.__doc__='Returns meta data for the requested FRED data.'
+    if result.ok:
+        return result.text
+    else:
+        return (F"There was an error with the request to IEX!\n"
+                + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                + F"URL: {response.url}\n"
+                + "Response Content:\n"
+                + F"{response.text}")
+
 
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
-def geofred_regional_series(series_id, file_type=None, date=None, start_date=None):
-    ## Returns the historical, geographically organized time series data for the requested FRED data.
-    url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series_id}'
-    if file_type: url += f'&file_type={file_type}'
-    if date: url += f'&date={date}'
-    if start_date: url += f'&start_date={start_date}'
-    url = append_fred_token(url)
+def geofred_regional_series(series, external=None, **query_params):
+    """Returns geographically organized series data from the US Federal Reserve and Economic Database (FRED) API.
+
+    :param series: The series ID of the data you want to return.
+    :type series: string, required
+    :param external: If you want to use a token from outside your environment variables, use this param
+    :type external: string, optional, default None
+    :param query_params: This function accepts any and all key-value pairs, but does not guarantee the validity of their use
+    :type query_params: strings, key-value pairs, optional
+
+    :return: Returns the historical, geographically organized time series data for the requested FRED data
+    """
+    url = GEOFRED_REGIONAL_SERIES_URL + f'series_id={series}'
+    for key, value in query_params.items():
+        url += F'&{key}={value}'
+    url = append_fred_token(url, external=external)
     result = requests.get(url)
-    return result.text
-geofred_regional_series.__doc__='Returns the historical, geographically organized time series data for the requested FRED data.'
+    if result.ok:
+        return result.text
+    else:
+        return (F"There was an error with the request to IEX!\n"
+                + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                + F"URL: {response.url}\n"
+                + "Response Content:\n"
+                + F"{response.text}")
+
 
 # # # # # # # # # # # # # # # #
 # GOVERNMENT YIELD CURVE DATA #
