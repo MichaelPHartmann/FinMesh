@@ -1,5 +1,5 @@
 IEXStock General Class
 ######################
 
-.. autoclass:: iex.IEXStock
+.. automodule:: iex.IEXStock
   :members:
