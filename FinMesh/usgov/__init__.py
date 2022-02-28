@@ -82,11 +82,12 @@ def geofred_series_meta(series, external=None, **query_params):
     if result.ok:
         return result.text
     else:
-        return (F"There was an error with the request to IEX!\n"
-                + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
-                + F"URL: {response.url}\n"
-                + "Response Content:\n"
-                + F"{response.text}")
+        error_response = (F"There was an error with the request to IEX!\n"
+                        + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                        + F"URL: {response.url}\n"
+                        + "Response Content:\n"
+                        + F"{response.text}")
+        raise Exception(error_response)
 
 
 GEOFRED_REGIONAL_SERIES_URL = GEOFRED_BASE_URL + 'series/data?'
@@ -110,11 +111,12 @@ def geofred_regional_series(series, external=None, **query_params):
     if result.ok:
         return result.text
     else:
-        return (F"There was an error with the request to IEX!\n"
-                + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
-                + F"URL: {response.url}\n"
-                + "Response Content:\n"
-                + F"{response.text}")
+        error_response = (F"There was an error with the request to IEX!\n"
+                        + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                        + F"URL: {response.url}\n"
+                        + "Response Content:\n"
+                        + F"{response.text}")
+        raise Exception(error_response)
 
 
 # # # # # # # # # # # # # # # #
