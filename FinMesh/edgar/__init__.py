@@ -193,7 +193,7 @@ class edgarFiler(object):
     """
         document = document_type_parse(document)
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
-
+        # Make the request and handle any errors with verbose Exception
         get_result = requests.get(URL)
         if get_result.status_code == 200:
             result_text = get_result.text
@@ -205,6 +205,7 @@ class edgarFiler(object):
                             + F"{response.text}")
             raise Exception(error_response)
 
+        # Define elements in the page and loop to look for accession numbers
         root = ET.fromstring(result_text)
         accessions_requested = []
         i = 0
