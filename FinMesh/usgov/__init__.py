@@ -11,31 +11,55 @@ import json
 FRED_BASE_URL = 'https://api.stlouisfed.org/fred/'
 GEOFRED_BASE_URL = 'https://api.stlouisfed.org/geofred/'
 
-def append_fred_token(url):
-    token = os.getenv('FRED_TOKEN')
+def append_fred_token(url, external=None):
+    if external:
+        token = external
+    else:
+        token = os.getenv('FRED_TOKEN')
     return f'{url}&api_key={token}'
 
 FRED_SERIES_OBS_URL = FRED_BASE_URL + 'series/observations?'
-def fred_series(series, file_type=None, realtime_start=None, realtime_end=None, limit=None, offset=None, sort_order=None, observation_start=None, observation_end=None, units=None, frequency=None, aggregation_method=None, output_type=None, vintage_dates=None):
-    ## Returns time series historical data for the requested FRED data.
+def fred_series(series, external=None, **query_params):
+    """ Returns series data from the US Federal Reserve and Economic Database (FRED) API.
+
+    :param series: The series of the data you want to return.
+    :type series: string, required
+    :param external: If you want to use a token from outside your environment variables, use this param
+    :type external: string, optional, default None
+    :param file_type:
+    :type file_type: string, optional
+    :param realtime_start:
+    :type realtime_start: string, optional
+    :param realtime_end:
+    :type realtime_end: string, optional
+    :param limit:
+    :type limit: string, optional
+    :param offset:
+    :type offset: string, optional
+    :param sort_order:
+    :type sort_order: string, optional
+    :param observation_start:
+    :type observation_start: string, optional
+    :param observation_end:
+    :type observation_end: string, optional
+    :param units:
+    :type units: string, optional
+    :param frequency:
+    :type frequency: string, optional
+    :param aggregation_method:
+    :type aggregation_method: string, optional
+    :param output_type:
+    :type output_type: string, optional
+    :param vintage_dates:
+    :type vintage_dates: string, optional
+
+    :return: Returns time series historical data for the requested FRED data
+    """
     url = FRED_SERIES_OBS_URL + f'series_id={series}'
-    if file_type: url += f'&file_type={file_type}'
-    if realtime_start: url += f'&realtime_start={realtime_start}'
-    if realtime_end: url += f'&realtime_end={realtime_end}'
-    if limit: url += f'&limit={limit}'
-    if offset: url += f'&offset={offset}'
-    if sort_order: url += f'&sort_order={sort_order}'
-    if observation_start: url += f'&observation_start={observation_start}'
-    if observation_end: url += f'&observation_end={observation_end}'
-    if units: url += f'&units={units}'
-    if frequency: url += f'&frequency={frequency}'
-    if aggregation_method: url += f'&aggregation_method={aggregation_method}'
-    if output_type: url += f'&output_type={output_type}'
-    if vintage_dates: url += f'&vintage_dates={vintage_dates}'
-    url = append_fred_token(url)
+    for
+    url = append_fred_token(url, external=external)
     result = requests.get(url)
     return result.text
-fred_series.__doc__='Returns time series historical data for the requested FRED data.'
 
 GEOFRED_SERIES_META_URL = GEOFRED_BASE_URL + 'series/group?'
 def geofred_series_meta(series_id, file_type=None):
@@ -64,9 +88,10 @@ geofred_regional_series.__doc__='Returns the historical, geographically organize
 # # # # # # # # # # # # # # # #
 
 GOV_YIELD_URL = 'https://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%204%20and%20year(NEW_DATE)%20eq%202019'
-
 def get_yield():
-    ## Returns government treasury bond yields. Organized in Python dictionary format by bond length.
+    """A function that retrieves current Treasury Bond rates from the US Treasury website.
+    :return: Dictionary containing all the T-Bond terms as keys (strings) and their rates as values (floats).
+    """
 
     # Formatting of XML to Python Dict
     curve = requests.get(GOV_YIELD_URL)
@@ -94,4 +119,3 @@ def get_yield():
         '30year' : float(content['d:BC_30YEAR']['#text']),
         }
     return yield_curve_values
-get_yield.__doc__='Returns government treasury bond yields. Organized in Python dictionary format by bond length.'
