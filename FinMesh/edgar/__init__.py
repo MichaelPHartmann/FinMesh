@@ -12,6 +12,35 @@ EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
 EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
 
+class edgarFilerNew():
+    """
+    """
+    def __init__(self, ticker):
+        self.ticker = ticker
+        self.cik = self.cik()
+
+    def cik(self):
+        """Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
+        :return: string, CIK
+        """
+        URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&output=atom"
+        # Make a request to EDGAR
+        response = requests.get(URL)
+        # Handle failed response
+        if response.status_code != 200:
+            error_response = (F"There was an error with the request to IEX!\n"
+                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                            + F"URL: {response.url}\n"
+                            + "Response Content:\n"
+                            + F"{response.text}")
+            raise Exception(error_response)
+        # Create the root for ET
+        root = ET.fromstring(response.text)
+        cik = root[1][4].text
+        return cik
+
+
+
 
 class edgarFiler(object):
     """
