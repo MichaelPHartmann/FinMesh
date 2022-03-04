@@ -12,14 +12,16 @@ EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
 EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
 
+EDGAR_API_BASE = "https://data.sec.gov/"
+
 class edgarFilerNew():
     """
     """
     def __init__(self, ticker):
         self.ticker = ticker
-        self.cik = self.cik()
+        self.cik = self.get_cik()
 
-    def cik(self):
+    def get_cik(self):
         """Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
         :return: string, CIK
         """
@@ -28,17 +30,57 @@ class edgarFilerNew():
         response = requests.get(URL)
         # Handle failed response
         if response.status_code != 200:
-            error_response = (F"There was an error with the request to IEX!\n"
+            error_response = (F"There was an error with the request to EDAGR!\n"
                             + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
                             + F"URL: {response.url}\n"
                             + "Response Content:\n"
                             + F"{response.text}")
             raise Exception(error_response)
+
         # Create the root for ET
+        # SHOULD BE REFACTORED
         root = ET.fromstring(response.text)
         cik = root[1][4].text
         return cik
 
+    def get_accessions(self, count=20):
+    """Returns most recent accession numbers and document type for the document for the desired company
+    Sets attribute `accession_numbers` with result.
+
+    :param count: The number of documents to return.
+    :type count: int, optional, default 20
+
+    :return: dictionary, {accession_number : {form : filing_type,date : filing_date}}
+    """
+        URL = EDGAR_API_BASE + F"submissions/CIK{self.cik}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = requests.get(URL)
+        if response.status_code != 200:
+            error_response = (F"There was an error with the request to EDGAR!\n"
+                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                            + F"URL: {response.url}\n"
+                            + "Response Content:\n"
+                            + F"{response.text}")
+            raise Exception(error_response)
+
+        # Define elements in the json and build a dictionary
+        filings = response["cik"]["recent"]
+        accessions = filings["accessionNumber"]
+        form = filings["form"]
+        date = filings["filingDate"]
+        source = filings["primaryDocument"]
+
+        accessions = {}
+        for i in range(count):
+            accessions[accessions[i]] = {
+            "form" : form[i],
+            "filingDate" : date[i],
+            "primaryDocument" : source[i]
+            }
+
+    setattr(self, "accession_numbers", accessions)
+
+    return accessions_requested
 
 
 
@@ -224,15 +266,15 @@ class edgarFiler(object):
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
         # Make the request and handle any errors with verbose Exception
         get_result = requests.get(URL)
-        if get_result.status_code == 200:
-            result_text = get_result.text
-        else:
-            error_response = (F"There was an error with the request to IEX!\n"
+        if get_result.status_code != 200:
+            error_response = (F"There was an error with the request to EDGAR!\n"
                             + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
                             + F"URL: {response.url}\n"
                             + "Response Content:\n"
                             + F"{response.text}")
             raise Exception(error_response)
+        else:
+            result_text = response.text
 
         # Define elements in the page and loop to look for accession numbers
         root = ET.fromstring(result_text)
