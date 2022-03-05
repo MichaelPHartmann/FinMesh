@@ -2,11 +2,13 @@ import os
 import requests
 import xml.etree.ElementTree as ET
 import webbrowser
-import shutil
 # from bs4 import BeautifulSoup, SoupStrainer
 # from nltk.corpus import words
 from ._common import *
 
+# Accession number format: <hash> - <year> - <filing number>
+# https://www.sec.gov/Archives/edgar/data/<cik>/<cik><year+filingNumber>/<primaryDocument>
+# https://www.sec.gov/edgar/sec-api-documentation
 
 EDGAR_BASE_URL = "https://www.sec.gov"
 EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
@@ -18,16 +20,15 @@ class edgarFilerNew():
     """
     """
     def __init__(self, ticker):
+        self.edgar_reg_base_url = "https://www.sec.gov"
+        self.edgar_api_base_url = "https://data.sec.gov"
+        self.edgar_archive_url = "/Archives/edgar/data/"
         self.ticker = ticker
         self.cik = self.get_cik()
 
-    def get_cik(self):
-        """Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
-        :return: string, CIK
-        """
-        URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&output=atom"
+    def get_edgar_request(self, url):
         # Make a request to EDGAR
-        response = requests.get(URL)
+        response = requests.get(url)
         # Handle failed response
         if response.status_code != 200:
             error_response = (F"There was an error with the request to EDAGR!\n"
@@ -36,7 +37,16 @@ class edgarFilerNew():
                             + "Response Content:\n"
                             + F"{response.text}")
             raise Exception(error_response)
+        else:
+            return response.json()
 
+    def get_cik(self):
+        """Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
+        :return: string, CIK
+        """
+        URL = F"{self.edgar_reg_base_url}/cgi-bin/browse-edgar?action=getcompany&CIK={self.ticker}&output=atom"
+        # Make a request to EDGAR
+        response = self.get_edgar_request(URL)
         # Create the root for ET
         # SHOULD BE REFACTORED
         root = ET.fromstring(response.text)
@@ -44,32 +54,28 @@ class edgarFilerNew():
         return cik
 
     def get_accessions(self, count=20):
-    """Returns most recent accession numbers and document type for the document for the desired company
-    Sets attribute `accession_numbers` with result.
+        """Returns most recent accession numbers and document type for the document for the desired company
+        Sets attribute `accession_numbers` with result.
 
-    :param count: The number of documents to return.
-    :type count: int, optional, default 20
+        Data comes from the `data.sec.gov/submissions/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
 
-    :return: dictionary, {accession_number : {form : filing_type,date : filing_date}}
-    """
-        URL = EDGAR_API_BASE + F"submissions/CIK{self.cik}.json"
+        :param count: The number of documents to return.
+        :type count: int, optional, default 20
+
+        :return: dictionary, {accession_number : {form : filing_type,date : filing_date}}
+        """
+        URL = F"{self.edgar_api_base_url}/submissions/CIK{self.cik}.json"
         # Make the request and handle any errors with verbose Exception
-        response = requests.get(URL)
-        if response.status_code != 200:
-            error_response = (F"There was an error with the request to EDGAR!\n"
-                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
-                            + F"URL: {response.url}\n"
-                            + "Response Content:\n"
-                            + F"{response.text}")
-            raise Exception(error_response)
+        response = self.get_edgar_request(URL)
 
-        # Define elements in the json and build a dictionary
+        # Define elements in the json
         filings = response["cik"]["recent"]
         accessions = filings["accessionNumber"]
         form = filings["form"]
         date = filings["filingDate"]
         source = filings["primaryDocument"]
-
+        # Build a dictionary
         accessions = {}
         for i in range(count):
             accessions[accessions[i]] = {
@@ -77,12 +83,43 @@ class edgarFilerNew():
             "filingDate" : date[i],
             "primaryDocument" : source[i]
             }
+        setattr(self, "accessions", accessions)
 
-    setattr(self, "accession_numbers", accessions)
+        return accessions
 
-    return accessions_requested
+    def get_company_concept(self, concept, taxonomy="us-gaap"):
+        """Returns all the disclosures from a single company and concept (a taxonomy and tag) into a single JSON file.
+        Returns a separate array of facts for each units on measure that the company has chosen to disclose.
 
+        Data comes from the `data.sec.gov/api/xbrl/companyconcept/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
 
+        :param concept: The tag or line item you are requesting.
+        :type concept: string, required
+        :param taxonomy: The reporting taxonomy for the tag you want to access. (us-gaap, ifrs-full, dei, srt)
+        :type taxonomy: string, optional, default is us-gaap
+
+        :return: Dictionary of raw JSON data returned by endpoint
+        """
+        URL = F"{self.edgar_api_base_url}/api/xbrl/companyconcept/CIK{self.cik}/{taxonomy}/{concept}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = self.get_edgar_request(URL)
+
+        return response
+
+    def get_company_facts(self):
+        """Returns all the company concepts data for a company into a single JSON object.
+
+        Data comes from the `data.sec.gov/api/xbrl/companyfacts/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
+
+        :return: Dictionary of raw JSON returned by the endpoint
+        """
+        URL = F"{self.edgar_api_base_url}/api/xbrl/companyfacts/CIK{self.cik}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = self.get_edgar_request(URL)
+
+        return response
 
 class edgarFiler(object):
     """
