@@ -30,8 +30,8 @@ class edgarFilerNew():
 
         headers = {
         "User-Agent" : "FinMesh Michael michaelpeterhartmann94@gmail.com",
-        "Accept-Encoding" : "gzip, deflate",
-        "Host" : "www.sec.gov"
+        # "Accept-Encoding" : "gzip, deflate",
+        # "Host" : "www.sec.gov"
         }
 
         response = requests.get(url, headers=headers)
@@ -79,7 +79,7 @@ class edgarFilerNew():
         response = self.get_edgar_request(URL).json()
 
         # Define elements in the json
-        filings = response["cik"]["recent"]
+        filings = response["filings"]["recent"]
         accessions = filings["accessionNumber"]
         form = filings["form"]
         date = filings["filingDate"]
@@ -87,14 +87,16 @@ class edgarFilerNew():
 
         accession_numbers = {}
         if filter:
+            n = 0
             while length(accession_numbers) < count:
-                i += 1
+                # try to find the next entry that fits the filter, otherwise break the loop
                 try:
-                    if form[i] in filter:
-                        accession_numbers[accessions[i]] = {
-                        "form" : form[i],
-                        "filingDate" : date[i],
-                        "primaryDocument" : source[i]
+                    if form[n] in filter:
+                        n += 1
+                        accession_numbers[accessions[n]] = {
+                        "form" : form[n],
+                        "filingDate" : date[n],
+                        "primaryDocument" : source[n]
                         }
                 except:
                     break
