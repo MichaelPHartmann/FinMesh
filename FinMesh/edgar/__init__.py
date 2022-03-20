@@ -169,7 +169,7 @@ class edgarFiler():
         setattr(self, "company_facts", response)
         return response
 
-    def get_report_raw(self, accession, directory=None):
+    def get_report_raw(self, accession, directory=""):
         """Takes an accession number and streams a text report file to your environment.
         File is named in the following format: `{ticker}_{accession}`.
         You can use the directory argument to specify the directory you would like to save the file in.
@@ -186,7 +186,7 @@ class edgarFiler():
         URL = f"{edgar_reg_base_url}{edgar_archive_url}{self.cik}/{fixed_accession}/{accession}.txt"
 
         response = self.get_edgar_request(URL, headers=False, stream=True)
-        filename = f'{if directoy: directoy else: ""}{self.ticker}_{accession}.txt'
+        filename = f'{directory}{self.ticker}_{accession}.txt'
         with open(filename, 'wb') as f:
             for chunk in response.iter_content(chunk_size=512):
                 if chunk:  # filter out keep-alive new chunks
