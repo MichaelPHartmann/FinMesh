@@ -26,15 +26,17 @@ class edgarFilerNew():
         self.ticker = ticker
         self.cik = self.get_cik()
 
-    def get_edgar_request(self, url, headers=None):
+    def get_edgar_request(self, url, headers=True, stream=False):
 
-        headers = {
-        "User-Agent" : "FinMesh Michael michaelpeterhartmann94@gmail.com",
-        # "Accept-Encoding" : "gzip, deflate",
-        # "Host" : "www.sec.gov"
-        }
-
-        response = requests.get(url, headers=headers)
+        if headers == True:
+            headers = {
+            "User-Agent" : "FinMesh Michael michaelpeterhartmann94@gmail.com",
+            # "Accept-Encoding" : "gzip, deflate",
+            # "Host" : "www.sec.gov"
+            }
+            response = requests.get(url, headers=headers, stream=stream)
+        else:
+            response = requests.get(url, stream=stream)
 
         # Handle failed response
         if response.status_code != 200:
@@ -156,9 +158,30 @@ class edgarFilerNew():
         setattr(self, "company_facts", response)
         return response
 
-#
-#
-#
+    def get_report_raw(self, accession, directory=None):
+        """Takes an accession number and streams a text report file to your environment.
+        File is named in the following format: `{ticker}_{accession}`.
+        You can use the directory argument to specify the directory you would like to save the file in.
+        This uses the exact text entered and appends it to the filename allowing for relative file placement.
+
+        :param accession: The accession number for the report you would like to download. Available online or through `get_accessions method`.
+        :type accession: string, required
+        :param directory: The directory you would like to send the file to.
+        :type directory: string, optional
+
+        :return: filename, string
+        """
+        fixed_accession = accession.replace("-","")
+        URL = f"{edgar_reg_base_url}{edgar_archive_url}{self.cik}/{fixed_accession}/{accession}.txt"
+
+        response = self.get_edgar_request(URL, headers=False, stream=True)
+        filename = f'{if directoy: directoy else: ""}{self.ticker}_{accession}.txt'
+        with open(filename, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=512):
+                if chunk:  # filter out keep-alive new chunks
+                    f.write(chunk)
+        return filename
+
 #
 # class edgarFiler(object):
 #     """
