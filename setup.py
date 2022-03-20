@@ -14,13 +14,13 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name = "FinMesh",
     version = "2.2",
-    author = "Michael and Josh Hartmann",
-    author_email = "mph101mph@gmail.com",
+    author = "Michael Hartmann",
+    author_email = "michaelpeterhartmann94@gmail.com.com",
     description = "A Python wrapper to bring together various financial APIs.",
     long_description = long_description,
     long_description_content_type = "text/markdown",
     keywords = "Finance, API, DCF, IEX, EDGAR, FRED, interest rates",
-    url = "",
+    url = "https://finmesh.readthedocs.io/",
     packages=setuptools.find_packages(),
     classifiers = [
         "Programming Language :: Python :: 3"

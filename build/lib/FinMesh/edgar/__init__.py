@@ -2,216 +2,193 @@ import os
 import requests
 import xml.etree.ElementTree as ET
 import webbrowser
-import shutil
-# from bs4 import BeautifulSoup, SoupStrainer
-# from nltk.corpus import words
-from ._common import *
+
+# EDGAR_BASE_URL = "https://www.sec.gov"
+# EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
+# EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
+# EDGAR_API_BASE = "https://data.sec.gov/"
 
 
-EDGAR_BASE_URL = "https://www.sec.gov"
-EDGAR_BROWSE_URL = "/cgi-bin/browse-edgar?action=getcompany"
-EDGAR_ARCHIVE_URL = "/Archives/edgar/data/"
+class edgarFiler():
+    """Accesses data from the SEC's EDGAR database RESTful API.
+    In current state this class wraps all the functionality for the API, providing JSON data to the user.
+    The SEC asks that users do not make more than 10 requests per second.
+    The SEC requires that automated requests declare a user-agent header, and while this class provides a default it is highly recommended that you set your own name and email.
 
-
-class edgarFiler(object):
+    :param ticker: The ticker symbol of the stock which you would like to access data for.
+    :type ticker: string, required
+    :param name: Your personal or business name. Used in request headers to validate your API access.
+    :type name: string, strongly advised
+    :param email: Your personal or business email. Used in request headers to validate your API access.
+    :type email: string, strongly advised.
     """
-    A class designed for retrieving SEC reports.
-    Currently only supports requests for raw reports, and does not take care of parsing.
-    This class may be useful if you are looking for the CIK number of a company.
-    This attribute is set upon initialization.
-    """
-
-    def __init__(self, ticker):
+    def __init__(self, ticker, name="webmaster", email="webmaster@sec.gov"):
+        self.edgar_reg_base_url = "https://www.sec.gov"
+        self.edgar_api_base_url = "https://data.sec.gov"
+        self.edgar_archive_url = "/Archives/edgar/data/"
         self.ticker = ticker
-        self.cik = self.cik()
+        self.request_log = {}
+        self.cik = self.get_cik()
+        self.user_name = name
+        self.user_email = email
 
-    def cik(self):
-        """Sets the CIK attribute for the requested company"""
-        URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&output=atom"
-        search = requests.get(URL)
-        search_result = search.text
-        root = ET.fromstring(search_result)
+    def get_edgar_request(self, url, user_header=True, stream=False):
+        """Returns a response object from EDGAR with options for headers and file streaming.
+        Throws a verbose error code on non-200 status codes.
+        Saves all raw responses in `request_log` class attribute.
+
+        :param url: The url you would like to request.
+        :type url: string, required
+        :param user_header: If you would like to send
+        """
+        if user_header == True:
+            headers = {
+            "User-Agent" : F"{self.user_name} {self.user_email}"
+            }
+            response = requests.get(url, headers=headers, stream=stream)
+        else:
+            response = requests.get(url, stream=stream)
+
+        # Handle failed response
+        if response.status_code != 200:
+            error_response = (F"There was an error with the request to EDAGR!\n"
+                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                            + F"URL: {response.url}\n"
+                            + "Response Content:\n")
+                            # + F"{response.text}")
+            raise Exception(error_response)
+        else:
+            return response
+
+    def get_cik(self):
+        """Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
+        :return: string, CIK
+        """
+        URL = F"{self.edgar_reg_base_url}/cgi-bin/browse-edgar?action=getcompany&CIK={self.ticker}&output=atom"
+        # Make a request to EDGAR
+        response = self.get_edgar_request(URL)
+        # Create the root for ET
+        # SHOULD BE REFACTORED
+        root = ET.fromstring(response.text)
         cik = root[1][4].text
         return cik
 
-    # # # # # # # # # # # # # # # # # # # # # # #
-    # FULL SERVICE ACCESSION AND REPORT GETTING #
-    # # # # # # # # # # # # # # # # # # # # # # #
-    def get_report_full(self, count, document, get=False, html=False, xbrl=False, xlsx=False,debug=False):
-    """Returns accession numbers and documents in five forms for all the documents for the desired company
-    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+    def get_accessions(self, count=20, filter=None):
+        """Returns most recent accession numbers and document type for the document for the desired company
+        If there is no filter set, it sets and attribute called `accession_numbers` with result.
+        If there are filters applied, the filters are joined with underscores in this format: `{filters}_accessions`.
 
-    :param count: The number of documents to return.
-    :type count: int, required
-    :param document: The name of the document you wish to request (i.e. '10-K')
-    :type document: string, required
-    :param get: Streams a raw text document for the filings staright to your local workspace.
-    :type get: boolean, optional
-    :param html: Returns an html-only version of the raw text document (parsed by switching at html tags)
-    :type html: boolean, optional
-    :param xbrl: Opens a new web page with the interactive xbrl data.
-    :type xbrl: boolean, optional
-    :param xlsx: Downloads the company-supplied xlsx filing document if available
-    :type xlsx: boolean, optional
-    """
-        document = document_type_parse(document)
-        URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
+        Data comes from the `data.sec.gov/submissions/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
 
-        get_result = requests.get(URL)
-        if get_result.status_code == 200:
-            result_text = get_result.text
+        :param count: The number of documents to return.
+        :type count: int, optional, default 20
+        :param filter: Filters results by the requested form type. Accepts multiple values.
+        :type filter: list of strings, optional, defualt is None
 
-            root = ET.fromstring(result_text)
+        :return: dictionary, {accession_number : {form : filing_type,date : filing_date}}
+        """
+        URL = F"{self.edgar_api_base_url}/submissions/CIK{self.cik}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = self.get_edgar_request(URL).json()
 
-            accessions_requested = []
-            i = 0
-            for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
+        # Define elements in the json
+        filings = response["filings"]["recent"]
+        accessions = filings["accessionNumber"]
+        form = filings["form"]
+        date = filings["filingDate"]
+        source = filings["primaryDocument"]
 
-                while i < count:
-                    i += 1
-                    nunber = result.text
-                    accessions_requested.append(nunber)
-
+        accession_numbers = {}
+        if filter:
+            n = 0
+            while length(accession_numbers) < count:
+                # try to find the next entry that fits the filter, otherwise break the loop
+                try:
+                    if form[n] in filter:
+                        n += 1
+                        accession_numbers[accessions[n]] = {
+                        "form" : form[n],
+                        "filingDate" : date[n],
+                        "primaryDocument" : source[n]
+                        }
+                except:
+                    break
         else:
-            raise Exception(f'{document} is not a valid document type!')
+            # Build a dictionary
+            for i in range(count):
+                accession_numbers[accessions[i]] = {
+                "form" : form[i],
+                "filingDate" : date[i],
+                "primaryDocument" : source[i]
+                }
+        if filter:
+            # this may create some gross attribute names but we want to be able to create multiple lists of accessions in one class
+            setattr(self, F"{filter.join('_')}_accessions", accessions)
+        else:
+            setattr(self, "accessions", accessions)
 
-        # Optionally, one can request the raw text document streamed to your local workspace
-        if get:
-            for accession in accessions_requested:
-                fixed_accession = accession.replace("-","")
-                URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
-                # Stream site to local file
-                response = requests.get(URL, stream=True)
-                filename = f'{self.ticker}_{accession}.txt'
-                with open(filename, 'wb') as f:
-                    for chunk in response.iter_content(chunk_size=512):
-                        if chunk:  # filter out keep-alive new chunks
-                            f.write(chunk)
+        return accession_numbers
 
-                # Optionally, one can request an html-only version of the raw text document (parsed by switching at html tags)
-                if html:
-                    raw_file = filename
-                    html_file = f"{self.ticker}_{accession}.html"
-                    edgar_strip_to_html(raw_file, html_file)
+    def get_company_concept(self, concept, taxonomy="us-gaap"):
+        """Returns all the disclosures from a single company and concept (a taxonomy and tag) into a single JSON file.
+        Returns a separate array of facts for each units on measure that the company has chosen to disclose.
+        Sets an attribute for the class formatted like `{concept}_{taxonomy}` which allows you to fetch multiple taxonomies of the same concept.
 
-                # Optionally, one can request a new web page with the interactive xbrl data
-                elif xbrl:
-                    URL = f"https://www.sec.gov/cgi-bin/viewer?action=view&amp;cik={self.cik}&amp;accession_number={accession}"
-                    xbrl_request = requests.get(URL)
-                    if xbrl_request.status_code == 200:
-                        webbrowser.open(URL)
-                    else:
-                        raise Exception('Please ensure there are valid CIK and accession numbers.')
+        Data comes from the `data.sec.gov/api/xbrl/companyconcept/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
 
-                # Optionally, one can request a download of the xlsx filing document if valid
-                elif xlsx:
-                    URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/Financial_Report.xlsx"
-                    xlsx_filename = f"{self.ticker}_{accession}.xlsx"
-                    xlsx_download = requests.get(URL)
-                    if xlsx_download.status_code == 200:
-                        with open(xlsx_filename, 'wb') as f:
-                            for chunk in xlsx_download.iter_content(chunk_size=512):
-                                if chunk:  # filter out keep-alive new chunks
-                                    f.write(chunk)
-                    else:
-                        raise Exception('Please ensure there are valid CIK and accession numbers.')
+        :param concept: The tag or line item you are requesting.
+        :type concept: string, required
+        :param taxonomy: The reporting taxonomy for the tag you want to access. (us-gaap, ifrs-full, dei, srt)
+        :type taxonomy: string, optional, default is us-gaap
 
-    return accessions_requested
+        :return: Dictionary of raw JSON data returned by endpoint
+        """
+        URL = F"{self.edgar_api_base_url}/api/xbrl/companyconcept/CIK{self.cik}/{taxonomy}/{concept}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = self.get_edgar_request(URL).json()
 
+        # this allows for mutliple lists of the same concept to be fetched with different taxonomys
+        setattr(self, F"{concept}_{taxonomy}", response)
+        return response
 
-    # # # # # # # # # # # # # # #
-    # GET REPORT FROM ACCESSION #
-    # # # # # # # # # # # # # # #
-    def get_reports(self, accession, get=False, html=False, xbrl=False, xlsx=False,debug=False):
-    """Returns document in five forms for the requested accession number.
-    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
+    def get_company_facts(self):
+        """Returns all the company concepts data for a company into a single JSON object.
+        Sets a class attribute called `company_facts`.
 
-    :param accession: The accession number of the report you wish to retrieve
-    :type accession: string, required
-    :param get: Streams a raw text document for the filings staright to your local workspace.
-    :type get: boolean, optional
-    :param html: Returns an html-only version of the raw text document (parsed by switching at html tags)
-    :type html: boolean, optional
-    :param xbrl: Opens a new web page with the interactive xbrl data.
-    :type xbrl: boolean, optional
-    :param xlsx: Downloads the company-supplied xlsx filing document if available
-    :type xlsx: boolean, optional
-    """
+        Data comes from the `data.sec.gov/api/xbrl/companyfacts/` endpoint.
+        The SEC asks that users do not make more than 10 requests per second.
+
+        :return: Dictionary of raw JSON returned by the endpoint
+        """
+        URL = F"{self.edgar_api_base_url}/api/xbrl/companyfacts/CIK{self.cik}.json"
+        # Make the request and handle any errors with verbose Exception
+        response = self.get_edgar_request(URL).json()
+
+        setattr(self, "company_facts", response)
+        return response
+
+    def get_report_raw(self, accession, directory=""):
+        """Takes an accession number and streams a text report file to your environment.
+        File is named in the following format: `{ticker}_{accession}`.
+        You can use the directory argument to specify the directory you would like to save the file in.
+        This uses the exact text entered and appends it to the filename allowing for relative file placement.
+
+        :param accession: The accession number for the report you would like to download. Available online or through `get_accessions method`.
+        :type accession: string, required
+        :param directory: The directory you would like to send the file to.
+        :type directory: string, optional
+
+        :return: filename, string
+        """
         fixed_accession = accession.replace("-","")
-        URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/{accession}.txt"
+        URL = f"{edgar_reg_base_url}{edgar_archive_url}{self.cik}/{fixed_accession}/{accession}.txt"
 
-        # Stream raw filing to local file
-        response = requests.get(URL, stream=True)
-        filename = f'{self.ticker}_{accession}.txt'
+        response = self.get_edgar_request(URL, headers=False, stream=True)
+        filename = f'{directory}{self.ticker}_{accession}.txt'
         with open(filename, 'wb') as f:
             for chunk in response.iter_content(chunk_size=512):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
-
-        # Optionally, one can request an html-only version of the raw text document (parsed by switching at html tags)
-        if html:
-            raw_file = filename
-            html_file = f"{self.ticker}_{accession}.html"
-            edgar_strip_to_html(raw_file, html_file)
-
-        # Optionally, one can request a new web page with the interactive xbrl data
-        elif xbrl:
-            URL = f"https://www.sec.gov/cgi-bin/viewer?action=view&amp;cik={self.cik}&amp;accession_number={accession}"
-            xbrl_request = requests.get(URL)
-            if xbrl_request.status_code == 200:
-                webbrowser.open(URL)
-            else:
-                raise Exception('Please ensure there are valid CIK and accession numbers.')
-
-        # Optionally, one can request a download of the xlsx filing document if valid
-        elif xlsx:
-            URL = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{fixed_accession}/Financial_Report.xlsx"
-            xlsx_filename = f"{self.ticker}_{accession}.xlsx"
-            xlsx_download = requests.get(URL)
-            if xlsx_download.status_code == 200:
-                with open(xlsx_filename, 'wb') as f:
-                    for chunk in xlsx_download.iter_content(chunk_size=512):
-                        if chunk:  # filter out keep-alive new chunks
-                            f.write(chunk)
-            else:
-                raise Exception('Please ensure there are valid CIK and accession numbers.')
-
         return filename
-
-
-    # # # # # # # # # # # # # # # # #
-    # GET LIST OF ACCESSION NUMBERS #
-    # # # # # # # # # # # # # # # # #
-    def get_accessions(self, count, document):
-    """Returns accession numbers for the document for the desired company
-    SEC lists a minimum of 10 numbers for any given result but that is parred down in this code.
-
-    :param count: The number of documents to return.
-    :type count: int, required
-    :param document: The name of the document you wish to request (i.e. '10-K')
-    :type document: string, required
-    """
-        document = document_type_parse(document)
-        URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
-
-        get_result = requests.get(URL)
-        if get_result.status_code == 200:
-            result_text = get_result.text
-        else:
-            error_response = (F"There was an error with the request to IEX!\n"
-                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
-                            + F"URL: {response.url}\n"
-                            + "Response Content:\n"
-                            + F"{response.text}")
-            raise Exception(error_response)
-
-        root = ET.fromstring(result_text)
-        accessions_requested = []
-        i = 0
-        for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
-            while i < count:
-                i += 1
-                nunber = result.text
-                accessions_requested.append(nunber)
-
-    return accessions_requested

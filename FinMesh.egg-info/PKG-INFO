@@ -2,9 +2,9 @@ Metadata-Version: 2.1
 Name: FinMesh
 Version: 2.2
 Summary: A Python wrapper to bring together various financial APIs.
-Home-page: UNKNOWN
-Author: Michael and Josh Hartmann
-Author-email: mph101mph@gmail.com
+Home-page: https://finmesh.readthedocs.io/
+Author: Michael Hartmann
+Author-email: michaelpeterhartmann94@gmail.com.com
 License: UNKNOWN
 Keywords: Finance,API,DCF,IEX,EDGAR,FRED,interest rates
 Platform: UNKNOWN
