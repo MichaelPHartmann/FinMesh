@@ -9,7 +9,7 @@ import webbrowser
 # EDGAR_API_BASE = "https://data.sec.gov/"
 
 
-class edgarFilerNew():
+class edgarFiler():
     """Accesses data from the SEC's EDGAR database RESTful API.
     In current state this class wraps all the functionality for the API, providing JSON data to the user.
     The SEC asks that users do not make more than 10 requests per second.
