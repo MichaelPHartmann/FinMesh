@@ -10,7 +10,17 @@ import webbrowser
 
 
 class edgarFilerNew():
-    """
+    """Accesses data from the SEC's EDGAR database RESTful API.
+    In current state this class wraps all the functionality for the API, providing JSON data to the user.
+    The SEC asks that users do not make more than 10 requests per second.
+    The SEC requires that automated requests declare a user-agent header, and while this class provides a default it is highly recommended that you set your own name and email.
+
+    :param ticker: The ticker symbol of the stock which you would like to access data for.
+    :type ticker: string, required
+    :param name: Your personal or business name. Used in request headers to validate your API access.
+    :type name: string, strongly advised
+    :param email: Your personal or business email. Used in request headers to validate your API access.
+    :type email: string, strongly advised.
     """
     def __init__(self, ticker, name="webmaster", email="webmaster@sec.gov"):
         self.edgar_reg_base_url = "https://www.sec.gov"
