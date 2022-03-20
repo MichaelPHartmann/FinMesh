@@ -41,6 +41,7 @@
 <li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usgov.html">US Government Economic Series Data from FRED API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="edgar.html">US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)</a></li>
 </ul>
 
         </div>
@@ -137,9 +138,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="iex.html#iex.stock.earnings">earnings() (in module iex.stock)</a>
 </li>
+      <li><a href="iex.html#iex.market.economic_data">economic_data() (in module iex.market)</a>
+</li>
+      <li>
+    edgar
+
+      <ul>
+        <li><a href="edgar.html#module-edgar">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="iex.html#iex.market.economic_data">economic_data() (in module iex.market)</a>
+      <li><a href="edgar.html#edgar.edgarFiler">edgarFiler (class in edgar)</a>
 </li>
       <li><a href="iex.html#iex.stock.estimates">estimates() (in module iex.stock)</a>
 </li>
@@ -173,11 +183,23 @@
 </li>
       <li><a href="iex.html#iex.market.generic_time_series">generic_time_series() (in module iex.market)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="usgov.html#usgov.geofred_regional_series">geofred_regional_series() (in module usgov)</a>
 </li>
       <li><a href="usgov.html#usgov.geofred_series_meta">geofred_series_meta() (in module usgov)</a>
+</li>
+      <li><a href="edgar.html#edgar.edgarFiler.get_accessions">get_accessions() (edgar.edgarFiler method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="edgar.html#edgar.edgarFiler.get_cik">get_cik() (edgar.edgarFiler method)</a>
+</li>
+      <li><a href="edgar.html#edgar.edgarFiler.get_company_concept">get_company_concept() (edgar.edgarFiler method)</a>
+</li>
+      <li><a href="edgar.html#edgar.edgarFiler.get_company_facts">get_company_facts() (edgar.edgarFiler method)</a>
+</li>
+      <li><a href="edgar.html#edgar.edgarFiler.get_edgar_request">get_edgar_request() (edgar.edgarFiler method)</a>
+</li>
+      <li><a href="edgar.html#edgar.edgarFiler.get_report_raw">get_report_raw() (edgar.edgarFiler method)</a>
 </li>
       <li><a href="usgov.html#usgov.get_yield">get_yield() (in module usgov)</a>
 </li>
@@ -273,6 +295,8 @@
     module
 
       <ul>
+        <li><a href="edgar.html#module-edgar">edgar</a>
+</li>
         <li><a href="iex.html#module-iex.forex">iex.forex</a>
 </li>
         <li><a href="iexstockclass.html#module-iex.IEXStock">iex.IEXStock</a>
