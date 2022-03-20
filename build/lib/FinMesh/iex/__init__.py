@@ -4,18 +4,14 @@ import pickle
 import pandas
 
 from .stock import *
-from .premium import *
 from .market import *
 from ._common import *
 
 
 class IEXStock:
     """A class that is built around retrieving data from the IEX Cloud API service.
-    All available data is derived from functions defined in the stock.py module, and are implemented here with a "get_" prefix.
-    All data is available in CSV format, and can be grouped together for bulk file writing.
-    CSV data is parsed, built and written using a scratch-built parser and this is why there is not currently any Excel output options.
-    Beta version will use Pandas. This is currently about 75% completed.
-    All data retrieved is automatically stored in the corrosponding class attribute (sans "get_" prefix).
+    All available data is derived from functions defined in the stock.py module, and are implemented here with a `get_` prefix.
+    All data retrieved is automatically stored in the corrosponding class attribute (sans `get_` prefix).
     Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.
 
     :param ticker: The symbol or ticker of the stock for which the class is to be created.

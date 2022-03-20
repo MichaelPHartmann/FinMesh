@@ -56,27 +56,22 @@ class edgarFiler(object):
     """
         document = document_type_parse(document)
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
-        if debug:
-            print(URL)
+
         get_result = requests.get(URL)
         if get_result.status_code == 200:
             result_text = get_result.text
-            if debug:
-                print(result_text)
+
             root = ET.fromstring(result_text)
-            if debug:
-                print(root.text)
+
             accessions_requested = []
             i = 0
             for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
-                if debug:
-                    print(result)
+
                 while i < count:
                     i += 1
                     nunber = result.text
                     accessions_requested.append(nunber)
-                    if debug:
-                        print(nunber)
+
         else:
             raise Exception(f'{document} is not a valid document type!')
 
@@ -198,114 +193,25 @@ class edgarFiler(object):
     """
         document = document_type_parse(document)
         URL = EDGAR_BASE_URL + EDGAR_BROWSE_URL + f"&CIK={self.ticker}&type={document}&count={count}&output=atom"
-        if debug:
-            print(URL)
+
         get_result = requests.get(URL)
         if get_result.status_code == 200:
             result_text = get_result.text
-            if debug:
-                print(result_text)
-            root = ET.fromstring(result_text)
-            if debug:
-                print(root.text)
-            accessions_requested = []
-            i = 0
-            for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
-                if debug:
-                    print(result)
-                while i < count:
-                    i += 1
-                    nunber = result.text
-                    accessions_requested.append(nunber)
-                    if debug:
-                        print(nunber)
         else:
-            raise Exception(f'{document} is not a valid document type!')
+            error_response = (F"There was an error with the request to IEX!\n"
+                            + F"{response.status_code}:{response.reason} in {round(response.elapsed.microseconds/1000000,4)} seconds\n"
+                            + F"URL: {response.url}\n"
+                            + "Response Content:\n"
+                            + F"{response.text}")
+            raise Exception(error_response)
+
+        root = ET.fromstring(result_text)
+        accessions_requested = []
+        i = 0
+        for result in root.iter('{http://www.w3.org/2005/Atom}accession-nunber'):
+            while i < count:
+                i += 1
+                nunber = result.text
+                accessions_requested.append(nunber)
 
     return accessions_requested
-
-
-# class edgarReport(object):
-#
-#     def __init__(self,ticker,file):
-#         self.ticker = ticker
-#         self.file = file
-#         self.report_period = ''
-#         self.company_name = ''
-#
-#     def get_report_attributes():
-#         with open(self.file, 'r') as f:
-#             text = f.read()
-#         report_period = "CONFORMED PERIOD OF REPORT:	"
-#         file_date = "FILED AS OF DATE:		"
-#         company_name = "COMPANY CONFORMED NAME:			"
-#         industrial_classification = "STANDARD INDUSTRIAL CLASSIFICATION:	"
-#         report_period_start = text.find(report_period)+len(report_period)
-#         file_date_start = text.find(file_date)+len(file_date)
-#         company_name_start = text.find(company_name)+len(company_name)
-#         company_name_end = ''
-#         industrial_classification_start = text.find(industrial_classification)+len(industrial_classification)
-#         industrial_classification_end = ''
-#
-#     # # # # # # # # # # #
-#     # Isolating  Tables #
-#     # # # # # # # # # # #
-#
-#     def isolate_tables(self, debug=True):
-#         with open(self.file, 'r') as fo:
-#             text = fo.read()
-#         starts, ends = find_all_tables(text)
-#         if debug: print(starts, ends)
-#         table_only_output = f'{self.ticker}_{self.report_period}_tablesonly.html'
-#         with open(table_only_output, 'a') as f:
-#             for i in range(len(starts)-1):
-#                 block_to_write = text[starts[i]:ends[i]]
-#                 f.write(block_to_write)
-#     isolate_tables.__doc__='Isolates all the tables in a SEC filing to a new file.'
-#
-#
-#     # # # # # # # # # #
-#     # WORD  FREQUENCY #
-#     # # # # # # # # # #
-#
-#     def real_word_frequency(self):
-#         # Returns a list fo real words sorted by use frequency
-#         with open(self.file,'r') as f:
-#             word_list = words.words()
-#             alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-#             file_words = []
-#             # Quick sieve that is used in bad_apples function to quickly throw out obvious unreal words
-#             ignore = ['-','_','/','=',':',';','<','>','#','$','@','*','\\']
-#             lines = f.readlines()
-#             word_freq = {}
-#             final_checked = {}
-#             # Iterate lines from file
-#             for line in lines:
-#                 words = line.lower().strip().split(' ')
-#                 # Iterate words from line
-#                 for word in words:
-#                     if not pick_bad_apples(word, ignore):
-#                         file_words.append(word)
-#             # Iterate words that pass bad apple check
-#             for w in file_words:
-#                 if not w == '':
-#                     length = len(w)-1
-#                     # Checks if the first and last letter are in the alphabet
-#                     if w[0] and w[length] in alphabet:
-#                         w.replace('.','').strip('\"')
-#                         if w in word_freq.keys():
-#                             word_freq[w] += 1
-#                         else:
-#                             word_freq[w] = 1
-#
-#             # Runs a final check against an actual dictionary
-#             for key in word_freq.keys():
-#                 if key in word_list:
-#                     val = word_freq.get(key)
-#                     final_checked[key] = val
-#
-#             # Sort the words by frequency
-#             final_checked_sorted = {k: v for k, v in sorted(final_checked.items(), key=lambda item: item[1])}
-#
-#             return final_checked_sorted
-#     real_word_frequency.__doc__='Returns a list fo real words sorted by use frequency.'

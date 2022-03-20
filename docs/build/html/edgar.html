@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR) &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="US Government Economic Series Data from FRED API" href="usgov.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iextutorial.html">Accessing IEX Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usgov.html">US Government Economic Series Data from FRED API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/edgar.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <div class="section" id="module-edgar">
+<span id="us-government-electronic-data-gathering-analysis-and-retrieval-system-edgar"></span><h1>US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)<a class="headerlink" href="#module-edgar" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="edgar.edgarFiler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">edgar.</span></span><span class="sig-name descname"><span class="pre">edgarFiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'webmaster'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'webmaster&#64;sec.gov'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler" title="Permalink to this definition"></a></dt>
+<dd><p>Accesses data from the SEC’s EDGAR database RESTful API.
+In current state this class wraps all the functionality for the API, providing JSON data to the user.
+The SEC asks that users do not make more than 10 requests per second.
+The SEC requires that automated requests declare a user-agent header, and while this class provides a default it is highly recommended that you set your own name and email.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>string</em><em>, </em><em>required</em>) – The ticker symbol of the stock which you would like to access data for.</p></li>
+<li><p><strong>name</strong> (<em>string</em><em>, </em><em>strongly advised</em>) – Your personal or business name. Used in request headers to validate your API access.</p></li>
+<li><p><strong>email</strong> (<em>string</em><em>, </em><em>strongly advised.</em>) – Your personal or business email. Used in request headers to validate your API access.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_accessions">
+<span class="sig-name descname"><span class="pre">get_accessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_accessions" title="Permalink to this definition"></a></dt>
+<dd><p>Returns most recent accession numbers and document type for the document for the desired company
+If there is no filter set, it sets and attribute called <cite>accession_numbers</cite> with result.
+If there are filters applied, the filters are joined with underscores in this format: <cite>{filters}_accessions</cite>.</p>
+<p>Data comes from the <cite>data.sec.gov/submissions/</cite> endpoint.
+The SEC asks that users do not make more than 10 requests per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>count</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default 20</em>) – The number of documents to return.</p></li>
+<li><p><strong>filter</strong> (<em>list of strings</em><em>, </em><em>optional</em><em>, </em><em>defualt is None</em>) – Filters results by the requested form type. Accepts multiple values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary, {accession_number : {form : filing_type,date : filing_date}}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_cik">
+<span class="sig-name descname"><span class="pre">get_cik</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_cik" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the Central Index Key (CIK) for the requested ticker through HTML tree traversal.
+:return: string, CIK</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_company_concept">
+<span class="sig-name descname"><span class="pre">get_company_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concept</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taxonomy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'us-gaap'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_company_concept" title="Permalink to this definition"></a></dt>
+<dd><p>Returns all the disclosures from a single company and concept (a taxonomy and tag) into a single JSON file.
+Returns a separate array of facts for each units on measure that the company has chosen to disclose.
+Sets an attribute for the class formatted like <cite>{concept}_{taxonomy}</cite> which allows you to fetch multiple taxonomies of the same concept.</p>
+<p>Data comes from the <cite>data.sec.gov/api/xbrl/companyconcept/</cite> endpoint.
+The SEC asks that users do not make more than 10 requests per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concept</strong> (<em>string</em><em>, </em><em>required</em>) – The tag or line item you are requesting.</p></li>
+<li><p><strong>taxonomy</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default is us-gaap</em>) – The reporting taxonomy for the tag you want to access. (us-gaap, ifrs-full, dei, srt)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of raw JSON data returned by endpoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_company_facts">
+<span class="sig-name descname"><span class="pre">get_company_facts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_company_facts" title="Permalink to this definition"></a></dt>
+<dd><p>Returns all the company concepts data for a company into a single JSON object.
+Sets a class attribute called <cite>company_facts</cite>.</p>
+<p>Data comes from the <cite>data.sec.gov/api/xbrl/companyfacts/</cite> endpoint.
+The SEC asks that users do not make more than 10 requests per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of raw JSON returned by the endpoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_edgar_request">
+<span class="sig-name descname"><span class="pre">get_edgar_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_edgar_request" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a response object from EDGAR with options for headers and file streaming.
+Throws a verbose error code on non-200 status codes.
+Saves all raw responses in <cite>request_log</cite> class attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em><em>, </em><em>required</em>) – The url you would like to request.</p></li>
+<li><p><strong>user_header</strong> – If you would like to send</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgar.edgarFiler.get_report_raw">
+<span class="sig-name descname"><span class="pre">get_report_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#edgar.edgarFiler.get_report_raw" title="Permalink to this definition"></a></dt>
+<dd><p>Takes an accession number and streams a text report file to your environment.
+File is named in the following format: <cite>{ticker}_{accession}</cite>.
+You can use the directory argument to specify the directory you would like to save the file in.
+This uses the exact text entered and appends it to the filename allowing for relative file placement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accession</strong> (<em>string</em><em>, </em><em>required</em>) – The accession number for the report you would like to download. Available online or through <cite>get_accessions method</cite>.</p></li>
+<li><p><strong>directory</strong> (<em>string</em><em>, </em><em>optional</em>) – The directory you would like to send the file to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filename, string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usgov.html" class="btn btn-neutral float-left" title="US Government Economic Series Data from FRED API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

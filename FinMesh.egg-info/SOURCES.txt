@@ -6,9 +6,6 @@ FinMesh.egg-info/PKG-INFO
 FinMesh.egg-info/SOURCES.txt
 FinMesh.egg-info/dependency_links.txt
 FinMesh.egg-info/top_level.txt
-FinMesh/auxiliary/__init__.py
-FinMesh/auxiliary/token_setup.py
-FinMesh/auxiliary/word_processing.py
 FinMesh/edgar/__init__.py
 FinMesh/edgar/_common.py
 FinMesh/iex/__init__.py
@@ -16,6 +13,5 @@ FinMesh/iex/_common.py
 FinMesh/iex/account.py
 FinMesh/iex/forex.py
 FinMesh/iex/market.py
-FinMesh/iex/premium.py
 FinMesh/iex/stock.py
 FinMesh/usgov/__init__.py
