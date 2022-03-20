@@ -17,6 +17,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)" href="edgar.html" />
     <link rel="prev" title="IEX Cloud Endpoint Function List" href="iex.html" /> 
 </head>
 
@@ -42,6 +43,7 @@
 <li class="toctree-l1"><a class="reference internal" href="iexstockclass.html">IEXStock General Class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Endpoint Function List</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">US Government Economic Series Data from FRED API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="edgar.html">US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)</a></li>
 </ul>
 
         </div>
@@ -68,8 +70,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="module-usgov">
-<span id="us-government-economic-series-data-from-fred-api"></span><h1>US Government Economic Series Data from FRED API<a class="headerlink" href="#module-usgov" title="Permalink to this headline"></a></h1>
+  <div class="section" id="us-government-economic-series-data-from-fred-api">
+<h1>US Government Economic Series Data from FRED API<a class="headerlink" href="#us-government-economic-series-data-from-fred-api" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="usgov.append_fred_token">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">append_fred_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.append_fred_token" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="usgov.fred_series">
 <span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">fred_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.fred_series" title="Permalink to this definition"></a></dt>
@@ -101,6 +108,23 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="usgov.geofred_series_meta">
+<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">geofred_series_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.geofred_series_meta" title="Permalink to this definition"></a></dt>
+<dd><p>Returns series meta data from the US Federal Reserve and Economic Database (FRED) API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>series</strong> (<em>string</em><em>, </em><em>required</em>) – The series ID of the data you want to return.</p></li>
+<li><p><strong>external</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – If you want to use a token from outside your environment variables, use this param</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns meta data for the requested FRED data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="usgov.geofred_regional_series">
 <span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">geofred_regional_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.geofred_regional_series" title="Permalink to this definition"></a></dt>
 <dd><p>Returns geographically organized series data from the US Federal Reserve and Economic Database (FRED) API.</p>
@@ -119,23 +143,6 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="usgov.geofred_series_meta">
-<span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">geofred_series_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">query_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#usgov.geofred_series_meta" title="Permalink to this definition"></a></dt>
-<dd><p>Returns series meta data from the US Federal Reserve and Economic Database (FRED) API.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>series</strong> (<em>string</em><em>, </em><em>required</em>) – The series ID of the data you want to return.</p></li>
-<li><p><strong>external</strong> (<em>string</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – If you want to use a token from outside your environment variables, use this param</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Returns meta data for the requested FRED data</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="usgov.get_yield">
 <span class="sig-prename descclassname"><span class="pre">usgov.</span></span><span class="sig-name descname"><span class="pre">get_yield</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#usgov.get_yield" title="Permalink to this definition"></a></dt>
 <dd><p>A function that retrieves current Treasury Bond rates from the US Treasury website.
@@ -149,6 +156,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="iex.html" class="btn btn-neutral float-left" title="IEX Cloud Endpoint Function List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="edgar.html" class="btn btn-neutral float-right" title="US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

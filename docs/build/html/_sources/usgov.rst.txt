@@ -1,5 +1,8 @@
 US Government Economic Series Data from FRED API
 ################################################
 
-.. automodule:: usgov
-  :members:
+.. autofunction:: usgov.append_fred_token
+.. autofunction:: usgov.fred_series
+.. autofunction:: usgov.geofred_series_meta
+.. autofunction:: usgov.geofred_regional_series
+.. autofunction:: usgov.get_yield
