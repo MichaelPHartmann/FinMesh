@@ -35,6 +35,7 @@ If FinMesh has brought you value please consider supporting the project.
    iexstockclass
    iex
    usgov
+   edgar
 
 
 Indices and tables
