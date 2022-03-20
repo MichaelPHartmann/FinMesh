@@ -1,5 +1,5 @@
 US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)
 ###############################################################################
 
-.. automodule:: edgar
+.. autoclass:: edgar.edgarFiler
   :members:
