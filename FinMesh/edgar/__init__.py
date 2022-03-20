@@ -62,7 +62,8 @@ class edgarFilerNew():
 
     def get_accessions(self, count=20, filter=None):
         """Returns most recent accession numbers and document type for the document for the desired company
-        Sets attribute `accession_numbers` with result.
+        If there is no filter set, it sets and attribute called `accession_numbers` with result.
+        If there are filters applied, the filters are joined with underscores in this format: `{filters}_accessions`.
 
         Data comes from the `data.sec.gov/submissions/` endpoint.
         The SEC asks that users do not make more than 10 requests per second.
@@ -108,13 +109,18 @@ class edgarFilerNew():
                 "filingDate" : date[i],
                 "primaryDocument" : source[i]
                 }
-        setattr(self, "accessions", accessions)
+        if filter:
+            # this may create some gross attribute names but we want to be able to create multiple lists of accessions in one class
+            setattr(self, F"{filter.join('_')}_accessions", accessions)
+        else:
+            setattr(self, "accessions", accessions)
 
         return accession_numbers
 
     def get_company_concept(self, concept, taxonomy="us-gaap"):
         """Returns all the disclosures from a single company and concept (a taxonomy and tag) into a single JSON file.
         Returns a separate array of facts for each units on measure that the company has chosen to disclose.
+        Sets an attribute for the class formatted like `{concept}_{taxonomy}` which allows you to fetch multiple taxonomies of the same concept.
 
         Data comes from the `data.sec.gov/api/xbrl/companyconcept/` endpoint.
         The SEC asks that users do not make more than 10 requests per second.
@@ -130,11 +136,13 @@ class edgarFilerNew():
         # Make the request and handle any errors with verbose Exception
         response = self.get_edgar_request(URL).json()
 
-        setattr(self, "company_concept", response)
+        # this allows for mutliple lists of the same concept to be fetched with different taxonomys
+        setattr(self, F"{concept}_{taxonomy}", response)
         return response
 
     def get_company_facts(self):
         """Returns all the company concepts data for a company into a single JSON object.
+        Sets a class attribute called `company_facts`.
 
         Data comes from the `data.sec.gov/api/xbrl/companyfacts/` endpoint.
         The SEC asks that users do not make more than 10 requests per second.
