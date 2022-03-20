@@ -143,7 +143,7 @@ class edgarFilerNew():
         """
         URL = F"{self.edgar_api_base_url}/api/xbrl/companyfacts/CIK{self.cik}.json"
         # Make the request and handle any errors with verbose Exception
-        response = self.get_edgar_request(URL)
+        response = self.get_edgar_request(URL).json()
 
         setattr(self, "company_facts", response)
         return response
