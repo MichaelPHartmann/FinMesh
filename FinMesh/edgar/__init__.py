@@ -19,20 +19,28 @@ EDGAR_API_BASE = "https://data.sec.gov/"
 class edgarFilerNew():
     """
     """
-    def __init__(self, ticker):
+    def __init__(self, ticker, name="webmaster", email="webmaster@sec.gov"):
         self.edgar_reg_base_url = "https://www.sec.gov"
         self.edgar_api_base_url = "https://data.sec.gov"
         self.edgar_archive_url = "/Archives/edgar/data/"
         self.ticker = ticker
+        self.request_log = {}
         self.cik = self.get_cik()
+        self.user_name = name
+        self.user_email = email
 
-    def get_edgar_request(self, url, headers=True, stream=False):
+    def get_edgar_request(self, url, user_header=True, stream=False):
+        """Returns a response object from EDGAR with options for headers and file streaming.
+        Throws a verbose error code on non-200 status codes.
+        Saves all raw responses in `request_log` class attribute.
 
-        if headers == True:
+        :param url: The url you would like to request.
+        :type url: string, required
+        :param user_header: If you would like to send
+        """
+        if user_header == True:
             headers = {
-            "User-Agent" : "FinMesh Michael michaelpeterhartmann94@gmail.com",
-            # "Accept-Encoding" : "gzip, deflate",
-            # "Host" : "www.sec.gov"
+            "User-Agent" : F"{self.user_name} {self.user_email}"
             }
             response = requests.get(url, headers=headers, stream=stream)
         else:
