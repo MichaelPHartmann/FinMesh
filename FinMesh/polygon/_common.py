@@ -1,3 +1,5 @@
+import os
+
 stocks = {
 "aggregates" : "/v2/aggs/ticker/{stockTicker}/range/{multiplier}/{timespan}/{from}/{to}",
 "grouped daily" : "/v2/aggs/grouped/locale/us/market/stocks/{date}",
@@ -61,11 +63,17 @@ reference = {
 
 class polygonCommon():
 
-    def __init__(self, section, symbol, endpoint, external=False):
-        self.url = "https://api.polygon.io"
+    def __init__(self, url_extension, external=False):
+        self.url = "https://api.polygon.io" + url_extension
+        if external:
+            self.token = external
+        else:
+            self.get_env_token()
 
     def get_env_token(self):
-        pass
+        token = os.getenv('POLYGON_TOKEN')
+        setattr(self, "token", token)
+        return self.token
 
     # Adds query paramters to the url
     def append_query_params_to_url(self, query_params):
@@ -107,13 +115,7 @@ class polygonCommon():
         result = response.json()
         return result
 
-    # Step One
-    # Execution of class is split into two parts so that changes to the url can be made halfway through
-    def pre_execute(self, **query_params):
-        self.add_query_params_to_url(self, query_params)
-
-    # Step Two
     # Final execution step where token is added and request is made.
     def execute(self):
         self.append_token_to_url()
-        return self.make_iex_request()
+        return self.make_polygon_request()

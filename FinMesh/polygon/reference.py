@@ -1,3 +1,5 @@
+from ._common import *
+
 reference = {
 "tickers" : "/v3/reference/tickers",
 "ticker news" : "/v2/reference/news",
@@ -8,23 +10,52 @@ reference = {
 "exchanges" : "/v3/reference/exchanges"
 }
 
-def tickers():
-    pass
 
-def ticker_news():
-    pass
+def tickers(external=False, **query_params):
+    URL_EXTENSION = F"/v3/reference/tickers"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
-def ticker_types():
-    pass
+def ticker_news(external=False, **query_params):
+    URL_EXTENSION = F"/v2/reference/news"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
-def market_holidays():
-    pass
+def ticker_types(external=False, **query_params):
+    URL_EXTENSION = F"/v3/reference/tickers/types"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
-def market_status():
-    pass
+def market_holidays(external=False, **query_params):
+    URL_EXTENSION = F"/v1/marketstatus/upcoming"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
-def conditions():
-    pass
+def market_status(external=False, **query_params):
+    URL_EXTENSION = F"/v1/marketstatus/now"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
 
-def exchanges():
-    pass
+def conditions(external=False, **query_params):
+    URL_EXTENSION = F"/v3/reference/conditions"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
+
+def exchanges(external=False, **query_params):
+    URL_EXTENSION = F"/v3/reference/exchanges"
+    instance = polygonCommon(URL_EXTENSION, external=external)
+    if query_params:
+        instance.append_query_params_to_url(query_params)
+    return instance.execute()
