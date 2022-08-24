@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEXStock Classes &mdash; FinMesh 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polygon.io Modules" href="polygon.html" />
+    <link rel="prev" title="IEX Cloud Modules" href="iex.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> FinMesh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iextutorial.html">Accessing IEX Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iex.html">IEX Cloud Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IEXStock Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#iexstock-class">IEXStock Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iexmarket-class">IEXMarket Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="polygon.html">Polygon.io Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polygonclasses.html">Polygon.io Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usgov.html">US Government Economic Series Data from FRED API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="edgar.html">US Government Electronic Data Gathering, Analysis, and Retrieval System (EDGAR)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FinMesh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>IEXStock Classes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/iexclasses.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="iexstock-classes">
+<h1>IEXStock Classes<a class="headerlink" href="#iexstock-classes" title="Permalink to this headline"></a></h1>
+<div class="section" id="iexstock-class">
+<h2>IEXStock Class<a class="headerlink" href="#iexstock-class" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iex.IEXStock">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">iex.</span></span><span class="sig-name descname"><span class="pre">IEXStock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quarter'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autopopulate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock" title="Permalink to this definition"></a></dt>
+<dd><p>A class that is built around retrieving data from the IEX Cloud API service.
+All available data is derived from functions defined in the stock.py module, and are implemented here with a <cite>get_</cite> prefix.
+All data retrieved is automatically stored in the corrosponding class attribute (sans <cite>get_</cite> prefix).
+Data set to class attributes can be saved to file and subsequently loaded from that file to limit credit usage in IEX Cloud.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol or ticker of the stock for which the class is to be created.</p></li>
+<li><p><strong>period</strong> (<em>string</em><em>, </em><em>optional</em>) – Default is ‘quarter’. Allows a user to set period data for all income statement requests.</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Default is 1. Allows a user to specify how many statements to retrieve of financial statement data.</p></li>
+<li><p><strong>autopopulate</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Automatically populates key information as class attributes. Uses methods ‘basic_information’ and ‘price_information’</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.basic_information">
+<span class="sig-name descname"><span class="pre">basic_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.basic_information" title="Permalink to this definition"></a></dt>
+<dd><p>6 credits per symbol requested.
+Makes requests to the company and key stat IEX endpoints.
+Sets class attributes for:</p>
+<p>Company name (self.company_name)</p>
+<p>Industry (self.industry)</p>
+<p>Market Capitalization (self.market_cap)</p>
+<p>P/E Ratio (self.pe_ratio)</p>
+<p>Beta (self.beta)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_advanced_fundementals">
+<span class="sig-name descname"><span class="pre">get_advanced_fundementals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_advanced_fundementals" title="Permalink to this definition"></a></dt>
+<dd><p>75,000 credits per symbol requested.
+CSV is formatted vertically with keys in the first column.
+Sets class attribute ‘advanced_fundementals’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Immediate access to the data points in IEX models for 2850+ companies. Models are updated daily.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – Time interval of statements. Defaults to quarterly</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_advanced_stats">
+<span class="sig-name descname"><span class="pre">get_advanced_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_advanced_stats" title="Permalink to this definition"></a></dt>
+<dd><p>3,005 credits per symbol requested.
+Sets class attribute ‘advanced_stats’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Buffed version of key stats with selected financial data and more. Includes all data points from ‘key stats’.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_analyst_recommendations">
+<span class="sig-name descname"><span class="pre">get_analyst_recommendations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_analyst_recommendations" title="Permalink to this definition"></a></dt>
+<dd><p>Premium Data. 1,000 premium credits per symbol requested.
+Sets class attribute ‘analyst_recommendations’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Analyst stock recommendations for the requested stock from the last four months.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_balance_sheet">
+<span class="sig-name descname"><span class="pre">get_balance_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_balance_sheet" title="Permalink to this definition"></a></dt>
+<dd><p>3,000 credits per symbol requested.</p>
+<p>Sets class attribute ‘self.balance_sheet’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Balance sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – Time interval of statements. Defaults to quarterly</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_basic_financials">
+<span class="sig-name descname"><span class="pre">get_basic_financials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_basic_financials" title="Permalink to this definition"></a></dt>
+<dd><p>5000 credits per symbol requested.
+Note that fetching all three full financial statements has the same credit cost as this endpoint.
+Sets class attribute ‘basic_financials’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Basic financial data from the requested company.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_cash_flow_statement">
+<span class="sig-name descname"><span class="pre">get_cash_flow_statement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_cash_flow_statement" title="Permalink to this definition"></a></dt>
+<dd><p>1,000 credits per symbol requested.</p>
+<p>Sets class attribute ‘self.cash_flow_statement’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Cash flow statement data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – Time interval of statements. Defaults to quarterly</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_company">
+<span class="sig-name descname"><span class="pre">get_company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_company" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per symbol requested.
+Sets class attribute ‘company’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>General information on the company requested.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_delayed_quote">
+<span class="sig-name descname"><span class="pre">get_delayed_quote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_delayed_quote" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per symbol requested.
+Sets class attribute ‘delayed_quote’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>15 minute delayed quote for the requested symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_dividends">
+<span class="sig-name descname"><span class="pre">get_dividends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_dividends" title="Permalink to this definition"></a></dt>
+<dd><p>10 credits per symbol requested.
+Sets class attribute ‘dividends’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Basic dividend information for the requested symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>scope</strong> (<em>accepted arguments:</em><em> [</em><em>'5y'</em><em>,</em><em>'2y'</em><em>,</em><em>'1y'</em><em>,</em><em>'ytd'</em><em>,</em><em>'6m'</em><em>,</em><em>'3m'</em><em>,</em><em>'1m'</em><em>,</em><em>'next'</em><em>]</em><em>, </em><em>required</em>) – the range of data needed.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_financial_statements">
+<span class="sig-name descname"><span class="pre">get_financial_statements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_financial_statements" title="Permalink to this definition"></a></dt>
+<dd><p>5,000 credits per symbol requested.
+This is useful if you want to update the query parameters after you’ve made some requests. It’s just a time saver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All financial statement data for the requested company and sets class attribute for each individual statement, and returns a list of the attribute names.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – Time interval of statements. Defaults to quarterly</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_fund_ownership">
+<span class="sig-name descname"><span class="pre">get_fund_ownership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_fund_ownership" title="Permalink to this definition"></a></dt>
+<dd><p>10,000 credits per symbol requested.
+Sets class attribute ‘fund_ownership’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>10 largest institutional holders of the requested company.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_historical_price">
+<span class="sig-name descname"><span class="pre">get_historical_price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_by_day</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_close_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_historical_price" title="Permalink to this definition"></a></dt>
+<dd><p>10 credits per day requested when part of a time frame. (Full Data)
+50 credits per single day, minute data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_frame</strong> (<em>string</em>) – Determines how far back to retrieve data. Set to ‘date’ if only one specific day is required.</p></li>
+<li><p><strong>date</strong> (<em>string</em>) – If ‘date’ is specified in time_frame, this is the date that you wish to access.</p></li>
+<li><p><strong>chart_by_date</strong> (<em>boolean</em>) – If a single date is requested, setting param to True only returns OHLC data instead of minutely data.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_income_statement">
+<span class="sig-name descname"><span class="pre">get_income_statement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_income_statement" title="Permalink to this definition"></a></dt>
+<dd><p>1,000 credits per symbol requested.</p>
+<p>Sets class attribute ‘self.income_sheet’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Income sheet data for the requested company. If any non-JSON output is chosen, the method will return a Pandas DataFrame with the data from this endpoint.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>period</strong> (<em>accepted values are</em><em> [</em><em>'annual'</em><em>, </em><em>'quarterly'</em><em>]</em><em>, </em><em>optional</em>) – Time interval of statements. Defaults to quarterly</p></li>
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of periods to return, up to 4 for annual and 16 for quarterly. Defaults to 1.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_insider_roster">
+<span class="sig-name descname"><span class="pre">get_insider_roster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_insider_roster" title="Permalink to this definition"></a></dt>
+<dd><p>5,000 credits per symbol requested.
+Sets class attribute ‘insider_roster’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Top 10 insiders, with the most recent information.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_insider_transactions">
+<span class="sig-name descname"><span class="pre">get_insider_transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_insider_transactions" title="Permalink to this definition"></a></dt>
+<dd><p>50 credits per transaction per symbol requested.
+Sets class attribute ‘insider_transactions’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Insider transactions with the most recent information.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_institutional_ownership">
+<span class="sig-name descname"><span class="pre">get_institutional_ownership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_institutional_ownership" title="Permalink to this definition"></a></dt>
+<dd><p>10,000 credits per symbol requested.
+Sets class attribute ‘institutional_ownership’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>10 largest instituional owners for the requested stock. This is defined as explicitly buy or sell-side only.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_key_stats">
+<span class="sig-name descname"><span class="pre">get_key_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_key_stats" title="Permalink to this definition"></a></dt>
+<dd><p>5 credits per symbol requested, 1 credit per stat per symbol requested.
+Sets class attribute ‘key_stats’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Important stats for the requested company.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>stat</strong> (<em>string</em><em>, </em><em>optional</em>) – If you would like to querie one single stat, you can enter that here.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_largest_trades">
+<span class="sig-name descname"><span class="pre">get_largest_trades</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_largest_trades" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per trade per symbol requested.
+Sets class attribute ‘largest_trades’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>15 minute delayed, last sale eligible trades.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>stat</strong> (<em>string</em><em>, </em><em>optional</em>) – If you would like to querie one single stat, you can enter that here.</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_logo">
+<span class="sig-name descname"><span class="pre">get_logo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_logo" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per symbol requested.
+Sets class attribute ‘logo’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Google APIs link (bare url string) to the logo for the requested stock.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_news">
+<span class="sig-name descname"><span class="pre">get_news</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_news" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per news article per symbol requested.
+Sets class attribute ‘news’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Intraday news from over 3,000 global news sources including major publications, regional media, and social.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>last</strong> (<em>integer</em><em>, </em><em>min = 1 max = 50</em>) – Number of article to return. Defualt = 10</p></li>
+<li><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_ohlc">
+<span class="sig-name descname"><span class="pre">get_ohlc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_ohlc" title="Permalink to this definition"></a></dt>
+<dd><p>2 credits per symbol requested.
+Sets class attribute ‘ohlc’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Official open and close for a give symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_peers">
+<span class="sig-name descname"><span class="pre">get_peers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_peers" title="Permalink to this definition"></a></dt>
+<dd><p>500 credits per symbol requested.
+Sets class attribute ‘peers’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of peer company’s tickers in Python list form.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_price_target">
+<span class="sig-name descname"><span class="pre">get_price_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_price_target" title="Permalink to this definition"></a></dt>
+<dd><p>Premium Data. 500 premium credits per symbol requested.
+CSV is formatted vertically with keys in the first column.
+Sets class attribute ‘price_target’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Latest avg, high, and low analyst price target for a symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.get_quote">
+<span class="sig-name descname"><span class="pre">get_quote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.get_quote" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per symbol requested.
+CSV is formatted vertically with keys in the first column.
+Sets class attribute ‘quote’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Quote data for the requested symbol.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>output</strong> (<em>accepted values are</em><em> [</em><em>'dataframe'</em><em>, </em><em>'csv'</em><em>, </em><em>'excel'</em><em>]</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.pandas_financial_json">
+<span class="sig-name descname"><span class="pre">pandas_financial_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.pandas_financial_json" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dataframe for the requested financial statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json</strong> (<em>string</em><em>, </em><em>raw json</em><em>, </em><em>required</em>) – the raw json output from IEX Cloud containing financial statement data.</p></li>
+<li><p><strong>statement</strong> (<em>accepted values are : 'balancesheet'</em><em>, </em><em>'incomestatement'</em><em>, </em><em>and 'cashflow'.</em>) – the name of the statement as used by IEX Cloud.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.pandas_listofdict_json">
+<span class="sig-name descname"><span class="pre">pandas_listofdict_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.pandas_listofdict_json" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dataframe for the requested list of dictionaries json document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>raw json</em>) – the raw json output from IEX Cloud containing a list of dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.pandas_price_json">
+<span class="sig-name descname"><span class="pre">pandas_price_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.pandas_price_json" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dataframe for the requested price statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>raw json</em>) – the raw json output from IEX Cloud containing daily price data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.pandas_singledict_json">
+<span class="sig-name descname"><span class="pre">pandas_singledict_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.pandas_singledict_json" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a dataframe for the requested dictionary json document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json</strong> (<em>raw json</em>) – the raw json output from IEX Cloud containing a list of dictionary.</p></li>
+<li><p><strong>in_list</strong> (<em>boolean</em>) – whether the disctionary is conatined within a list element, that is, inside square braces.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.pickle_class_state">
+<span class="sig-name descname"><span class="pre">pickle_class_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.pickle_class_state" title="Permalink to this definition"></a></dt>
+<dd><p>This method takes the current state of the class and pickles it as-is.
+This will preserve all attributes of the current class instance.
+Recalling/loading the class can be done with the <code class="docutils literal notranslate"><span class="pre">iex.unpickle_class_state()</span></code>
+Filename is automatically created as ‘#ticker#_#date#_pickle.pickle’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.price">
+<span class="sig-name descname"><span class="pre">price</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.price" title="Permalink to this definition"></a></dt>
+<dd><p>1 credit per symbol requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Most recent price for the requested company and sets class attribute ‘self.price’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.price_information">
+<span class="sig-name descname"><span class="pre">price_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.price_information" title="Permalink to this definition"></a></dt>
+<dd><p>6 credits per symbol requested.
+Makes requests to the key stat and price endpoints.
+Sets class attributes for:</p>
+<p>52 week high (week52_high), 52 week low (week52_low)</p>
+<p>200 day moving average (moving_average_200), 50 day moving average (moving_average_50)</p>
+<p>Most recent price (self.price)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXStock.set_date">
+<span class="sig-name descname"><span class="pre">set_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXStock.set_date" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the date attribute.
+This is needed keep save and load funcionality smooth.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="iexmarket-class">
+<h2>IEXMarket Class<a class="headerlink" href="#iexmarket-class" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="iex.IEXMarket">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">iex.</span></span><span class="sig-name descname"><span class="pre">IEXMarket</span></span><a class="headerlink" href="#iex.IEXMarket" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXMarket.get_all_commodity_data">
+<span class="sig-name descname"><span class="pre">get_all_commodity_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXMarket.get_all_commodity_data" title="Permalink to this definition"></a></dt>
+<dd><p>10,000 credits per request per day.
+Returns all available current commodity datapoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXMarket.get_all_economic_data">
+<span class="sig-name descname"><span class="pre">get_all_economic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXMarket.get_all_economic_data" title="Permalink to this definition"></a></dt>
+<dd><p>18,000 credits per request per day.
+:return: All available current economic indicator datapoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Determines the output of the data. Default is raw JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="iex.IEXMarket.get_market_datapoint">
+<span class="sig-name descname"><span class="pre">get_market_datapoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'market'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">queries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#iex.IEXMarket.get_market_datapoint" title="Permalink to this definition"></a></dt>
+<dd><p>1,000 credits per symbol requested per date.
+Sets a class attribute equal to the symbol requested.</p>
+<p>Class attribute ‘available_economic_symbols’ is a dictionary of available economic symbols and their description.
+Class attribute ‘available_commodity_symbols’ is a dictionary of available commodity symbols and their description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Various economic and commodity values as a datapoint.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>string</em><em>, </em><em>required</em>) – The symbol of the economic indicator or commodity datapoint requested.</p></li>
+<li><p><strong>**queries</strong> – <p>Additional query parameters you want to include as listed in IEX Docs.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iex.html" class="btn btn-neutral float-left" title="IEX Cloud Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="polygon.html" class="btn btn-neutral float-right" title="Polygon.io Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Michael Hartmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

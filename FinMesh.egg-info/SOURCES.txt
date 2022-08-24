@@ -14,4 +14,10 @@ FinMesh/iex/account.py
 FinMesh/iex/forex.py
 FinMesh/iex/market.py
 FinMesh/iex/stock.py
+FinMesh/polygon/__init__.py
+FinMesh/polygon/_common.py
+FinMesh/polygon/forex.py
+FinMesh/polygon/options.py
+FinMesh/polygon/reference.py
+FinMesh/polygon/stocks.py
 FinMesh/usgov/__init__.py

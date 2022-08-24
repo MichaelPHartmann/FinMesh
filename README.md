@@ -8,7 +8,7 @@ FinMesh is a Python wrapper for several financial APIs and data sources. This pa
 
 This project is built and maintained in my free time, and so feature requests and fixes may take some time to complete. For any such requests, just open an issue (or submit a pull request if you want to contribute) and it will be added to my todo list.
 
-The APIs and sources currently supported are the (1) [IEX REST API][1], (2) [US Federal Reserve Economic Data][2] database API, (3) scraped yield curve data from the [US treasury][3], and filings from the [SECs EDGAR][4] database.
+The APIs and sources currently supported are the (1) [IEX REST API][1], (2) [US Federal Reserve Economic Data][2] database API, (3) scraped yield curve data from the [US treasury][3], and (4) filings from the [SECs EDGAR][4] database.
 
 You can donate [HERE][5] if you want to show your support. If you have a feature request that you would like built, donating is a great way to get that request prioritized.
 
@@ -20,7 +20,6 @@ You can donate [HERE][5] if you want to show your support. If you have a feature
 
 
 ## [Read The Docs!][6]
----
 
 Documentation for installation, first use, and msot of the basic functionality is complete and available on [Read The Docs][6]. Further work on the documentation is needed to cover more detailed use cases, and some tutorials are in the works. This documentation will take over for the extremely basic function lists on my personal website.
 
@@ -28,7 +27,6 @@ Documentation for installation, first use, and msot of the basic functionality i
 
 
 ## Purpose
----
 
 FinMesh exists to streamline data gathering of financial data, and provide built-in solutions to working with that data. Under the hood it is essentially an abstraction layer that makes it easier to use data for those that are just starting out, or don't want to build their own.
 
@@ -38,7 +36,6 @@ In the future, this package will be updated with new financial and economic APIs
 
 
 ## Installation
----
 
 The documentation provides a thorough guide to getting set up, but in general you will need these things to get started.
 
@@ -62,7 +59,6 @@ Click [HERE][9] for your free FRED token. This token must be stored as FRED_TOKE
 
 
 ## Contact
----
 
 If you would like to reach out, feel free to connect with me one of three ways:
 

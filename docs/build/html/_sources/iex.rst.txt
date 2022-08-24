@@ -1,17 +1,17 @@
-IEX Cloud Endpoint Function List
-################################
+..
+  Updated 25 August 2022
+
+IEX Cloud Modules
+#################
 
 Stock Endpoint
-==================
+==============
 
 .. automodule:: iex.stock
   :members:
 
-..automethod:: unpickle_class_state
-  :members:
-
 Market Endpoint
-===================
+===============
 
 .. automodule:: iex.market
   :members:

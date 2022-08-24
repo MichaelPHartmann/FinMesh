@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: FinMesh
-Version: 2.2
+Version: 2.3
 Summary: A Python wrapper to bring together various financial APIs.
 Home-page: https://finmesh.readthedocs.io/
 Author: Michael Hartmann
@@ -19,71 +19,74 @@ License-File: LICENSE.md
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/FinMesh?style=for-the-badge)
 ![Read the Docs](https://img.shields.io/readthedocs/finmesh?style=for-the-badge)
 
+FinMesh is a Python wrapper for several financial APIs and data sources. This package simplifies the gathering and use of financial and economic data, and provides abstraction that allows for plug-and-play use in your own projects.
 
-FinMesh is a python-based package that brings together financial data from various sources in one place for ease of use and distribution. The four main sections of FinMesh are (1) the [IEX REST API][1], (2) data from the [US treasury][2], data from the [US Federal Reserve Economic Data][3], and (4) data from the [SECs EDGAR][4] system.
+This project is built and maintained in my free time, and so feature requests and fixes may take some time to complete. For any such requests, just open an issue (or submit a pull request if you want to contribute) and it will be added to my todo list.
 
-You can donate to the project [HERE](https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD). This project is 100% maintained in my free time (although I'm currently unemployed so I guess that doesn't mean anything) and any donations are greatly appreciated. If FinMesh has helped you make money, consider contributing!
+The APIs and sources currently supported are the (1) [IEX REST API][1], (2) [US Federal Reserve Economic Data][2] database API, (3) scraped yield curve data from the [US treasury][3], and (4) filings from the [SECs EDGAR][4] database.
+
+You can donate [HERE][5] if you want to show your support. If you have a feature request that you would like built, donating is a great way to get that request prioritized.
 
 [1]: https://iexcloud.io/docs/api/
-[2]: https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
-[3]: https://fred.stlouisfed.org/
+[3]: https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
+[2]: https://fred.stlouisfed.org/
 [4]: https://www.sec.gov/edgar/searchedgar/companysearch.html
+[5]: https://www.paypal.com/donate?business=5G2WHG76TDH62&no_recurring=1&currency_code=CAD
 
-## [Read The Docs!](https://finmesh.readthedocs.io/en/latest/)
 
-Documentation is currently under construction but installation and all IEX functionality is covered on [Read The Docs](https://finmesh.readthedocs.io/en/latest/).
-This documentation will now take over for the extremely basic function lists found on my personal website.
+## [Read The Docs!][6]
+
+Documentation for installation, first use, and msot of the basic functionality is complete and available on [Read The Docs][6]. Further work on the documentation is needed to cover more detailed use cases, and some tutorials are in the works. This documentation will take over for the extremely basic function lists on my personal website.
+
+[6]: https://finmesh.readthedocs.io/en/latest/
+
 
 ## Purpose
----
-The purpose of this package and its sub-packages was originally to practice interacting with API data. With third-party API packages there is always the risk of outages or bugs. In building the original IEX wrapper we sought to build something easy to understand and use, that can be updated quickly and accurately.
 
-With the addition of the US Federal data the opportunity arose to create a package that could deliver all sorts of economic and security data from one place. In doing so we hope to create a low-barrier way for beginners to play with large and very useful data sets.
+FinMesh exists to streamline data gathering of financial data, and provide built-in solutions to working with that data. Under the hood it is essentially an abstraction layer that makes it easier to use data for those that are just starting out, or don't want to build their own.
+
+At the core of the package are simple functions that match the endpoints you would find in the supported API. At this level you are just given raw JSON data, and you can work with that however you wish. Through the use of stock classes and data serialization one can gather, organize, and store data. At this level you have access things like saving to and loading from a Pickle file, and Pandas so you can perform analysis on dataframes, or export to formats like CSV.
 
 In the future, this package will be updated with new financial and economic APIs. If you know of a low or no cost API that could be incorporated please raise it as an issue and we will work to have it done ASAP.
 
+
 ## Installation
-The following dependencies are used in FinMesh:
-- OS
-- CSV
-- JSON
-- Requests
+
+The documentation provides a thorough guide to getting set up, but in general you will need these things to get started.
+
+The following non-Python-standard dependencies are used in FinMesh:
+
 - xmltodict
 - xml.etree.ElementTree
-- webbrowser
-- shutil
-- BeautifulSoup4
 
 Some APIs require authentication through the use of tokens. These tokens should be set up as environment variables in the bash profile. A great article on how to do this on Mac is available here:
 
-[My Mac OSX Bash Profile](https://natelandau.com/my-mac-osx-bash_profile/)
+[My Mac OSX Bash Profile][7]
 
-Click [HERE](https://iexcloud.io/) for your free IEX token.
+Click [HERE][8] for your free IEX token.
 This token must be stored as IEX_TOKEN in your environment variables.
 
-Click [HERE](https://fred.stlouisfed.org/) for your free FRED token. This token must be stored as FRED_TOKEN in your environment variables.
+Click [HERE][9] for your free FRED token. This token must be stored as FRED_TOKEN in your environment variables.
 
+[7]: https://natelandau.com/my-mac-osx-bash_profile/
+[8]: https://iexcloud.io/
+[9]: https://fred.stlouisfed.org/
 
-## Compatibility with IEX cloud
----
-The name of the function shall be the name of the endpoint.
-The function shall accept all variables for a given endpoint using the same variable names per the documentation.
-Differences between IEX cloud documentation and this API should be considered errors. Please raise an issue if you notice discrepancies.
 
 ## Contact
----
+
 If you would like to reach out, feel free to connect with me one of three ways:
 
-1. [On GitHub][5]
+1. [On GitHub][10]
 
-2. [On LinkedIn][6]
+2. [On LinkedIn][11]
 
-3. [Via Email][7]
+3. [Via Email][12]
 
 If there are issues, be it major or semantic, please open an issue on GitHub.
 
-[5]: https://github.com/MichaelPHartmann
-[6]: https://www.linkedin.com/in/michael-hartmann/
-[7]: MichaelPeterHartmann94@gmail.com
+[10]: https://github.com/MichaelPHartmann
+[11]: https://www.linkedin.com/in/michael-hartmann/
+[12]: MichaelPeterHartmann94@gmail.com
 
 

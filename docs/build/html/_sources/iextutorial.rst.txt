@@ -1,3 +1,6 @@
+..
+  Updated 25 August 2022
+
 Accessing IEX Cloud
 ###################
 
