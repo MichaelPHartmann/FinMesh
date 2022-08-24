@@ -1,20 +1,20 @@
 from ._common import *
 
 forex = {
-"aggregates" : "/v2/aggs/ticker/{forex_ticker}/range/{multiplier}/{timespan}/{from}/{to}",
+"aggregates" : "/v2/aggs/ticker/{forex_ticker}/range/{multiplier}/{timespan}/{from_date}/{to}",
 "grouped daily" : "/v2/aggs/grouped/locale/global/market/fx/{date}",
 "previous close" : "/v2/aggs/ticker/{forex_ticker}/prev",
 "quotes" : "/v3/quotes/{fxTicker}",
-"historic ticks" : "/v1/historic/forex/{from}/{to}/{date}",
-"last pair quote" : "/v1/last_quote/currencies/{from}/{to}",
-"conversion" : "/v1/conversion/{from}/{to}",
+"historic ticks" : "/v1/historic/forex/{from_date}/{to}/{date}",
+"last pair quote" : "/v1/last_quote/currencies/{from_date}/{to}",
+"conversion" : "/v1/conversion/{from_date}/{to}",
 "snapshot all" : "/v2/snapshot/locale/global/markets/forex/tickers",
 "snapshot gain lose" : "/v2/snapshot/locale/global/markets/forex/{direction}",
 "snapshot ticker" : "/v2/snapshot/locale/global/markets/forex/tickers/{ticker}"
 }
 
 
- def aggregates(forex_ticker, multiplier, timespan, from, to, external=False, **query_params):
+def aggregates(forex_ticker, multiplier, timespan, from_date, to_date, external=False, **query_params):
     """
     :return: Get aggregate bars for a forex pair over a given date range in custom time window sizes.
 
@@ -24,8 +24,8 @@ forex = {
     :type multiplier: required, integer
     :param timespan: The size of the time window.
     :type timespan: required, string, [minute, hour, day, week, month, quarter, year]
-    :param from: The start of the aggregate time window.
-    :type from: required, string, date ex. '2021-07-22'
+    :param from_date: The start of the aggregate time window.
+    :type from_date: required, string, date ex. '2021-07-22'
     :param to: The end of the aggregate time window.
     :type to: required, string, date ex. '2021-07-22'
     :param external: Your Polygon API key if you are not using environment variables.
@@ -37,13 +37,13 @@ forex = {
     :param limit: Limits the number of base aggregates queried to create the aggregate results.
     :type limit: optional, integer, default 5000, max 50000
     """
-    URL_EXTENSION = F"/v2/aggs/ticker/{forex_ticker}/range/{multiplier}/{timespan}/{from}/{to}"
+    URL_EXTENSION = F"/v2/aggs/ticker/{forex_ticker}/range/{multiplier}/{timespan}/{from_date}/{to_date}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def grouped_daily(date, external=False, **query_params):
+def grouped_daily(date, external=False, **query_params):
     """
     :return: Get the daily open, high, low, and close (OHLC) for the entire forex markets.
 
@@ -60,7 +60,7 @@ forex = {
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def previous_close(forex_ticker, external=False, **query_params):
+def previous_close(forex_ticker, external=False, **query_params):
     """
     :return: Get the previous day's open, high, low, and close (OHLC) for the specified forex pair.
 
@@ -77,7 +77,7 @@ forex = {
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def quotes(forex_ticker, external=False, **query_params):
+def quotes(forex_ticker, external=False, **query_params):
     """
     :return: Get BBO quotes for a ticker symbol in a given time range.
 
@@ -100,12 +100,12 @@ forex = {
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def historic_ticks(from, to, date, external=False, **query_params):
+def historic_ticks(from_date, to, date, external=False, **query_params):
     """
     :return: Get historic ticks for a forex currency pair.
 
-    :param from: The start of the aggregate time window.
-    :type from: required, string, date ex. '2021-07-22'
+    :param from_date: The start of the aggregate time window.
+    :type from_date: required, string, date ex. '2021-07-22'
     :param to: The end of the aggregate time window.
     :type to: required, string, date ex. '2021-07-22'
     :param date: The beginning date for the aggregate window.
@@ -117,35 +117,35 @@ forex = {
     :param limit: Limits the number of base aggregates queried to create the aggregate results.
     :type limit: optional, integer, default 5000, max 50000
     """
-    URL_EXTENSION = F"/v1/historic/forex/{from}/{to}/{date}"
+    URL_EXTENSION = F"/v1/historic/forex/{from_date}/{to}/{date}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def last_pair_quote(from, to, external=False, **query_params):
+def last_pair_quote(from_date, to, external=False, **query_params):
     """
     :return: Get the last quote tick for a forex currency pair.
 
-    :param from: The start of the aggregate time window.
-    :type from: required, string, date ex. '2021-07-22'
+    :param from_date: The start of the aggregate time window.
+    :type from_date: required, string, date ex. '2021-07-22'
     :param to: The end of the aggregate time window.
     :type to: required, string, date ex. '2021-07-22'
     :param external: Your Polygon API key if you are not using environment variables.
     :type external: optional, string
     """
-    URL_EXTENSION = F"/v1/last_quote/currencies/{from}/{to}"
+    URL_EXTENSION = F"/v1/last_quote/currencies/{from_date}/{to}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def conversion(from, to, external=False, **query_params):
+def conversion(from_date, to, external=False, **query_params):
     """
     :return: Get currency conversions using the latest market conversion rates. Note than you can convert in both directions.
 
-    :param from: The start of the aggregate time window.
-    :type from: required, string, date ex. '2021-07-22'
+    :param from_date: The start of the aggregate time window.
+    :type from_date: required, string, date ex. '2021-07-22'
     :param to: The end of the aggregate time window.
     :type to: required, string, date ex. '2021-07-22'
     :param external: Your Polygon API key if you are not using environment variables.
@@ -155,7 +155,7 @@ forex = {
     :param precision: The decimal precision of the conversion. Defaults to 2 which is 2 decimal places accuracy.
     :type precision: optional, integer
     """
-    URL_EXTENSION = F"/v1/conversion/{from}/{to}"
+    URL_EXTENSION = F"/v1/conversion/{from_date}/{to}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)
@@ -167,14 +167,16 @@ def snapshot_gain_lose(direction, external=False, **query_params):
 
     :param direction: The direction of the snapshot results to return.
     :type direction: required, string, [gainers, losers]
+    :param external: Your Polygon API key if you are not using environment variables.
+    :type external: optional, string
     """
-   URL_EXTENSION = F"/v2/snapshot/locale/global/markets/forex/{direction}"
+    URL_EXTENSION = F"/v2/snapshot/locale/global/markets/forex/{direction}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def snapshot_all(external=False, **query_params):
+def snapshot_all(external=False, **query_params):
     """
     :return: Get the current minute, day, and previous day’s aggregate, as well as the last trade and quote for all traded forex symbols.
 
@@ -189,7 +191,7 @@ def snapshot_gain_lose(direction, external=False, **query_params):
         instance.append_query_params_to_url(query_params)
     return instance.execute()
 
- def snapshot_ticker(forex_ticker, external=False, **query_params):
+def snapshot_ticker(forex_ticker, external=False, **query_params):
     """
     :return:Get the current minute, day, and previous day’s aggregate, as well as the last trade and quote for a single traded currency symbol.
 

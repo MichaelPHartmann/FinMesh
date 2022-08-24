@@ -16,7 +16,7 @@ options_reference = {
 }
 
 
-def aggregates(options_ticker, multiplier, timespan, from, to, external=False, **query_params):
+def aggregates(options_ticker, multiplier, timespan, from_date, to_date, external=False, **query_params):
     """
     :return: Get aggregate bars for an option contract over a given date range in custom time window sizes.
 
@@ -39,7 +39,7 @@ def aggregates(options_ticker, multiplier, timespan, from, to, external=False, *
     :param limit: Limits the number of base aggregates queried to create the aggregate results.
     :type limit: optional, integer, default 5000, max 50000
     """
-    URL_EXTENSION = F"/v2/aggs/ticker/{options_ticker}/range/{multiplier}/{timespan}/{from}/{to}"
+    URL_EXTENSION = F"/v2/aggs/ticker/{options_ticker}/range/{multiplier}/{timespan}/{from_date}/{to_date}"
     instance = polygonCommon(URL_EXTENSION, external=external)
     if query_params:
         instance.append_query_params_to_url(query_params)

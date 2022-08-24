@@ -1,7 +1,5 @@
-.. FinMesh documentation master file, created by
-   sphinx-quickstart on Sat Sep 18 15:51:05 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+..
+   Updated 25 August 2022
 
 Welcome to FinMesh's documentation!
 ===================================
@@ -32,8 +30,10 @@ If FinMesh has brought you value please consider supporting the project.
 
    install
    iextutorial
-   iexstockclass
    iex
+   iexclasses
+   polygon
+   polygonclasses
    usgov
    edgar
 

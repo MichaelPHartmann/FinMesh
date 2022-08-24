@@ -1,4 +1,5 @@
 import os
+from queue import Queue
 
 stocks = {
 "aggregates" : "/v2/aggs/ticker/{stockTicker}/range/{multiplier}/{timespan}/{from}/{to}",
@@ -102,7 +103,7 @@ class polygonCommon():
     def make_polygon_request(self):
         """Performs request to Polygon.io from the URL defined in url_final.
         If request does not return a 200 response then a verbose error statement is raised.
-        Returns JSON object of response.
+        otherwise it returns a JSON object.
         """
         response = requests.get(self.url_final)
         if response.status_code != 200:
